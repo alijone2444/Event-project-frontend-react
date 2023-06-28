@@ -1,84 +1,57 @@
-import { useState } from 'react';
-import { TextField, Button, Container } from '@mui/material';
-import axios from 'axios';
+import Loginform from "./rightHalf"
+import Logindisplay from "./leftHalf"
 import { makeStyles } from '@mui/styles';
+import MovingBackground from './animation';
 
-function Loginform(){
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const classes = useStyles();
-
-    const handleEmailChange = (e) => {
-      setEmail(e.target.value);
-    };
-  
-    const handlePasswordChange = (e) => {
-      setPassword(e.target.value);
-    };
-  
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      console.log('Email:', email);
-      console.log('Password:', password);
-      if (email && password){
-        //here the backend begins
-        axios.get('https://api.example.com/data',{
-          params: {
-            param1: 'value1',
-            param2: 'value2',
-          }
-        })
-          .then(response => {
-            // Handle on successful response
-            console.log(response.data);
-          })
-          .catch(error => {
-            // Handle the error
-            console.error(error);
-          });
-      }
-    };
-    return(
-        <div>
-            <Container maxWidth="sm" className={classes.root}>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <TextField
-                label="Email"
-                type="email"
-                value={email}
-                onChange={handleEmailChange}
-                fullWidth
-                margin="normal"
-                required
-                />
-                <TextField
-                label="Password"
-                type="password"
-                value={password}
-                onChange={handlePasswordChange}
-                fullWidth
-                margin="normal"
-                required
-                />
-                <Button type="submit" variant="contained" color="primary">
-                Login
-                </Button>
-            </form>
-            </Container>
-        </div>
-    )
+function LoginScreen(){
+  const classes = useStyles();
+  return(
+    <div className={classes.root}>
+      <div className={classes.imglg} ><Logindisplay/></div>
+      <div className={classes.formlg} ><Loginform/></div>
+      <MovingBackground/>
+      
+    </div>
+  )
 }
 const useStyles = makeStyles({
+  root:{
+    height:"100vh",
+    display:"flex",
+    flexDirection:"row",
+    alignItems:"center",
+    justifyContent:"center"
+  },
+  imglg:{
+    width:"50%",
+    zIndex:"1"
+  },
+  formlg:{
+    
+    width:"50%",
+    zIndex:"1"
+  },
+
+  '@media (max-width: 600px)': {
   root: {
-    backgroundColor: 'red',
-    color: 'white',
-    padding: '10px',
+    flexDirection:"column"
   },
-  button: {
-    backgroundColor: 'blue',
-    color: 'white',
-    padding: '5px 10px',
-  },
-});
-export default Loginform;
+  formlg:{
+    width:"80%",
+    height:"70vh"
+  }
+  ,imglg:{
+    height:"60vh"
+  }
+}
+,
+'@media (max-width: 500px)': {
+  formlg:{
+    height:"75vh"
+  }
+  ,imglg:{
+    height:"25vh"
+  }
+}
+})
+export default LoginScreen

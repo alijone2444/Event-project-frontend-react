@@ -5,15 +5,20 @@
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
+    "@mediapipe/tasks-vision": "^0.10.2-rc2",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.13.6",
     "@mui/styles": "^5.13.2",
+    "@react-three/drei": "^9.77.5",
     "axios": "^1.4.0",
     "cra-template": "1.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.14.0",
     "react-scripts": "5.0.1",
+    "react-three-fiber": "^6.0.13",
+    "three": "^0.153.0",
+    "three.js": "^0.77.1",
     "web-vitals": "^3.3.2"
   },
   "scripts": {

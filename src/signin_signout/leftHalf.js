@@ -16,8 +16,7 @@ function Logindisplay() {
 
 const useStyles = makeStyles((theme) => ({
   card: {
-    zIndex: "1",
-    height: "70vh",
+    height: "100vh",
   },
   media: {
     paddingTop:"10%",

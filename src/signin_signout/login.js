@@ -2,13 +2,17 @@ import Loginform from "./rightHalf"
 import Logindisplay from "./leftHalf"
 import { makeStyles } from '@mui/styles';
 import MovingBackground from './animation';
+import Signupform from './signup'
 
 function LoginScreen(){
   const classes = useStyles();
   return(
     <div className={classes.root}>
       <div className={classes.imglg} ><Logindisplay/></div>
-      <div className={classes.formlg} ><Loginform/></div>
+      <div className={classes.formlg}>
+      <div  ><Loginform/></div>  
+      <div ><Signupform/></div>
+      </div>
       <MovingBackground/>
       
     </div>
@@ -20,16 +24,18 @@ const useStyles = makeStyles({
     display:"flex",
     flexDirection:"row",
     alignItems:"center",
-    justifyContent:"center"
+    justifyContent:"center",
+    
   },
   imglg:{
     width:"50%",
     zIndex:"1"
   },
   formlg:{
-    
+    position:"relative",
     width:"50%",
-    zIndex:"1"
+    zIndex:"1",
+    height:"80vh"
   },
 
   '@media (max-width: 600px)': {
@@ -41,7 +47,7 @@ const useStyles = makeStyles({
     height:"70vh"
   }
   ,imglg:{
-    height:"60vh"
+    height:"30vh"
   }
 }
 ,

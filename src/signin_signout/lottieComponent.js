@@ -17,6 +17,11 @@ const MyLottie = (props) => {
           loop: true,
         }}
         isStopped={isAnimationStopped}
+      height={150}
+      width={150}
+      style={{
+        borderRadius:"50%",
+        border:"2px solid #0195db",}}
       />
     </div>
   );

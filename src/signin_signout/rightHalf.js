@@ -4,13 +4,11 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import MyLottie from './lottieComponent'
-import zIndex from '@mui/material/styles/zIndex';
-function Loginform(){
+function Loginform({ onswitch }){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isAnimationStopped, setIsAnimationStopped] = useState(false);
     const [isSignUpClicked, setIsSignUpClicked] = useState(false); // New state variable
-    const [formKey, setFormKey] = useState(0); // New state variable
   
     const classes = useStyles();
 
@@ -56,13 +54,14 @@ function Loginform(){
     };
     const handleSignUpClick = () => {
       console.log('Signup link clicked');
-      setIsSignUpClicked(true); // Update state variable when signup link is clicked
-      setFormKey(prevKey => prevKey + 1); };
+      setIsSignUpClicked(true); 
+      onswitch() // Update state variable when signup link is clicked
+    };
     return(
     <div className={`${classes.parent} ${isSignUpClicked ? classes.animateRotate : ''} `}>
 
             <Container maxWidth="sm" className={classes.root}>
-            <div  className={classes.lottie} ><MyLottie  key={formKey} isAnimationStopped={isAnimationStopped} /></div>
+            <div  className={classes.lottie} ><MyLottie  isAnimationStopped={isAnimationStopped} /></div>
             <form onSubmit={handleSubmit}>
                 <TextField
                 label="Email"
@@ -72,10 +71,9 @@ function Loginform(){
                 onClick={handleusernameClick}
                 fullWidth
                 margin="normal"
-                style={{zIndex:"3"}}
                 required
                 className={classes.fields}
-                InputLabelProps={{ style: { color: 'rgb(0, 255, 221)' } }}
+                InputLabelProps={{ style: { color: '#0195db' } }}
                 />
                 <TextField
                 label="Password"
@@ -87,13 +85,13 @@ function Loginform(){
                 margin="normal"
                 required
                 className={classes.fields}
-                InputLabelProps={{ style: { color: 'rgb(0, 255, 221)' } }}
+                InputLabelProps={{ style: { color: '#0195db' } }}
                 />
                 <div className={classes.linklg}>
                     <p>don't have an account?</p>
-                    <Link style={{color:"skyblue"}} onClick={handleSignUpClick}>Signup</Link>
+                    <Link style={{color:"#0195db"}} onClick={handleSignUpClick}>Signup</Link>
                  </div>
-                <div style={{paddingTop:"20%",paddingBottom:"10%"}}>
+                <div className={classes.new} >
                     <Button type="submit" variant="contained"  className={classes.buttonlg}>
                     Login
                     </Button>
@@ -107,67 +105,87 @@ const useStyles = makeStyles({
   parent: {
     paddingRight: '10%',
     paddingLeft: '10%',
-    position: "absolute",
-    zIndex:"4"
+    animation: '$root 2s ease-in-out',
+    display:"flex",
+    alignItems:"center",
+    justifyContent:"center"
   },
   root: {
-    paddingTop: '50%',
     backdropFilter: 'blur(25px)',
     borderRadius: '5%',
-    padding: '10px',
     width: '100%',
-    borderBottom: '1px solid white',
+    border: '1px solid lightgrey'
+   
   },
   fields: {
-    color: 'white',
+    color: 'black',
     '& input': {
-      color: 'white',
+      color: 'black',
     },
     '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: 'white',
+      borderColor: '#0195db',
     },
     '&:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: 'white',
+      borderColor: '#0195db',
     },
     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: 'white',
+      borderColor: '#0195db',
     },
   },
   buttonlg: {
-    backgroundColor: 'rgb(0, 255, 221) !important',
+    backgroundColor: '#0195db !important',
     color: 'white !important',
     padding: '5px 10px',
     width: '100%',
-    paddingBottom: '10%',
   },
   linklg: {
-    color: 'rgb(0, 255, 221)',
+    color: 'black',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
   },
   lottie: {
-    zIndex: '1',
-    position: 'absolute',
-    top: '0',
+    paddingTop:"5%"
+  },
+  new:{
+    paddingBottom:"10%",
+    paddingTop:"10%"
   },
   animateRotate: {
-    animation: '$rotateAnimation 0.7s ease-in-out forwards',
+    animation: '$rotateAnimation 2s ease-in-out forwards',
     animationDelay: '0.3s',
   },
   '@keyframes rotateAnimation': {
     '0%': {
-      transform: 'translateX(0)',
+      transform: 'rotateY(0deg)',
     },
-    '50%': {
-      transform: 'translateX(-500px)',
+    '100%': {
+      transform: 'rotateY(1turn)',
+      opacity: 0,
     },
     
+  },
+  
+  '@keyframes root': {
+    '0%': {
+      opacity:"0.5",
+    },
+    '50%': {
+      opacity:"0.7",
+    },
     '100%': {
-      zIndex:"3"
+      opacity:"1",
     },
   },
+  '@media (max-width: 500px)': {
+    root:{
+      height:"100%",
+          },
+          new:{
+            paddingTop:"15%",
+          }
+  }
 });
 
 export default Loginform;

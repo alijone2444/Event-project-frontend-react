@@ -5,13 +5,12 @@ import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import MyLottie from './lottieComponent'
 
-function Signupform(){
+function Signupform({onswitch}){
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isAnimationStopped, setIsAnimationStopped] = useState(false);
     const [isSignInClicked, setIsSignInClicked] = useState(false); // New state variable
-    
-    const [formKey, setFormKey] = useState(0); // New state variable
+  
     const classes = useStyles();
 
     const handleEmailChange = (e) => {
@@ -32,15 +31,15 @@ function Signupform(){
       console.log('Password field clicked');
       setIsAnimationStopped(false); // Stop the animation
     };
-    const handleSignInClick = () => {
+    const handleSignUpClick = () => {
       console.log('Signup link clicked');
-      setIsSignInClicked(true); // Update state variable when signup link is clicked
-      setFormKey(prevKey => prevKey + 1); 
+      setIsSignInClicked(true); 
+      onswitch()// Update state variable when signup link is clicked
     };
-    return(
-        <div className={`${classes.parent} ${isSignInClicked ? classes.animateRotate : ''} `}>
-            <Container maxWidth="sm" className={classes.root} style={{ width: '100%' }}>
-            <div  className={classes.lottie} ><MyLottie  key={formKey} isAnimationStopped={isAnimationStopped} /></div>
+    return( 
+    <div className={`${classes.parent} ${isSignInClicked ? classes.animateRotate : ''} `}>
+            <Container maxWidth="sm" className={classes.root} >
+            <div  className={classes.lottie} ><MyLottie  isAnimationStopped={isAnimationStopped} /></div>
             <form >
                 <TextField
                 label="Email"
@@ -50,10 +49,9 @@ function Signupform(){
                 onClick={handleusernameClick}
                 fullWidth
                 margin="normal"
-                style={{zIndex:"2"}}
                 required
                 className={classes.fields}
-                InputLabelProps={{ style: { color: 'rgb(0, 255, 221)' } }}
+                InputLabelProps={{ style: { color: '#0195db' } }}
                 />
                 <TextField
                 label="Password"
@@ -65,7 +63,7 @@ function Signupform(){
                 margin="normal"
                 required
                 className={classes.fields}
-                InputLabelProps={{ style: { color: 'rgb(0, 255, 221)' } }}
+                InputLabelProps={{ style: { color: '#0195db' } }}
                 />
                 <TextField
                 label="Confirm Password"
@@ -76,14 +74,14 @@ function Signupform(){
                 margin="normal"
                 required
                 className={classes.fields}
-                InputLabelProps={{ style: { color: 'rgb(0, 255, 221)' } }}
+                InputLabelProps={{ style: { color: '#0195db' } }}
                 />
                 
                 <div className={classes.linklg}>
                     <p>already have an account?</p>
-                    <Link  style={{color:"skyblue"}} onClick={handleSignInClick}>SignIn</Link>
+                    <Link  style={{color:"#0195db"}} onClick={handleSignUpClick}>SignIn</Link>
                  </div>
-                <div style={{}}>
+                <div className={classes.new}>
                     <Button type="submit" variant="contained"  className={classes.buttonlg}>
                     Signup
                     </Button>
@@ -96,65 +94,86 @@ function Signupform(){
     parent: {
       paddingRight: '10%',
       paddingLeft: '10%',
-      position:"absolute",
-      zIndex:"3"
+    animation: '$root 2s ease-in-out',
     },
     root: {
-      paddingTop: '50%',
       backdropFilter: 'blur(25px)',
       borderRadius: '5%',
-      padding: '10px',
       width: '100%',
-      borderBottom: '1px solid white',
-      
+      border: '1px solid lightgrey',
+    
     },
     fields: {
-      color: 'white',
+      color: 'black',
       '& input': {
-        color: 'white',
+        color: 'black',
       },
       '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: 'white',
+        borderColor: '#0195db',
       },
       '&:hover .MuiOutlinedInput-notchedOutline': {
-        borderColor: 'white',
+        borderColor: '#0195db',
       },
       '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-        borderColor: 'white',
+        borderColor: '#0195db',
       },
     },
     buttonlg: {
-      backgroundColor: 'rgb(0, 255, 221) !important',
+      backgroundColor: '#0195db !important',
       color: 'white !important',
       padding: '5px 10px',
       width: '100%',
       paddingBottom: '10%',
     },
     linklg: {
-      color: 'rgb(0, 255, 221)',
+      color: 'black',
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
     },
+    new:{
+      paddingTop:"10%",
+      paddingBottom:"10%",
+    },
     lottie: {
-      zIndex: '1',
-      position: 'absolute',
-      top: '0',
+      paddingTop:"5%"
     },
     animateRotate: {
-      animation: '$rotateAnimation 0.7s ease-in-out forwards',
+      animation: '$rotateAnimation 2s ease-in-out forwards',
       animationDelay: '0.3s',
     },
     '@keyframes rotateAnimation': {
       '0%': {
-        transform: 'translateX(0)',
-        zIndex:"2"
+        transform: ' rotateY(0deg) ',
+      },
+      '100%': {
+        transform: ' rotateY(1turn) ',
+      },
+    },
+    
+    '@keyframes root': {
+      '0%': {
+        opacity:"0.5",
+        backdropFilter: 'blur(15px)',
       },
       '50%': {
-        transform: 'translateX(500px)',
+        opacity:"0.7",
+        backdropFilter: 'blur(15px)',
       },
-      
+      '100%': {
+        opacity:"1",
+        backdropFilter: 'blur(15px)',
+      },
     },
+    
+  '@media (max-width: 500px)': {
+    root:{
+      height:"100%",
+          },
+          new:{
+            paddingTop:"15%",
+          }
+  }
   });
 export default Signupform;

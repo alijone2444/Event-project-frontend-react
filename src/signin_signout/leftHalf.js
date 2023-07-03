@@ -1,6 +1,6 @@
 import { makeStyles } from '@mui/styles';
 import { Card, CardMedia } from '@mui/material';
-import Image from '../images/ist_logo.png';
+import Image from '../images/ist_logo.jpg';
 
 function Logindisplay() {
   const classes = useStyles();
@@ -21,7 +21,6 @@ const useStyles = makeStyles((theme) => ({
   media: {
     paddingTop:"10%",
     paddingLeft: "10%",
-    opacity: 0.5,
     display:"flex",
     alignItems:"center",
     height: "70vh",

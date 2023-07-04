@@ -40,41 +40,32 @@ const useStyles = makeStyles({
     
   },
   imglg:{
-    width:"50%",
-    zIndex:"1"
+    width:"60%",
   },
   formlg:{
-    
-    width:"50%",
-    zIndex:"1",
+    width:"40%",
     height:"100%",
     display:"flex",
     alignItems:"center",
+    justifyContent:"center"
   },
 
-  '@media (max-width: 600px)': {
+  '@media (max-width: 900px)': {
   root: {
     flexDirection:"column"
   },
   formlg:{
+    display:"flex",
+    alignItems:"center",
+    height:"100%",
     width:"100%",
-    height:"70%",
-    alignItems:"flex-start",
     justifyContent:"center"
   }
   ,imglg:{
-    height:"30%"
+    height:"0%"
   }
 }
 ,
-'@media (max-width: 500px)': {
-  formlg:{
-    height:"75%",
-    alignItems:"flex-start"
-  }
-  ,imglg:{
-    height:"25%"
-  }
-}
+
 })
 export default LoginScreen

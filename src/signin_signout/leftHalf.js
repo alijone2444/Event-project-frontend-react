@@ -8,19 +8,15 @@ import Image3 from '../images/event_game.png';
 
 const useStyles = makeStyles((theme) => ({
   card: {
-  height: '96vh',
-  background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.3) 0%, rgba(234, 246, 255, 1) 70%, rgba(234, 246, 255, 1) 100%, rgba(255, 255, 255, 0.3) 100%)',
   border: '5% solid white',
   borderRight: 'none',
-
+    paddingLeft:"5%"
   },
   media: {
-    paddingTop: '10%',
-    paddingLeft: '10%',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    height: '70vh',
+    height: '90vh',
     position: 'relative',
   },
   slideContainer: {
@@ -69,7 +65,7 @@ function Logindisplay() {
 
   const classes = useStyles();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const isMobile = useMediaQuery('(max-width:600px)');
+  const isMobile = useMediaQuery('(max-width:900px)');
 
   useEffect(() => {
     const interval = setInterval(() => {

@@ -1,10 +1,28 @@
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import { TextField, Button, Container } from '@mui/material';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import MyLottie from './lottieComponent'
+
+
 function Loginform({ onswitch }){
+
+  //const classes1 = useStyles();
+ useEffect(() => {
+  // Apply the gradient background to the body element
+  document.body.style.background = 'linear-gradient(to bottom, white 5%, #EAF6FF 10%, #EAF6FF)';
+
+  // Set the left border color to white
+  document.body.style.borderLeft = '5% solid white';
+
+  // Clean up the background style when the component is unmounted
+  return () => {
+    document.body.style.background = '';
+    document.body.style.borderLeft = '';
+  };
+}, []);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isAnimationStopped, setIsAnimationStopped] = useState(false);
@@ -114,8 +132,9 @@ const useStyles = makeStyles({
     backdropFilter: 'blur(25px)',
     borderRadius: '5%',
     width: '100%',
-    border: '1px solid lightgrey'
-   
+    backgroundColor:'white',
+    border: '5% solid white',
+
   },
   fields: {
     color: 'black',

@@ -43,10 +43,10 @@ function Loginform({ onswitch }){
       console.log('Password:', password);
       if (email && password){
         //here the backend begins
-        axios.get('https://api.example.com/data',{
+        axios.get('http://127.0.0.1:8000/login/',{
           params: {
-            param1: 'value1',
-            param2: 'value2',
+            param1: email,
+            param2: password,
           }
         })
           .then(response => {

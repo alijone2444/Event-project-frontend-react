@@ -1,0 +1,159 @@
+import React, { useEffect, useState } from 'react';
+import AppBar from '@mui/material/AppBar';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Collapse from '@mui/material/Collapse';
+import HomeIcon from '@mui/icons-material/Home';
+import SettingsIcon from '@mui/icons-material/Settings';
+import Image from '../../images/ist_logo.png';
+import makeStyles from '@mui/styles/makeStyles';
+import Heading from './heading';
+import Button from '@mui/material/Button';
+import MenuIcon from '@mui/icons-material/Menu';
+
+const Header = (props) => {
+  const classes = useStyles();
+  const [expandedButton, setExpandedButton] = React.useState(null);
+  const [homeButtonActive, setHomeButtonActive] = React.useState(false);
+  const [settingsButtonActive, setSettingsButtonActive] = React.useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isSidebarOpen,setisSidebarOpen] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 1000);
+    };
+
+    handleResize(); // Check initial width
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const handleButtonClick = (buttonName) => {
+    if (expandedButton === buttonName) {
+      setExpandedButton(null);
+      if (buttonName === 'Home') {
+        setHomeButtonActive(false);
+      } else if (buttonName === 'Settings') {
+        setSettingsButtonActive(false);
+      }
+    } else {
+      setExpandedButton(buttonName);
+      if (buttonName === 'Home') {
+        setHomeButtonActive(true);
+        setSettingsButtonActive(false);
+      } else if (buttonName === 'Settings') {
+        setSettingsButtonActive(true);
+        setHomeButtonActive(false);
+      }
+    }
+  };
+  const handleSidebar=()=>{
+    props.callbackToSidebar()
+  }
+  
+
+  return (
+    <AppBar position="static" color="transparent">
+      <Toolbar className={classes.toolbar}>
+        <Heading />
+
+        <div className={classes.logoContainer}>
+          <a>
+            <img src={Image} alt="Logo" className={classes.logoImage} />
+          </a>
+        </div>
+
+        <div className={classes.rightContent}>
+          {!isMobile && (
+            <>
+              <Button color="inherit">Societies</Button>
+              <Button color="inherit">Calendar</Button>
+              <Button color="inherit">Events</Button>
+           
+
+            <IconButton
+              onClick={() => handleButtonClick('Settings')}
+              color={settingsButtonActive ? 'primary' : 'default'}
+            >
+              <SettingsIcon style={{ color: '#2e3192' }} />
+            </IconButton>
+            
+            <Collapse
+              className={classes.iconbutton}
+              in={expandedButton === 'Settings'}
+              timeout={1000}
+              unmountOnExit
+            >
+            <div className={classes.collapseContent}>
+              <IconButton>
+                <Typography variant="body2">Settings</Typography>
+              </IconButton>
+            </div>
+          </Collapse>
+          </>
+          )}
+          {isMobile && <IconButton
+            color={settingsButtonActive ? 'primary' : 'default'}
+            onClick={handleSidebar}
+          >
+            <MenuIcon />
+          </IconButton>}
+        </div>
+      </Toolbar>
+    </AppBar>
+  );
+};
+
+const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },logoContainer: {
+    position:'absolute',
+    left:"50%",
+    transform: "translate(-50%, 0)"
+  },
+  Middlecontent: {
+   
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center', // Added line
+
+  },
+  rightContent: {
+    display:"flex",
+    flexDirection:"row",
+    alignItems:"center",
+    color:"#00adef"
+  },
+  logoImage: {
+    height: '60px',
+  },
+  iconbutton: {
+    borderBottom: '3px solid #0090d6',
+  },
+  collapseContent: {
+    display: 'flex',
+    justifyContent: 'flex-end',
+    marginLeft: '100%',
+    transition: 'transform 0.3s ease',
+    transform: 'translateX(-100%)',
+  },
+  '@media (max-width: 600px)': {
+    logoImage: {
+      display: 'none',
+    },
+  },
+  '@media (max-width: 900px)': {
+    toolbar:{
+      paddingLeft:"0 !important"
+    }
+  },
+}));
+
+export default Header;

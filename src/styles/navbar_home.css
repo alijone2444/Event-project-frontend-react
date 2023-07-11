@@ -1,0 +1,83 @@
+.parent{
+    z-index: 1;
+    color: #00adef;
+    padding-top: 1%;
+}
+.overlay {
+	width: 100%;
+	z-index: 100;
+	background: rgb(255, 255, 255);
+	background: linear-gradient(
+		0deg,
+		rgba(255, 255, 255, 1) 75%,
+		rgba(255, 255, 255, 0.9) 80%,
+		rgba(255, 255, 255, 0.25) 95%,
+		rgba(255, 255, 255, 0) 100%
+	);
+}
+
+.text {
+    padding-left: 10%;
+    font-family: "Arial", sans-serif;
+    font-size: 25px;
+    display: flex;
+    flex-direction: row;
+    user-select: none;
+  }
+  
+.text .wrapper {
+	padding-left: 4px;
+	padding-right: 4px;
+	padding-top: 2px;
+	padding-bottom: 2px;
+}
+
+.text .wrapper .letter {
+	transition: ease-out 1s;
+	transform: translateY(40%);
+}
+
+.text .wrapper .shadow {
+	transform: scale(1, -1);
+	color: rgb(231, 231, 231);
+	transition: ease-in 3s, ease-out 3s;
+}
+
+.text .wrapper:hover .letter {
+	transform: translateY(-200%);
+}
+
+.text .wrapper:hover .shadow {
+	opacity: 0;
+	transform: translateY(200%);
+}
+@media(max-width:600px){
+    .text{
+        font-size: 20px;
+    }
+}
+.overlayhome {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.5), rgba(202, 202, 202, 0.5), rgba(143, 143, 143, 0.5));
+    background-size: 400% 400%;
+    animation: gradient 5s ease forwards;
+    height: 100vh;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 70% 80%;
+    }
+    100% {
+        background-position: 90% 100%;
+    }
+}
+.crousel{
+    z-index: -1;
+}

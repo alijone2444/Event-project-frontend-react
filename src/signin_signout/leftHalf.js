@@ -2,9 +2,11 @@ import { useState, useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import { useMediaQuery } from '@mui/material';
 
-import Image1 from '../images/ist.jpg';
+import Image1 from '../images/undraw_login.png';
 import Image2 from '../images/event.jpg';
 import Image3 from '../images/event_game.png';
+import Image4 from '../images/undraw_login2.png';
+import Image5 from '../images/undraw_login3.png';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -50,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   dot: {
     width: 10,
     height: 10,
-    borderRadius: '50%',
+    borderRadius: '20%',
     margin: '0 5px',
     backgroundColor: '#c4c4c4',
     cursor: 'pointer',
@@ -69,13 +71,13 @@ function Logindisplay() {
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 3);
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % 5);
     }, 3000);
 
     return () => clearInterval(interval);
   }, []);
 
-  const images = [Image1, Image2, Image3];
+  const images = [Image1, Image2, Image3,Image4,Image5];
 
   return (
     <div>

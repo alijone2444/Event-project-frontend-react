@@ -1,0 +1,10 @@
+.neon-cursor-container {
+    position: relative;
+  }
+  
+  .neon-effect {
+    position: relative;
+    z-index: 1;
+    /* Add any custom styles for the neon effect */
+    /* For example, you can use CSS properties like text-shadow, box-shadow, or background-color to create the neon effect */
+  }

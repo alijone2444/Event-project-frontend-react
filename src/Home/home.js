@@ -3,6 +3,7 @@ import Header from "./navbar/header";
 import SidebarComponent from "./navbar/sidebar";
 import CarouselComponent from "./crousel/crousel";
 import '../styles/navbar_home.css';
+import NeonCursor from "./neonCursor";
 
 function Home(){
     const [showSideBar,setshowSideBar]=useState(true)
@@ -25,6 +26,7 @@ return(
            <CarouselComponent/>
            <div>
             <h1>helo wor;d</h1>
+          <NeonCursor />
            </div>
      
     </div>

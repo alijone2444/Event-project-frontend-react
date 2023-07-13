@@ -36,6 +36,7 @@ function Loginform({ onswitch }){
   
     const handlePasswordChange = (e) => {
       setPassword(e.target.value);
+      setIsAnimationStopped(true); // Stop the animation
     };
     const handleSubmit = (e) => {
       e.preventDefault();

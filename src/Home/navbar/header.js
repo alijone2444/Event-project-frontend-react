@@ -57,7 +57,7 @@ const Header = (props) => {
   
 
   return (
-    <AppBar position="static" color="transparent">
+    <AppBar position="static" color="transparent" style={{position:"fixed",top:0,left:0,zIndex:"999",backgroundColor:"white"}}> 
       <Toolbar className={classes.toolbar}>
         <Heading />
 

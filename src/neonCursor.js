@@ -13,11 +13,6 @@ const NeonCursor = () => {
         innerScale={0.7} // Customize the scaling of the inner cursor
         outerScale={3} // Customize the scaling of the outer cursor
       />
-      {/* Add any content or components you want to apply the neon effect to */}
-      <div className="neon-effect">
-        <h1>Neon Cursor</h1>
-        <p>Move the cursor around the screen</p>
-      </div>
     </div>
   );
 };

@@ -2,10 +2,13 @@ import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import Image from '../../images/navbackground.jpg';
 import { useRef, useState, useEffect } from "react";
 
+import { makeStyles } from '@mui/styles';
+
 function SidebarComponent(props) {
   const [openSlide, setopenSlide] = useState("");
   const sideNavRef = useRef(null);
   const [showsidebar,setshowsidebar] = useState(true)
+  const classes = useStyles() 
 
   useEffect(() => {
     if (props.Openstatus===false) {
@@ -28,22 +31,48 @@ function SidebarComponent(props) {
   }
 
   return (
-    <div style={{ position: "fixed", top:35, width: "100%" ,zIndex: 2}}>
-      {<div style={{ position: "absolute", top: 35, zIndex: 1, width: "0%", height: "80vh",background:"red" }}>
-        <Sidebar ref={sideNavRef} rootStyles={{zIndex:"2",height:"80vh",bottom: 0, }} image={Image} transitionDuration={1000} collapsed={props.Openstatus} collapsedWidth='0px'>
-            <Menu closeOnClick={true}>
-            <SubMenu label="Events" >
-                <MenuItem defaultOpen={true}> In Side University </MenuItem>
+    <div className={classes.parent} >
+      {<div className={classes.parent2} >
+        <Sidebar ref={sideNavRef} className={classes.sidebar} image={Image} transitionDuration={1000} collapsed={props.Openstatus} collapsedWidth='0px'>
+            <Menu closeOnClick={true} >
+            <SubMenu label="Events" style={{marginTop:"15%"}}>
+                <MenuItem defaultOpen={true} > In Side University </MenuItem>
                 <MenuItem> Out Side University </MenuItem>
             </SubMenu>
-            <MenuItem > Societies </MenuItem>
-            <MenuItem> Calendar </MenuItem>
-            <MenuItem> Settings </MenuItem>
+            <MenuItem className={classes.menuitem} > Societies </MenuItem>
+            <MenuItem className={classes.menuitem}> Calendar </MenuItem>
+            <MenuItem className={classes.menuitem}> Settings </MenuItem>
             </Menu>
         </Sidebar>
         </div>}
     </div>
   );
 }
-
+const useStyles = makeStyles((theme) => ({
+  parent: {
+    position: "fixed",
+     top:0,
+      width: "100%" 
+    ,zIndex: 4,
+  },  
+  parent2 :{
+    position: "absolute"
+    , top: 0,
+     zIndex: 4,
+      width: "0%",
+       height: "100vh"
+  },
+  sidebar:{
+    zIndex:"4",
+    height:"100vh"
+    ,bottom: 0, 
+    
+  },
+  menuitem:{
+    background:"rgba(154, 177, 255, 0.3)",
+    color:"black",
+    padding:"2%",
+    fontFamily:"arial",
+  }
+}));
 export default SidebarComponent;

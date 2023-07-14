@@ -3,7 +3,8 @@ import Header from "./navbar/header";
 import SidebarComponent from "./navbar/sidebar";
 import CarouselComponent from "./crousel/crousel";
 import '../styles/navbar_home.css';
-import NeonCursor from "./neonCursor";
+import HomeBody from "./HomePageBody/homebody";
+import ThemedFooter from "./Footer/footer";
 
 function Home(){
     const [showSideBar,setshowSideBar]=useState(true)
@@ -23,11 +24,10 @@ return(
     <div className={showstyle ? 'overlayhome' : ''}>
         <Header callbackToSidebar ={handleSidebar}/>
         <SidebarComponent Openstatus={showSideBar} callbackClose={handleclose}/>
-           <CarouselComponent/>
-           <div>
-            <h1>helo wor;d</h1>
-          <NeonCursor />
-           </div>
+        <CarouselComponent/>
+        <HomeBody/>
+        <ThemedFooter/>
+
      
     </div>
 )

@@ -4,6 +4,7 @@ import { TextField, Button, Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import MyLottie from './lottieComponent'
+import axios from 'axios';
 
 function Signupform({onswitch}){
     const [email, setEmail] = useState('');
@@ -34,16 +35,38 @@ function Signupform({onswitch}){
     const handleSignUpClick = () => {
       console.log('Signup link clicked');
       setIsSignInClicked(true); 
-      onswitch()// Update state variable when signup link is clicked
+      onswitch()
+    };
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      console.log('Email:', email);
+      console.log('Password:', password);
+  
+      if (email && password && password.length > 6){
+        //here the backend begins
+        console.log("pass check ok")
+        axios.post('http://127.0.0.1:8000/signup/', {
+          email: email,
+          password: password,
+        })
+          .then(response => {
+            // Handle on successful response
+            console.log(response.data);
+          })
+          .catch(error => {
+            // Handle the error
+            console.error(error);
+          });
+      }
     };
     return( 
     <div className={`${classes.parent} ${isSignInClicked ? classes.animateRotate : ''} `}>
             <Container maxWidth="sm" className={classes.root} >
             <div  className={classes.lottie} ><MyLottie  isAnimationStopped={isAnimationStopped} /></div>
-            <form >
+            <form onSubmit={handleSubmit}>
                 <TextField
-                label="Email"
-                type="email"
+                label="User name"
+                type="User name"
                 value={email}
                 onChange={handleEmailChange}
                 onClick={handleusernameClick}

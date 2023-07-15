@@ -27,7 +27,6 @@ function Loginform({ onswitch }){
     const [password, setPassword] = useState('');
     const [isAnimationStopped, setIsAnimationStopped] = useState(false);
     const [isSignUpClicked, setIsSignUpClicked] = useState(false); // New state variable
-  
     const classes = useStyles();
 
     const handleEmailChange = (e) => {
@@ -37,13 +36,16 @@ function Loginform({ onswitch }){
     const handlePasswordChange = (e) => {
       setPassword(e.target.value);
       setIsAnimationStopped(true); // Stop the animation
+
     };
     const handleSubmit = (e) => {
       e.preventDefault();
       console.log('Email:', email);
       console.log('Password:', password);
-      if (email && password){
+  
+      if (email && password && password.length > 6){
         //here the backend begins
+        console.log("pass check ok")
         axios.get('http://127.0.0.1:8000/login/',{
           params: {
             param1: email,
@@ -83,8 +85,8 @@ function Loginform({ onswitch }){
             <div  className={classes.lottie} ><MyLottie  isAnimationStopped={isAnimationStopped} /></div>
             <form onSubmit={handleSubmit}>
                 <TextField
-                label="Email"
-                type="email"
+                label="User name"
+                type="User name"
                 value={email}
                 onChange={handleEmailChange}
                 onClick={handleusernameClick}

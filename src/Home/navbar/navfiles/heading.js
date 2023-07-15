@@ -1,4 +1,4 @@
-import '../../styles/navbar_home.css'
+import '../../../styles/navbar_home.css'
 
 function Heading(){
     return(

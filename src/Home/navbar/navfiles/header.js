@@ -6,11 +6,12 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
-import Image from '../../images/ist_logo.png';
+import Image from '../../../images/ist_logo.png';
 import makeStyles from '@mui/styles/makeStyles';
 import Heading from './heading';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
+import {useNavigate} from "react-router-dom"
 
 const Header = (props) => {
   const classes = useStyles();
@@ -20,6 +21,7 @@ const Header = (props) => {
   const [isMobile, setIsMobile] = useState(false);
   const [isSidebarOpen,setisSidebarOpen] = useState(false)
 
+  const navigate = useNavigate();
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 1000);
@@ -54,8 +56,12 @@ const Header = (props) => {
   const handleSidebar=()=>{
     props.callbackToSidebar()
   }
-  
-
+  const handleSocieties=()=>{
+    navigate("/societies")
+  }
+  const handleCalander=()=>{
+    navigate("/calander")
+  }
   return (
     <AppBar position="static" color="transparent" style={{position:"fixed",top:0,left:0,zIndex:"3",backgroundColor:"white"}}> 
       <Toolbar className={classes.toolbar}>
@@ -70,8 +76,8 @@ const Header = (props) => {
         <div className={classes.rightContent}>
           {!isMobile && (
             <>
-              <Button color="inherit">Societies</Button>
-              <Button color="inherit">Calendar</Button>
+              <Button color="inherit" onClick={handleSocieties}>Societies</Button>
+              <Button color="inherit" onClick={handleCalander}>Calendar</Button>
               <Button color="inherit">Events</Button>
            
 

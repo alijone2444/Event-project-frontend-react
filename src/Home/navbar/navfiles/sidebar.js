@@ -1,7 +1,7 @@
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import Image from '../../images/navbackground.jpg';
+import Image from '../../../images/navbackground.jpg';
 import { useRef, useState, useEffect } from "react";
-
+import {useNavigate} from "react-router-dom"
 import { makeStyles } from '@mui/styles';
 
 function SidebarComponent(props) {
@@ -9,7 +9,7 @@ function SidebarComponent(props) {
   const sideNavRef = useRef(null);
   const [showsidebar,setshowsidebar] = useState(true)
   const classes = useStyles() 
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (props.Openstatus===false) {
       // Add event listener to the document object
@@ -29,7 +29,12 @@ function SidebarComponent(props) {
       props.callbackClose();
     }
   }
-
+const handleSocieties =()=>{
+  navigate("/societies")
+}
+const handleCalander=()=>{
+  navigate("/calander")
+}
   return (
     <div className={classes.parent} >
       {<div className={classes.parent2} >
@@ -39,8 +44,8 @@ function SidebarComponent(props) {
                 <MenuItem defaultOpen={true} > In Side University </MenuItem>
                 <MenuItem> Out Side University </MenuItem>
             </SubMenu>
-            <MenuItem className={classes.menuitem} > Societies </MenuItem>
-            <MenuItem className={classes.menuitem}> Calendar </MenuItem>
+            <MenuItem className={classes.menuitem} onClick={handleSocieties}> Societies </MenuItem>
+            <MenuItem className={classes.menuitem} onClick={handleCalander}> Calendar </MenuItem>
             <MenuItem className={classes.menuitem}> Settings </MenuItem>
             </Menu>
         </Sidebar>

@@ -45,7 +45,7 @@ function Signupform({onswitch}){
       if (email && password && password.length > 6){
         //here the backend begins
         console.log("pass check ok")
-        axios.post('http://127.0.0.1:8000/signup/', {
+        axios.post('http://localhost:3001/signup', {
           email: email,
           password: password,
         })

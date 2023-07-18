@@ -1,9 +1,10 @@
 import { useState ,useEffect} from 'react';
 import { TextField, Button, Container } from '@mui/material';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
-import MyLottie from './lottieComponent'
+import MyLottie from './lottieComponent';
+import { useNavigate } from 'react-router-dom';
 
 
 function Loginform({ onswitch }){
@@ -27,7 +28,9 @@ function Loginform({ onswitch }){
     const [password, setPassword] = useState('');
     const [isAnimationStopped, setIsAnimationStopped] = useState(false);
     const [isSignUpClicked, setIsSignUpClicked] = useState(false); // New state variable
+    const [error,seterror] = useState(false)
     const classes = useStyles();
+    const navigate = useNavigate()
 
     const handleEmailChange = (e) => {
       setEmail(e.target.value);
@@ -46,18 +49,24 @@ function Loginform({ onswitch }){
       if (email && password && password.length > 6){
         //here the backend begins
         console.log("pass check ok")
-        axios.get('http://127.0.0.1:8000/login/',{
+        axios.get('http://localhost:3002/login',{
           params: {
-            param1: email,
-            param2: password,
+            username: email,
+            password: password,
           }
         })
           .then(response => {
             // Handle on successful response
             console.log(response.data);
+            if(response.data.success===true){
+              navigate('/Home')
+            }
+            
           })
           .catch(error => {
             // Handle the error
+              seterror(true)
+              navigate('/login')
             console.error(error);
           });
       }
@@ -112,6 +121,7 @@ function Loginform({ onswitch }){
                     <p>don't have an account?</p>
                     <Link style={{color:"#0195db"}} onClick={handleSignUpClick}>Signup</Link>
                  </div>
+                 {error && <p className={classes.errorText}>incorrect password or username</p>}
                 <div className={classes.new} >
                     <Button type="submit" variant="contained"  className={classes.buttonlg}>
                     Login
@@ -174,6 +184,12 @@ const useStyles = makeStyles({
     paddingBottom:"10%",
     paddingTop:"10%"
   },
+  errorText: {
+    color: 'red',
+    textAlign: 'center',
+    marginBottom: '0',
+    animation: '$blink 1s infinite',
+  },
   animateRotate: {
     animation: '$rotateAnimation 2s ease-in-out forwards',
     animationDelay: '0.3s',
@@ -200,12 +216,23 @@ const useStyles = makeStyles({
       opacity:"1",
     },
   },
+  '@keyframes blink': {
+    '0%': {
+      opacity: 1,
+    },
+    '50%': {
+      opacity: 0,
+    },
+    '100%': {
+      opacity: 1,
+    },
+  },
   '@media (max-width: 500px)': {
     root:{
       height:"100%",
           },
           new:{
-            paddingTop:"15%",
+            paddingTop:"5%",
           }
   }
 });

@@ -60,7 +60,7 @@ function CarouselComponent(props){
             ...classes.indicatorIconButtonProps,
             style: {
               ...classes.indicatorIconButtonProps.style,
-              marginBottom: isSmallScreen ? '15%' : '5%', // Apply different margin based on screen size
+              marginBottom: isSmallScreen ? '20%' : '5%', // Apply different margin based on screen size
             },
           }}>
 

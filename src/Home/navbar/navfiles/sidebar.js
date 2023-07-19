@@ -53,7 +53,7 @@ const handleHome=()=>{
         <Sidebar rootStyles={{border:"0px"}} ref={sideNavRef} className={classes.sidebar} image={Image} transitionDuration={1000} collapsed={props.Openstatus}   collapsedWidth={'0'}>
         {isMobile &&<img src={ist_logo2} alt="Event Icon" style={{position:"absolute",left:"-20px"}}/>}
             <Menu closeOnClick={true} >
-            <MenuItem className={classes.menuitem} style={{marginTop:"15%",display:"flex"}} onClick={handleHome}><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Home </div><div><HomeOutlined style={{color:"black"}}/></div></div></MenuItem>
+            <MenuItem rootStyles={{}} className={classes.menuitem} style={{marginTop:"15%",display:"flex",borderTop:"2px solid white"}} onClick={handleHome}><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Home </div><div><HomeOutlined style={{color:"black"}}/></div></div></MenuItem>
             <MenuItem className={classes.menuitem} ><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Events </div><div><StarBorderOutlined style={{color:"black"}}/></div></div></MenuItem>
             <MenuItem className={classes.menuitem} onClick={handleSocieties}><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Societies </div><div> <img  alt="Event Icon" src={societyicon} className={classes.icon} /></div></div></MenuItem>
             <MenuItem className={classes.menuitem} onClick={handleCalander}><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Calendar </div><div><CalendarTodayOutlined style={{color:"black"}}/></div></div></MenuItem>
@@ -86,10 +86,11 @@ const useStyles = makeStyles((theme) => ({
     
   },
   menuitem:{
-    background:"rgba(154, 177, 255, 0.3)",
+    background:"rgba(255, 255, 255, 0.3)",
     color:"black",
     padding:"2%",
     fontFamily:"arial",
+    borderTop:"2px solid white"
   },
   icon:{
     width:"24px",

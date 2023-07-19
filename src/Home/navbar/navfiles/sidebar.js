@@ -20,6 +20,7 @@ function SidebarComponent(props) {
   const isMobile = useMediaQuery('(max-width:600px)');
   useEffect(() => {
     if (props.Openstatus===false) {
+      setshowsidebar(true)
       // Add event listener to the document object
       document.addEventListener('mousedown', handleClickOutside);
     }
@@ -33,8 +34,8 @@ function SidebarComponent(props) {
   function handleClickOutside(event) {
     if (sideNavRef.current && !sideNavRef.current.contains(event.target)) {
       console.log("bello");
-      setshowsidebar(false)
       props.callbackClose();
+      setshowsidebar(false)
     }
   }
 const handleSocieties =()=>{
@@ -49,7 +50,7 @@ const handleHome=()=>{
   return (
     <div className={classes.parent} >
       {<div className={classes.parent2} >
-        <Sidebar ref={sideNavRef} className={classes.sidebar} image={Image} transitionDuration={1000} collapsed={props.Openstatus} collapsedWidth={0}>
+        <Sidebar rootStyles={{border:"0px"}} ref={sideNavRef} className={classes.sidebar} image={Image} transitionDuration={1000} collapsed={props.Openstatus}   collapsedWidth={'0'}>
         {isMobile &&<img src={ist_logo2} alt="Event Icon" style={{position:"absolute",left:"-20px"}}/>}
             <Menu closeOnClick={true} >
             <MenuItem className={classes.menuitem} style={{marginTop:"15%",display:"flex"}} onClick={handleHome}><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Home </div><div><HomeOutlined style={{color:"black"}}/></div></div></MenuItem>

@@ -50,6 +50,12 @@ function CarouselComponent(props){
                 zIndex:1 // 5
             }
         }}
+        navButtonsWrapperProps={{   // Move the buttons to the bottom. Unsetting top here to override default style.
+          style: {
+              bottom: '50px',
+              top: 'unset'
+          }
+      }} 
         indicatorIconButtonProps={{
             ...classes.indicatorIconButtonProps,
             style: {
@@ -69,7 +75,7 @@ function CarouselComponent(props){
 function Item(props)
 {
     return (
-        <Paper style={{height:"95vh",borderLeft:"2px solid white"}} >
+        <Paper style={{height:"95vh"}} >
            <div style={{ position: "relative" }}>
         <img
           src={props.item.path}

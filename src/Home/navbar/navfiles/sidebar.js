@@ -3,6 +3,13 @@ import Image from '../../../images/navbackground.jpg';
 import { useRef, useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom"
 import { makeStyles } from '@mui/styles';
+import HomeOutlined from '@mui/icons-material/HomeOutlined';
+import StarBorderOutlined from '@mui/icons-material/StarBorderOutlined';
+import societyicon from '../../../images/societyicon.png'
+import SettingsOutlined from '@mui/icons-material/SettingsOutlined';
+import CalendarTodayOutlined from '@mui/icons-material/CalendarTodayOutlined';
+import ist_logo2 from '../../../images/editedlogo_2.png'
+import { useMediaQuery } from '@mui/material';
 
 function SidebarComponent(props) {
   const [openSlide, setopenSlide] = useState("");
@@ -10,6 +17,7 @@ function SidebarComponent(props) {
   const [showsidebar,setshowsidebar] = useState(true)
   const classes = useStyles() 
   const navigate = useNavigate();
+  const isMobile = useMediaQuery('(max-width:600px)');
   useEffect(() => {
     if (props.Openstatus===false) {
       // Add event listener to the document object
@@ -35,18 +43,21 @@ const handleSocieties =()=>{
 const handleCalander=()=>{
   navigate("/calander")
 }
+const handleHome=()=>{
+  navigate("/Home")
+}
   return (
     <div className={classes.parent} >
       {<div className={classes.parent2} >
         <Sidebar ref={sideNavRef} className={classes.sidebar} image={Image} transitionDuration={1000} collapsed={props.Openstatus} collapsedWidth='0px'>
+        {isMobile &&<img src={ist_logo2} alt="Event Icon" style={{position:"absolute",left:"-20px"}}/>}
             <Menu closeOnClick={true} >
-            <SubMenu label="Events" style={{marginTop:"15%"}}>
-                <MenuItem defaultOpen={true} > In Side University </MenuItem>
-                <MenuItem> Out Side University </MenuItem>
-            </SubMenu>
-            <MenuItem className={classes.menuitem} onClick={handleSocieties}> Societies </MenuItem>
-            <MenuItem className={classes.menuitem} onClick={handleCalander}> Calendar </MenuItem>
-            <MenuItem className={classes.menuitem}> Settings </MenuItem>
+            <MenuItem className={classes.menuitem} style={{marginTop:"15%",display:"flex"}} onClick={handleHome}><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Home </div><div><HomeOutlined style={{color:"black"}}/></div></div></MenuItem>
+            <MenuItem className={classes.menuitem} ><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Events </div><div><StarBorderOutlined style={{color:"black"}}/></div></div></MenuItem>
+            <MenuItem className={classes.menuitem} onClick={handleSocieties}><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Societies </div><div> <img  alt="Event Icon" src={societyicon} className={classes.icon} /></div></div></MenuItem>
+            <MenuItem className={classes.menuitem} onClick={handleCalander}><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Calendar </div><div><CalendarTodayOutlined style={{color:"black"}}/></div></div></MenuItem>
+            <MenuItem className={classes.menuitem} ><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Settings </div><div><SettingsOutlined style={{color:"black"}}/></div></div></MenuItem>
+            
             </Menu>
         </Sidebar>
         </div>}
@@ -78,6 +89,10 @@ const useStyles = makeStyles((theme) => ({
     color:"black",
     padding:"2%",
     fontFamily:"arial",
+  },
+  icon:{
+    width:"24px",
+    height:"24px"
   }
 }));
 export default SidebarComponent;

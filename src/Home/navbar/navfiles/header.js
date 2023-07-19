@@ -62,8 +62,11 @@ const Header = (props) => {
   const handleCalander=()=>{
     navigate("/calander")
   }
+  const handleHome=()=>{
+    navigate("/Home")
+  }
   return (
-    <AppBar position="static" color="transparent" style={{position:"fixed",top:0,left:0,zIndex:"3",backgroundColor:"white"}}> 
+    <AppBar position="static" color="transparent" style={{position:"sticky",top:0,left:0,zIndex:"3",backgroundColor:"white"}}> 
       <Toolbar className={classes.toolbar}>
         <Heading />
 
@@ -76,6 +79,8 @@ const Header = (props) => {
         <div className={classes.rightContent}>
           {!isMobile && (
             <>
+            
+            <Button color="inherit" onClick={handleHome}>Home</Button>
               <Button color="inherit" onClick={handleSocieties}>Societies</Button>
               <Button color="inherit" onClick={handleCalander}>Calendar</Button>
               <Button color="inherit">Events</Button>

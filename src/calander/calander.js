@@ -21,7 +21,7 @@ function CalanderComponent() {
 
   return (
     <div>
-    <div style={{ marginTop: "5%" }}></div>
+   
       <Navbar />
       <Calendar
         localizer={localizer}

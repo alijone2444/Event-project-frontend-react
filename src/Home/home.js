@@ -10,7 +10,7 @@ function Home(){
     const [showstyle , setshowstyle] = useState(false)
 return(
     <div className={showstyle ? 'overlayhome' : ''}>
-        <Navbar showstyle={setshowstyle(true)} notshowstyle={setshowstyle(false)}/>
+        <Navbar showstyle={()=>setshowstyle(true)} notshowstyle={()=>setshowstyle(false)}/>
         <CarouselComponent/>
         <HomeBody/>
         <ThemedFooter/>

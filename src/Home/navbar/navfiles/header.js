@@ -12,6 +12,7 @@ import Heading from './heading';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import {useNavigate} from "react-router-dom"
+import MySettingIcon from './lottieSettingicon'
 
 const Header = (props) => {
   const classes = useStyles();
@@ -19,7 +20,6 @@ const Header = (props) => {
   const [homeButtonActive, setHomeButtonActive] = React.useState(false);
   const [settingsButtonActive, setSettingsButtonActive] = React.useState(false);
   const [isMobile, setIsMobile] = useState(false);
-  const [isSidebarOpen,setisSidebarOpen] = useState(false)
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -87,10 +87,11 @@ const Header = (props) => {
            
 
             <IconButton
+            style={{margin:0,padding:0}}
               onClick={() => handleButtonClick('Settings')}
               color={settingsButtonActive ? 'primary' : 'default'}
             >
-              <SettingsIcon style={{ color: '#2e3192' }} />
+              <MySettingIcon onClick={()=>{console.log("hello")}}/>
             </IconButton>
             
             <Collapse

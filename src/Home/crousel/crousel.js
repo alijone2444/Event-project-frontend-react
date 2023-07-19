@@ -40,7 +40,7 @@ function CarouselComponent(props){
     ]
 
     return (
-        <Carousel className='crousel' height={"95vh"} animation={'fade'}  indicatorContainerProps={{
+        <Carousel className='crousel'  height={"95vh"} animation={'fade'}  indicatorContainerProps={{
             style: {
                 position:"absolute",
                 bottom:"0",
@@ -54,7 +54,7 @@ function CarouselComponent(props){
             ...classes.indicatorIconButtonProps,
             style: {
               ...classes.indicatorIconButtonProps.style,
-              marginBottom: isSmallScreen ? '10%' : '5%', // Apply different margin based on screen size
+              marginBottom: isSmallScreen ? '15%' : '5%', // Apply different margin based on screen size
             },
           }}>
 

@@ -14,8 +14,7 @@ return(
         <CarouselComponent/>
         <HomeBody/>
         <ThemedFooter/>
-
-     
+    
     </div>
 )
 }

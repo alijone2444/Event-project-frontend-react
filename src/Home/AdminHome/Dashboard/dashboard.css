@@ -1,0 +1,26 @@
+.welcomeimg{
+    width: 200px;
+    height: 200px;
+}
+.list-item-container{
+   display: 'flex';
+    align-items: 'center';
+     width: 100% ;
+}.ant-card-head-title {
+    color: blue;
+  }
+  .heading-h1{
+    color:blue;
+    font-weight: 500;
+  }
+  .Dashboard-four-buttons{
+    background:"red";
+    text-align:"center";
+  }
+  .buttons-text{
+    color: white;
+  }
+  .buttonContainer{
+    padding:5%;
+    border-radius: 5%;
+}

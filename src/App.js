@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginScreen from './signin_signout/login.js';
+import AdminHome from './Home/AdminHome/homepage.js';
 import Home from './Home/home.js';
 import NeonCursor from "./neonCursor.js";
 import SocietiesComponent from './societies/societies.js'
@@ -12,6 +13,7 @@ function App() {
       <NeonCursor/>
       <Router>
         <Routes>
+          <Route path="/admin" element={<AdminHome />} />
           <Route path="/login" element={<LoginScreen />} />
           <Route path="/Home" element={<Home />} />
           <Route path="/societies" element={<SocietiesComponent />} />

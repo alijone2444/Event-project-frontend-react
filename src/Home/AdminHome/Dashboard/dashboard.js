@@ -35,7 +35,7 @@ const Dashboard = () => {
             <div style={{ fontSize: '20px', marginLeft: '24px' ,paddingRight:"2px"}}>Dashboard<span style={{paddingLeft:"5px"}}><DashboardOutlined/></span></div>
           </Grid>
           <Grid item xs={4} md={4} lg={4}>    
-            <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}><CalendarOutlined/>{currentDate}</div>
+            <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"flex-end",paddingRight:"5%"}}><CalendarOutlined/>{currentDate}</div>
           </Grid>
         </Header>
       </Grid>
@@ -53,7 +53,7 @@ const Dashboard = () => {
     </Grid>
     <Grid container spacing={1} style={{padding:"5%"}}>
       <Grid item xs={12} md={6} lg={6}>
-       <Card title="Recent Activity" bordered >
+       <Card title="Recent Activity" bordered style={{color:"Red"}}>
             <List
                 dataSource={activities}
                 style={{overflowY:"auto",maxHeight:"350px",}}

@@ -23,7 +23,7 @@ const AdminSidebar = () => {
   return (
     <Sider
     theme="light" // Use "dark" for a blue theme
-    width={'20vw'}
+    width={'16vw'}
     style={{
       overflow: 'auto',
       height: '100vh',

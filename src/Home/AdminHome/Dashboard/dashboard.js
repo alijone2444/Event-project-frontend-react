@@ -1,44 +1,59 @@
 import React from 'react';
 import {DashboardData,activities} from '../constants/dashboardConstants';
-import { Layout, Card, Button,List,Typography } from 'antd';
+import { Layout, Card, Button,List } from 'antd';
 import welcomeImg from '../../../images/dashboard_welcome.png'
 import './dashboard.css'
 import { DashboardOutlined,ClockCircleOutlined,CalendarOutlined } from '@ant-design/icons';
 import getRandomColor from './randomBulletcolor';
 import ProgressTrackerCard from './progressValue';
 import Fourbuttons from './fourbutton';
+import { Grid } from '@mui/material';
+import Typography from '@mui/material/Typography';
+import {BarChart} from './charts/bargraph';
+import LineGraph from './charts/linechart';
+
 const { Header, Content } = Layout;
 const Dashboard = () => {
   const currentDate = new Date().toLocaleDateString();
 
   return (
-    <Layout style={{ marginLeft: 'auto', height: '100vh' }}>
-      <Header
-        style={{
-            
-          background: 'blue',
-          color:"white",
-          padding: 0,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <div style={{ fontSize: '20px', marginLeft: '24px' ,paddingRight:"2px"}}>Dashboard<span style={{paddingLeft:"5px"}}><DashboardOutlined/></span></div>
-        <div style={{ marginRight: '24px' }}><span style={{paddingRight:"5px"}}><CalendarOutlined/></span>{currentDate}</div>
-      </Header>
-      <Content style={{ padding: '24px', display: 'grid', gridGap: '24px' }}>
-      <Card bordered>
-            <div style={{ display: "flex" }}>
-                <div>
-                <h1 className='heading-h1'>{DashboardData.title}</h1>
-                {DashboardData.content}
-                </div>
-                <img src={welcomeImg} alt='.' className='welcomeimg' />
-            </div>
-        </Card>
-        <div style={{ display: 'grid', gridGap: '24px', gridTemplateColumns: '1fr 1fr' }}>
-        <Card title="Recent Activity" bordered >
+    
+    <Grid container>
+      <Grid item xs={12} md={12} lg={12}>
+        <Header
+          style={{
+              
+            background: 'blue',
+            color:"white",
+            padding: 0,
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <Grid item xs={8} md={8} lg={8}>
+            <div style={{ fontSize: '20px', marginLeft: '24px' ,paddingRight:"2px"}}>Dashboard<span style={{paddingLeft:"5px"}}><DashboardOutlined/></span></div>
+          </Grid>
+          <Grid item xs={4} md={4} lg={4}>    
+            <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}><CalendarOutlined/>{currentDate}</div>
+          </Grid>
+        </Header>
+      </Grid>
+      <Grid container  style={{padding:"5%",paddingBottom:0,display:"flex",alignItems:"center",paddingTop:"2%"}}>
+        <Grid item xs={12} md={9} lg={9}>
+          <Typography variant="h5" component="h2" gutterBottom>
+            {DashboardData.title}
+          </Typography>
+          {DashboardData.content}
+        </Grid>
+        <Grid item xs={12} md={3} lg={3}>
+          <img src={welcomeImg} alt='.' className='welcomeimg' />
+        </Grid>
+      
+    </Grid>
+    <Grid container spacing={1} style={{padding:"5%"}}>
+      <Grid item xs={12} md={6} lg={6}>
+       <Card title="Recent Activity" bordered >
             <List
                 dataSource={activities}
                 style={{overflowY:"auto",maxHeight:"350px",}}
@@ -65,21 +80,22 @@ const Dashboard = () => {
                 )}
             />
             </Card>
-            <ProgressTrackerCard/>
-        </div>
+            </Grid>
+            <Grid item xs={12} md={6} lg={6}>
+                <ProgressTrackerCard/>
+            </Grid>
+            </Grid>
+            
         <Fourbuttons/>
-        <div style={{ display: 'grid', gridGap: '24px', gridTemplateColumns: '1fr 1fr' }}>
-          {/* Placeholder for the Bar Graph */}
-          <div style={{ backgroundColor: '#f0f0f0', height: '300px' }}>
-            Placeholder for Bar Graph
-          </div>
-          {/* Placeholder for the Line Chart */}
-          <div style={{ backgroundColor: '#f0f0f0', height: '300px' }}>
-            Placeholder for Line Chart
-          </div>
-        </div>
-      </Content>
-    </Layout>
+        <Grid container spacing={1} style={{padding:"5%"}}>
+          <Grid item xs={12} md={6} lg={6}>
+            <BarChart/>
+          </Grid>
+          <Grid item xs={12} md={6} lg={6}>
+          <LineGraph/>
+          </Grid>
+        </Grid>
+    </Grid>
   );
 };
 

@@ -23,7 +23,7 @@ const Dashboard = () => {
         <Header
           style={{
               
-            background: 'blue',
+            background: 'DodgerBlue',
             color:"white",
             padding: 0,
             display: 'flex',

@@ -1,19 +1,24 @@
 import AdminSidebar from "./sidebar/sidebar"
 import Dashboard from "./Dashboard/dashboard";
-
+import React, { useState } from 'react';
 import { Grid } from '@mui/material';
+import EventManagementInterface from "./AdminEvents/AdminEvents";
 
 function AdminHomePage(){
+    const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
+
+    const handleselect =(option)=>{
+        console.log(option,"selected")
+        setSelectedMenuItem(option);
+    }
     return(
         <Grid container style={{ height: '100vh' }}>
-        {/* Sidebar */}
         <Grid item xs={2} sx={{ borderRight: '1px solid #ccc' }}>
-          <AdminSidebar  />
+          <AdminSidebar  selectedOption={(option)=>handleselect(option)}/>
         </Grid>
-  
-        {/* Main Content */}
         <Grid item xs={10}>
-          <Dashboard />
+        {selectedMenuItem === 'dashboard' && <Dashboard />}
+        {selectedMenuItem === 'events' && <EventManagementInterface />}
         </Grid>
       </Grid>
     )

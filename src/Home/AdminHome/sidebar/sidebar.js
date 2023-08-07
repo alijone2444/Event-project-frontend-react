@@ -9,17 +9,20 @@ import {
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 import './sidebar.css'
-
+import { menuItems } from '../../constants/adminMenuItems';
 const { Sider } = Layout;
 const { SubMenu } = Menu;
 
-const AdminSidebar = () => {
+const AdminSidebar = (props) => {
   const [collapsed, setCollapsed] = useState(false);
 
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
   };
-
+    const handleMenuItemClick = (key) => {
+      props.selectedOption(key)
+      
+    };
   return (
     <Sider
     theme="light" // Use "dark" for a blue theme
@@ -42,25 +45,21 @@ const AdminSidebar = () => {
       className='Sidebar-menu'
     >
 
-        <Menu.Item key="dashboard" icon={<DashboardOutlined />}>
-          Dashboard
-        </Menu.Item>
-        <Menu.Item key="events" icon={<CalendarOutlined />}>
-          Events
-        </Menu.Item>
-        <Menu.Item key="registration" icon={<UsergroupAddOutlined />}>
-          Registration/Attendees
-        </Menu.Item>
-        <Menu.Item key="schedules" icon={<ScheduleOutlined />}>
-          Schedules
-        </Menu.Item>
-        <SubMenu key="sub1" icon={<SettingOutlined />} title="Settings">
-          <Menu.Item key="general">General</Menu.Item>
-          <Menu.Item key="permissions">Permissions</Menu.Item>
-        </SubMenu>
-        <Menu.Item key="help" icon={<QuestionCircleOutlined />}>
-          Help and Support
-        </Menu.Item>
+  {menuItems.map((item) =>
+        item.subMenu ? (
+          <SubMenu key={item.key} icon={item.icon} title={item.name}>
+            {item.subMenu.map((subItem) => (
+              <Menu.Item key={subItem.key} onClick={() => handleMenuItemClick(subItem.key)}>
+                {subItem.name}
+              </Menu.Item>
+            ))}
+          </SubMenu>
+        ) : (
+          <Menu.Item key={item.key} icon={item.icon} onClick={() => handleMenuItemClick(item.key)}>
+            {item.name}
+          </Menu.Item>
+        )
+      )}
       </Menu>
     </Sider>
   );

@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid, Button } from '@mui/material';
 import { Card } from 'antd';
 import { Typography } from '@mui/material';
-
+import './gridview.css'
 const EventCard = () => {
   const eventData = [
     {
@@ -19,17 +19,19 @@ const EventCard = () => {
   ];
 
   return (
-    <Grid container spacing={1} style={{ padding: '2%' }}>
+    <Grid container spacing={3} style={{ padding: '2%' }}>
       {eventData.map((event) => (
         <Grid key={event.id} item xs={12} sm={6} md={4}>
           <div style={{ border: '1px solid lightgrey', borderRadius: '2%' }}>
-            <img
-              src="https://placekitten.com/300/200" // Replace with your image URL
-              alt="Event"
-              style={{ width: '100%', height: '50%', objectFit: 'cover', clipPath: 'polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%)' }}
-            />
-            <div style={{ padding: '5%' }}>
-              <Typography variant="h5" component="h2" style={{ marginBottom: '2%' }}>
+            <div style={{padding:"5%"}}>
+              <img
+              className="event-image "
+                src="https://placekitten.com/300/200" // Replace with your image URL
+                alt="Event"
+              />
+            </div>
+            <div style={{ padding: '5%',paddingTop:0 }}>
+              <Typography variant="h5" component="h2" style={{ marginBottom: '2%' }} className='hover-3'>
                 {event.eventName}
               </Typography>
               <div style={{ marginBottom: '5%' }}>{event.eventData}</div>

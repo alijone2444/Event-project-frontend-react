@@ -10,7 +10,6 @@ import Fourbuttons from './fourbutton';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
 import {BarChart} from './charts/bargraph';
-import LineGraph from './charts/linechart';
 
 const { Header, Content } = Layout;
 const Dashboard = () => {
@@ -53,7 +52,7 @@ const Dashboard = () => {
     </Grid>
     <Grid container spacing={1} style={{padding:"5%"}}>
       <Grid item xs={12} md={6} lg={6}>
-       <Card title="Recent Activity" bordered style={{color:"Red"}}>
+       <Card title="Recent Activity" bordered >
             <List
                 dataSource={activities}
                 style={{overflowY:"auto",maxHeight:"350px",}}
@@ -88,11 +87,8 @@ const Dashboard = () => {
             
         <Fourbuttons/>
         <Grid container spacing={1} style={{padding:"5%"}}>
-          <Grid item xs={12} md={6} lg={6}>
+          <Grid item xs={12} md={10} lg={10}>
             <BarChart/>
-          </Grid>
-          <Grid item xs={12} md={6} lg={6}>
-          <LineGraph/>
           </Grid>
         </Grid>
     </Grid>

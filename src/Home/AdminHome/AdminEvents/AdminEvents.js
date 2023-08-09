@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Button, Radio, Select, Space, Table, Tag } from 'antd';
 import { Grid } from '@mui/material';
 import { Typography} from '@mui/material';
+import './gridview.css'
 import {
   PlusOutlined,
   DeleteOutlined,
@@ -9,6 +10,7 @@ import {
   AppstoreOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons';
+import EditCalendarOutlined from '@mui/icons-material/EditCalendarOutlined'
 import EventCard from './gridview';
 const { Option } = Select;
 
@@ -79,7 +81,8 @@ const EventManagementInterface = () => {
         <Grid container style={{background:"DodgerBlue"}}>
         <Grid item xs={4} sm={4} md={4} lg={4}>
           <div style={{display:"flex",alignItems:"center",paddingLeft:"5%",height:"100%"}}> 
-            <Typography variant='h6' style={{color:"white"}}>Manage Events</Typography>
+          <div style={{color:"white", fontSize: '20px'}}>Manage events<span style={{paddingLeft:"5px"}}><EditCalendarOutlined/></span></div>
+        
           </div>
         </Grid>
         <Grid item xs={8} sm={8} md={8} lg={8} style={{textAlign:'right'}}>      
@@ -102,7 +105,7 @@ const EventManagementInterface = () => {
         <Grid container>
         <Grid item xs={12}>
           {viewType === 'grid' ? (
-            <div >
+            <div style={{marginBottom:'15%'}}>
                 <EventCard/>
             </div>
           ) : (
@@ -114,10 +117,10 @@ const EventManagementInterface = () => {
         </Grid>
         <Grid container>
         <Grid item xs={12}>
-        <div  style={{ width:"100%",position:"fixed",top: 'auto', bottom: 0, background: 'DodgerBlue',height: '34px' }}>
+        <div  className='hover-2' style={{ width:"100%",position:"fixed",top: 'auto', bottom: 0,height: '34px',paddingRight:"5%" }}>
         <div>
-        <div style={{textAlign:"center"}}>
-            <Button type="primary" icon={<PlusOutlined />} onClick={()=>{console.log("heloo")}} style={{ flexGrow: 1, background: 'transparent',marginRight:"15%" }}>
+        <div style={{textAlign:"center",background:"white"}} >
+            <Button type="primary" icon={<PlusOutlined />} onClick={()=>{console.log("heloo")}} style={{ flexGrow: 1, background: 'white',marginRight:"20%",color: 'DodgerBlue' }}>
             Add Event
             </Button>
         </div>

@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Menu } from 'antd';
-import {
-  DashboardOutlined,
-  CalendarOutlined,
-  UsergroupAddOutlined,
-  ScheduleOutlined,
-  SettingOutlined,
-  QuestionCircleOutlined,
-} from '@ant-design/icons';
+
 import './sidebar.css'
 import { menuItems } from '../../constants/adminMenuItems';
 const { Sider } = Layout;

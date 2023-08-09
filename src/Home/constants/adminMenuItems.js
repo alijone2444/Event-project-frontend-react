@@ -34,7 +34,10 @@ import {
       name: 'Settings',
       subMenu: [
         { key: 'general', name: 'General' },
-        { key: 'permissions', name: 'Permissions' },
+        { key: 'theme', name: 'Theme' },
+        { key: 'history', name: 'History' },
+        { key: 'Messages', name: 'Messages' },
+        //bug reports or messages
       ],
     },
     {

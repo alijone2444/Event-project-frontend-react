@@ -3,6 +3,9 @@ import Dashboard from "./Dashboard/dashboard";
 import React, { useState } from 'react';
 import { Grid } from '@mui/material';
 import EventManagementInterface from "./AdminEvents/AdminEvents";
+import AttendeesTable from "./registrations/registration";
+import EventScheduler from "./schedules/schedules";
+import HelpAndSupport from "./Help/help_support";
 
 function AdminHomePage(){
     const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
@@ -19,6 +22,9 @@ function AdminHomePage(){
         <Grid item xs={10}>
         {selectedMenuItem === 'dashboard' && <Dashboard />}
         {selectedMenuItem === 'events' && <EventManagementInterface />}
+        {selectedMenuItem === 'registration' && <AttendeesTable />}
+        {selectedMenuItem === 'schedules' && <EventScheduler />}
+        {selectedMenuItem === 'help' && <HelpAndSupport />}
         </Grid>
       </Grid>
     )

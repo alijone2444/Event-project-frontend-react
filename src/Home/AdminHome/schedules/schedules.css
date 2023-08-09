@@ -1,0 +1,19 @@
+.event-description {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /* Number of lines to show for small screens */
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+    padding:5%
+  }
+  
+  @media (min-width: 769px) {
+    .event-description {
+      -webkit-line-clamp: 5; /* Number of lines to show for large screens */
+    }
+  }
+
+  .cards{
+    display: flex;
+    justify-content: center;
+  }

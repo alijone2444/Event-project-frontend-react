@@ -15,6 +15,11 @@ const EventCard = () => {
       eventName: 'Event 2',
       eventData: 'Event data goes here. You can customize this based on your requirements.',
     },
+    {
+      id: 3,
+      eventName: 'Event 3',
+      eventData: 'Event data goes here. You can customize this based on your requirements.',
+    },
     // Add more event data here
   ];
 

@@ -5,7 +5,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-
+import ScrollingText from './footerMarquee/marquee';
 const theme = createTheme({
   palette: {
     primary: {
@@ -21,8 +21,7 @@ const useStyles = makeStyles((theme) => ({
   footer: {
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.common.white,
-    padding: theme.spacing(6, 0),
-    marginTop: theme.spacing(4),
+    padding: theme.spacing(1, 0),
   },
   link: {
     margin: theme.spacing(1, 2),
@@ -61,6 +60,12 @@ const Footer = () => {
 
   return (
     <footer className={classes.footer}>
+       <Grid container  style={{display:"flex",justifyContent:"center",marginBottom:"5%",padding:"2%"}}>
+          <Grid item xs={12} sm={12}>
+            
+      <ScrollingText/>
+          </Grid>
+          </Grid>
       <Container maxWidth="lg">
         <Grid container spacing={4}>
           <Grid item xs={12} sm={4}>

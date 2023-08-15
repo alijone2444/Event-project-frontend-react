@@ -1,0 +1,13 @@
+.banner{
+    background-color:rgb(255, 255, 255);
+    font-size:20px;
+    color:rgb(21, 161, 226);
+    text-shadow: 2px 2px 8px #ffffff;
+  }
+  .marquee {
+    background-color: white;
+    height: 30px;	
+    overflow: hidden;
+    position: relative;
+    white-space: nowrap;
+  }

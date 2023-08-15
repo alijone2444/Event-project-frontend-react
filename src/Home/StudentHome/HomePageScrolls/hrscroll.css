@@ -12,14 +12,38 @@
   
   .card {
     flex-shrink: 0;
-    width: 400px;
-    height: 300px;
-    border-radius: 10px;
-    margin-left: 10px;
+    width: 300px;
+    height: 400px;
+    margin-left: 30px;
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
+    position: relative; /* Add this line to make sure pseudo-element is positioned relative to .card */
+    transition: background-color 0.3s; /* Add a smooth transition for background-color change */
   }
+  
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+     background: linear-gradient(to top, rgba(0, 119, 255, 0.5), rgba(255, 255, 255, 0), rgba(255, 255, 255, 0));
+
+    opacity: 0;
+    pointer-events: none; /* Ensure pseudo-element doesn't interfere with hover state */
+    transition: opacity 0.3s; /* Add a smooth transition for opacity change */
+  }
+  
+  .card:hover {
+    background-color: rgba(0, 119, 255, 0.5); /* Adjust the opacity as needed */
+  }
+  
+  .card:hover::before {
+    opacity: 1;
+  }
+  
   .recent-container{
     display: flex;
     flex-direction: row;
@@ -46,5 +70,7 @@
     .card {
         width: 300px;
         height: 200px;
+        border-radius: 10px;
+        margin-left: 10px;
       }
 }

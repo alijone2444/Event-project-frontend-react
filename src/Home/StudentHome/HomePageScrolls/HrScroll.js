@@ -38,41 +38,38 @@ const ScrollingHorizontally = (props) => {
 //       state: { data: index }
 //     });  
 //   }
-    return (
-        <div>
-            <div className='recent-container'>
-            <ArrowForward style={{ fontSize: 40, color: 'black' }}/>
-            <Typography className='recent' style={{color:"black"}} variant='h4'>
-                {props.title}
-            </Typography>
+return (
+  <div>
+    <div className='recent-container'>
+      <ArrowForward style={{ fontSize: 40, color: 'black' }}/>
+      <Typography className='recent' style={{color:"black"}} variant='h4'>
+        {props.title}
+      </Typography>
+    </div>
+    <div style={{paddingLeft:"5%"}}>
+      <div className="container" {...bind()}>
+        {props.data ? (
+          props.data.map((index, i) => (
+            <div key={index.image} style={{ marginTop: `${i % 2 === 0 ? 20 : 0}px` }}>
+                <animated.div
+                className="card"
+                style={{
+                  ...style,
+                  backgroundImage: `url(${index.image})`,
+                  cursor: "pointer",
+                }}
+              />
+              <h3 style={{ textAlign: "center", color: "black" }}>{index.title}</h3>
             </div>
-            <div style={{paddingLeft:"5%"}}>
-                <div className="container" {...bind()}>
-                {props.data ? (
-                // Check if props.data is present
-                props.data.map((index) => (
-                    <div key={index.image} >
-                    {/* Wrapper div with onClick event */}
-                    <animated.div
-                        className="card"
-                        style={{
-                        ...style,
-                        backgroundImage: `url(${index.image})`,
-                        cursor: "pointer", // Set cursor to pointer
-                        }}
-                    />
-                    <h3 style={{ textAlign: "center", color: "black" }}>{index.title}</h3>
-                    </div>
-                ))
-                ) : (
-                <div style={{ display: "flex", justifyContent: "center"}}>
-                    <CircularProgress style={{ color: "yellow" }} />
-                </div>
-                )}
-            </div>
-        </div>
+          ))
+        ) : (
+          <div style={{ display: "flex", justifyContent: "center"}}>
+            <CircularProgress style={{ color: "yellow" }} />
+          </div>
+        )}
       </div>
-    );
-  };
-
+    </div>
+  </div>
+);
+};
 export default ScrollingHorizontally;

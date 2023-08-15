@@ -7,7 +7,6 @@ import Image2 from '../images/event.jpg';
 import Image3 from '../images/event_game.png';
 import Image4 from '../images/undraw_login2.png';
 import Image5 from '../images/undraw_login3.png';
-
 const useStyles = makeStyles((theme) => ({
   card: {
   border: '5% solid white',

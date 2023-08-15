@@ -62,7 +62,7 @@ const useStyles = makeStyles({
     justifyContent:"center"
   }
   ,imglg:{
-    height:"0%"
+    height:"0%",
   }
 }
 ,

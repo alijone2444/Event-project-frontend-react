@@ -12,6 +12,7 @@ function Signupform({onswitch}){
     const [isAnimationStopped, setIsAnimationStopped] = useState(false);
     const [isSignInClicked, setIsSignInClicked] = useState(false); // New state variable
   
+    console.log(isAnimationStopped,"adaw")
     const classes = useStyles();
 
     const handleEmailChange = (e) => {
@@ -20,6 +21,7 @@ function Signupform({onswitch}){
   
     const handlePasswordChange = (e) => {
       setPassword(e.target.value);
+      setIsAnimationStopped(true); // Stop the animation
     };
    
     
@@ -63,7 +65,7 @@ function Signupform({onswitch}){
     <div className={`${classes.parent} ${isSignInClicked ? classes.animateRotate : ''} `}>
             <Container maxWidth="sm" className={classes.root} >
             <div  className={classes.lottie} ><MyLottie  isAnimationStopped={isAnimationStopped} /></div>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className={classes.form}>
                 <TextField
                 label="User name"
                 type="User name"
@@ -125,6 +127,9 @@ function Signupform({onswitch}){
       width: '100%',
       border: '1px solid lightgrey',
     
+    },
+    form:{
+      marginTop:"40%"
     },
     fields: {
       color: 'black',

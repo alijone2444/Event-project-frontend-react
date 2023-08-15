@@ -31,7 +31,6 @@ function Loginform({ onswitch }){
     const [error,seterror] = useState(false)
     const classes = useStyles();
     const navigate = useNavigate()
-
     const handleEmailChange = (e) => {
       setEmail(e.target.value);
     };
@@ -91,8 +90,10 @@ function Loginform({ onswitch }){
     <div className={`${classes.parent} ${isSignUpClicked ? classes.animateRotate : ''} `}>
 
             <Container maxWidth="sm" className={classes.root}>
-            <div  className={classes.lottie} ><MyLottie  isAnimationStopped={isAnimationStopped} /></div>
-            <form onSubmit={handleSubmit}>
+            <div  className={classes.lottie} >
+              <MyLottie  isAnimationStopped={isAnimationStopped} />
+              </div>
+            <form onSubmit={handleSubmit} className={classes.form}>
                 <TextField
                 label="User name"
                 type="User name"
@@ -189,6 +190,9 @@ const useStyles = makeStyles({
     textAlign: 'center',
     marginBottom: '0',
     animation: '$blink 1s infinite',
+  },
+  form:{
+marginTop:"40%"
   },
   animateRotate: {
     animation: '$rotateAnimation 2s ease-in-out forwards',

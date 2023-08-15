@@ -1,6 +1,6 @@
 .parent{
     z-index: 1;
-    color: #00adef;
+    color: #01adf1;
     padding-top: 1%;
 }
 .overlay {
@@ -16,7 +16,7 @@
 	);
 }
 
-.text {
+.heading-text {
     padding-left: 10%;
     font-family: "Arial", sans-serif;
     font-size: 25px;
@@ -25,34 +25,34 @@
     user-select: none;
   }
   
-.text .wrapper {
+.heading-text .wrapper {
 	padding-left: 4px;
 	padding-right: 4px;
 	padding-top: 2px;
 	padding-bottom: 2px;
 }
 
-.text .wrapper .letter {
+.heading-text .wrapper .letter {
 	transition: ease-out 1s;
 	transform: translateY(40%);
 }
 
-.text .wrapper .shadow {
+.heading-text .wrapper .shadow {
 	transform: scale(1, -1);
 	color: rgb(231, 231, 231);
 	transition: ease-in 3s, ease-out 3s;
 }
 
-.text .wrapper:hover .letter {
+.heading-text .wrapper:hover .letter {
 	transform: translateY(-200%);
 }
 
-.text .wrapper:hover .shadow {
+.heading-text .wrapper:hover .shadow {
 	opacity: 0;
 	transform: translateY(200%);
 }
 @media(max-width:600px){
-    .text{
+    .heading-text{
         font-size: 20px;
     }
 }

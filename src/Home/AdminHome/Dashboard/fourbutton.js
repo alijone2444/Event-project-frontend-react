@@ -4,7 +4,7 @@ import './dashboard.css'
 import { DollarCircleOutlined ,ExclamationCircleOutlined,UserAddOutlined,RightOutlined} from '@ant-design/icons';
 import { Grid } from '@mui/material';
 
-const Fourbuttons = () => {
+const Fourbuttons = (props) => {
   return (
     
     <Grid container spacing={1} style={{padding:"5%"}}>
@@ -22,7 +22,7 @@ const Fourbuttons = () => {
               <DollarCircleOutlined style={{fontSize:"5vw",color:"white"}}/>
             </div>
             </div>
-            <Button size='large' type='link' className='buttons-text' style={{display:"flex",justifyContent:"space-between",padding:0,width:"100%"}}>
+            <Button size='large' type='link' className='buttons-text' style={{display:"flex",justifyContent:"space-between",padding:0,width:"100%"}} onClick={()=>{props.fourbuttonPressed('report')}}>
               <div >View Report</div>
               <div><RightOutlined style={{color:"white"}}/></div>        
             </Button>
@@ -43,7 +43,7 @@ const Fourbuttons = () => {
               <UserAddOutlined style={{fontSize:"5vw",color:"white"}}/>
             </div>
             </div>
-            <Button size='large' type='link' className='buttons-text' style={{display:"flex",justifyContent:"space-between",padding:0,width:"100%"}}>
+            <Button size='large' type='link' className='buttons-text' style={{display:"flex",justifyContent:"space-between",padding:0,width:"100%"}} onClick={()=>{props.fourbuttonPressed('users')}}>
               <div >View Report</div>
               <div><RightOutlined style={{color:"white"}}/></div>        
             </Button>
@@ -65,7 +65,7 @@ const Fourbuttons = () => {
             </div>
             
             </div>
-            <Button size='large' type='link' className='buttons-text' style={{display:"flex",justifyContent:"space-between",padding:0,width:"100%"}}>
+            <Button size='large' type='link' className='buttons-text' style={{display:"flex",justifyContent:"space-between",padding:0,width:"100%"}} onClick={()=>{props.fourbuttonPressed('request')}}>
               <div >View Requests</div>
               <div><RightOutlined style={{color:"white"}}/></div>        
             </Button>

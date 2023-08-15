@@ -6,7 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
-import Image from '../../../images/ist_logo.png';
+import Image from '../../../../images/ist_logo.png';
 import makeStyles from '@mui/styles/makeStyles';
 import Heading from './heading';
 import Button from '@mui/material/Button';

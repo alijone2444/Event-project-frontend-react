@@ -88,7 +88,7 @@ const AttendeesTable = ({  onAccept, onReject }) => {
   ];
 
   return (
-    <div style={{overflowX:"auto"}}>
+    <div >
       <Grid container alignItems="center" justifyContent="space-between" style={{backgroundColor:"dodgerblue"}}>
       <Grid item>
         <Typography variant="h6" style={{color:"white",padding:"5%"}}>Registrations</Typography>
@@ -99,7 +99,7 @@ const AttendeesTable = ({  onAccept, onReject }) => {
         <Tag color="red">Rejected: {rejectedRequests}</Tag>
       </Grid>
     </Grid>
-      <Table columns={columns} dataSource={data} />
+      <Table columns={columns} dataSource={data} style={{overflowX:"auto"}}/>
     </div>
   );
 

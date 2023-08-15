@@ -12,9 +12,19 @@ import Typography from '@mui/material/Typography';
 import {BarChart} from './charts/bargraph';
 
 const { Header, Content } = Layout;
-const Dashboard = () => {
+const Dashboard = (props) => {
   const currentDate = new Date().toLocaleDateString();
-
+  const handleFourButtons =(BtnType)=>{
+    if(BtnType==='request'){
+      props.GoTo('request')
+    }
+    else if(BtnType==='report'){
+      props.GoTo('report')
+    }
+    else if(BtnType==='users'){
+      props.GoTo('users')
+    }
+  }
   return (
     
     <Grid container>
@@ -45,7 +55,7 @@ const Dashboard = () => {
           </Typography>
           {DashboardData.content}
         </Grid>
-        <Grid item xs={12} md={3} lg={3}>
+        <Grid item xs={12} md={3} lg={3} style={{display:"flex",justifyContent:"center"}}>
           <img src={welcomeImg} alt='.' className='welcomeimg' />
         </Grid>
       
@@ -85,9 +95,9 @@ const Dashboard = () => {
             </Grid>
             </Grid>
             
-        <Fourbuttons/>
-        <Grid container spacing={1} style={{padding:"5%"}}>
-          <Grid item xs={12} md={10} lg={10}>
+        <Fourbuttons fourbuttonPressed={(BtnType)=>{handleFourButtons(BtnType)}}/>
+        <Grid container spacing={1} style={{padding:"5%",display:'flex',justifyContent:"center"}}>
+          <Grid item xs={12} md={10} lg={10} >
             <BarChart/>
           </Grid>
         </Grid>

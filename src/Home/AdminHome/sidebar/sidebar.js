@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Layout, Menu } from 'antd';
+import { useEffect } from 'react';
 
 import './sidebar.css'
 import { menuItems } from '../../constants/adminMenuItems';
@@ -8,10 +9,13 @@ const { SubMenu } = Menu;
 
 const AdminSidebar = (props) => {
   const [collapsed, setCollapsed] = useState(false);
-
+  const [defaultselectedKey,setdefaultselectedKey] = useState(['dashboard'])
   const onCollapse = (collapsed) => {
     setCollapsed(collapsed);
   };
+  useEffect(()=>{
+    setdefaultselectedKey(props.selected)
+  },[props.selected])
     const handleMenuItemClick = (key) => {
       props.selectedOption(key)
       
@@ -33,7 +37,7 @@ const AdminSidebar = (props) => {
   >
     <Menu
       mode="inline"
-      defaultSelectedKeys={['dashboard']}
+      selectedKeys={defaultselectedKey}
       defaultOpenKeys={['sub1']}
       className='Sidebar-menu'
     >

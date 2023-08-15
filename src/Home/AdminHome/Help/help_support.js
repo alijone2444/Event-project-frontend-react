@@ -17,12 +17,12 @@ const HelpAndSupport = () => {
     <div>
         <div style={{backgroundColor:'DodgerBlue',display:'flex',alignItems:"center",justifyContent:"center",flexDirection:isSmallScreen?"column":"row"}}>
         <div style={{display:'flex',alignItems:"center",justifyContent:"center",flexDirection:"column",padding:"5%"}}>
-         <p className='animation'>Hello 👋 How can we</p>
+         <p className='animation'> How can we</p>
           <section class="animation">
-            <div class="first"><div>Help you?</div></div>
-            <div class="second"><div>Support you?</div></div>
-            <div class="third"><div>assist you?</div></div>
-            <div class="fourth"><div>advice you?</div></div>
+            <div class="first"><div>Help you</div></div>
+            <div class="second"><div>Support you</div></div>
+            <div class="third"><div>assist you</div></div>
+            <div class="fourth"><div>advice you</div></div>
         </section>
         </div>
           <div style={{display:"flex",alignItems:"center"}}><HelpIcon style={{color:'white',fontSize:"150px"}}/></div>

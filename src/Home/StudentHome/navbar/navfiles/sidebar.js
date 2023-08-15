@@ -1,14 +1,14 @@
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import Image from '../../../images/navbackground.jpg';
+import Image from '../../../../images/navbackground.jpg';
 import { useRef, useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom"
 import { makeStyles } from '@mui/styles';
 import HomeOutlined from '@mui/icons-material/HomeOutlined';
 import StarBorderOutlined from '@mui/icons-material/StarBorderOutlined';
-import societyicon from '../../../images/societyicon.png'
+import societyicon from '../../../../images/societyicon.png'
 import SettingsOutlined from '@mui/icons-material/SettingsOutlined';
 import CalendarTodayOutlined from '@mui/icons-material/CalendarTodayOutlined';
-import ist_logo2 from '../../../images/editedlogo_2.png'
+import ist_logo2 from '../../../../images/editedlogo_2.png'
 import { useMediaQuery } from '@mui/material';
 
 function SidebarComponent(props) {

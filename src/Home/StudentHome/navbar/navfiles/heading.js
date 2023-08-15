@@ -1,11 +1,11 @@
-import '../../../styles/navbar_home.css'
+import '../../../../styles/navbar_home.css'
 
 function Heading(){
     return(
         <div className='parent'>
             <div className="overlay"></div>
 
-            <div className="text">
+            <div className="heading-text">
                 <div className="wrapper">
                     <div id="L" className="letter">I</div>
                     <div className="shadow">I</div>

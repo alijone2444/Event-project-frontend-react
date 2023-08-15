@@ -34,7 +34,7 @@ import {
       name: 'Settings',
       subMenu: [
         { key: 'general', name: 'General' },
-        { key: 'theme', name: 'Theme' },
+        //crousel images website management etc
         { key: 'history', name: 'History' },
         { key: 'Messages', name: 'Messages' },
         //bug reports or messages

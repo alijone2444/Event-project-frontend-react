@@ -9,18 +9,31 @@ import HelpAndSupport from "./Help/help_support";
 
 function AdminHomePage(){
     const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
-
+    const [selectedType,setselectedType]=useState(['dashboard'])
+    const handleGoTo = (btntype) =>{
+      if(btntype==='request'){
+        setselectedType(['registration'])
+        setSelectedMenuItem('registration')
+        
+      }
+      // else if(BtnType==='report'){
+      //   setSelectedMenuItem('registration')
+      // }
+      // else if(BtnType==='users'){
+      //   props.GoTo('users')
+      // }
+    }
     const handleselect =(option)=>{
-        console.log(option,"selected")
+        setselectedType('')
         setSelectedMenuItem(option);
     }
     return(
         <Grid container style={{ height: '100vh' }}>
         <Grid item xs={2} sx={{ borderRight: '1px solid #ccc' }}>
-          <AdminSidebar  selectedOption={(option)=>handleselect(option)}/>
+          <AdminSidebar  selectedOption={(option)=>handleselect(option)} selected={selectedType}/>
         </Grid>
         <Grid item xs={10}>
-        {selectedMenuItem === 'dashboard' && <Dashboard />}
+        {selectedMenuItem === 'dashboard' && <Dashboard GoTo={(btntype)=>{handleGoTo(btntype)}}/>}
         {selectedMenuItem === 'events' && <EventManagementInterface />}
         {selectedMenuItem === 'registration' && <AttendeesTable />}
         {selectedMenuItem === 'schedules' && <EventScheduler />}

@@ -1,4 +1,4 @@
-import Navbar from "../Home/navbar/navbar";
+import Navbar from "../navbar/navbar";
 function SocietiesComponent(){
     return(
             <div>

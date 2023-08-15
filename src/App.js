@@ -2,10 +2,10 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginScreen from './signin_signout/login.js';
 // import AdminHome from './Home/AdminHome/homepage.js';
-import Home from './Home/home.js';
+import Home from './Home/StudentHome/home.js';
 import NeonCursor from "./neonCursor.js";
-import SocietiesComponent from './societies/societies.js'
-import CalanderComponent from './calander/calander.js'
+import SocietiesComponent from './Home/StudentHome/societies/societies.js'
+import CalanderComponent from './Home/StudentHome/calander/calander.js'
 import AdminHomePage from './Home/AdminHome/adminHome.js';
 function App() {
   return (

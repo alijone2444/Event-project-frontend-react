@@ -1,11 +1,11 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel'
 import { Paper, Button } from '@mui/material'
-import imagea from '../../images/crousel1.jpg'
-import imageb from '../../images/crousel2.webp'
-import imagec from '../../images/crousel3.jpg'
-import imaged from '../../images/ist.jpg'
-import '../../styles/navbar_home.css'
+import imagea from '../../../images/crousel1.jpg'
+import imageb from '../../../images/crousel2.webp'
+import imagec from '../../../images/crousel3.jpg'
+import imaged from '../../../images/ist.jpg'
+import '../../../styles/navbar_home.css'
 import  {makeStyles} from '@mui/styles';
 import { useMediaQuery ,createTheme} from '@mui/material';
 

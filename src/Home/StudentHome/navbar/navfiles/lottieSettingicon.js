@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Lottie from 'lottie-react-web';
-import animationData from '../../../lottie/lottiesettingicon.json';
+import animationData from '../../../../lottie/lottiesettingicon.json';
 import { useEffect } from 'react';
 
 const MySettingIcon = (props) => {

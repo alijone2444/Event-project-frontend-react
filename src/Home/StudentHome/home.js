@@ -6,6 +6,7 @@ import ThemedFooter from "./Footer/footer";
 import Navbar from "./navbar/navbar";
 import ScrollingHorizontally from "./HomePageScrolls/HrScroll";
 import ScrollToTopButton from "./scrollToTop/scrollup";
+import { useMediaQuery } from "@mui/material";
 function Home(){
     const imageData = [
         {
@@ -28,12 +29,14 @@ function Home(){
         },
       ];
     const [showstyle , setshowstyle] = useState(false)
+    const isSmallScreen = useMediaQuery('(max-width:768px)');
+
 return(
     <div className={showstyle ? 'overlayhome' : ''}>
         <Navbar showstyle={()=>setshowstyle(true)} notshowstyle={()=>setshowstyle(false)}/>
         <CarouselComponent/>
         <ScrollToTopButton/>
-        <div style={{marginBottom:"5%"}}>
+        <div style={{marginBottom:"5%",marginTop:isSmallScreen?"10%":"5%"}}>
           <ScrollingHorizontally data={imageData} title={'Recent'} subheader={'Check Latest Happenings'}/>
           <ScrollingHorizontally data={imageData} title={'Upcomming'} subheader={'Future Gatherings'}/>
           <ScrollingHorizontally data={imageData} title={'Hot'} subheader={'Find Trending Occasions'}/>

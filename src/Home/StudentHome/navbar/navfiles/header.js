@@ -13,7 +13,7 @@ import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import {useNavigate} from "react-router-dom"
 import MySettingIcon from './lottieSettingicon'
-
+import constants from '../../../../Constants/constants'
 const Header = (props) => {
   const classes = useStyles();
   const [expandedButton, setExpandedButton] = React.useState(null);
@@ -79,20 +79,32 @@ const Header = (props) => {
         <div className={classes.rightContent}>
           {!isMobile && (
             <>
-            
-            <Button color="inherit" onClick={handleHome}>Home</Button>
-              <Button color="inherit" onClick={handleSocieties}>Societies</Button>
-              <Button color="inherit" onClick={handleCalander}>Calendar</Button>
-              <Button color="inherit">Events</Button>
-           
-
-            <IconButton
-            style={{margin:0,padding:0}}
-              onClick={() => handleButtonClick('Settings')}
-              color={settingsButtonActive ? 'primary' : 'default'}
+            {!isMobile && (
+        <>
+          {constants.menuitems.map((item, index) => (
+            <Button
+              key={index}
+              color="inherit"
+              onClick={
+                item.name === 'Home' ? handleHome :
+                item.name === 'Societies' ? handleSocieties :
+                item.name === 'Calander' ? handleCalander :
+                null // Add more cases if needed
+              }
             >
-              <MySettingIcon onClick={()=>{console.log("hello")}}/>
-            </IconButton>
+              {item.name}
+            </Button>
+          ))}
+          
+          <IconButton
+            style={{ margin: 0, padding: 0 }}
+            onClick={() => handleButtonClick('Settings')}
+            color={settingsButtonActive ? 'primary' : 'default'}
+          >
+            <MySettingIcon onClick={() => { console.log("hello"); }} />
+          </IconButton>
+        </>
+      )}
             
             <Collapse
               className={classes.iconbutton}

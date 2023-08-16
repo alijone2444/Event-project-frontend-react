@@ -1,6 +1,7 @@
 import Navbar from '../navbar/navbar';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
+import { Grid } from '@mui/material';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 
 function CalanderComponent() {
@@ -20,17 +21,20 @@ function CalanderComponent() {
   const localizer = momentLocalizer(moment);
 
   return (
-    <div>
+    <div style={{width:"100%"}}>
    
       <Navbar />
-      <Calendar
-        localizer={localizer}
-        events={myEventsList}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 500 }}
-      />
-      <h1>Calendars</h1>
+      <Grid container style={{padding:"25px"}}> 
+        <Grid item xs={12} >
+        <Calendar
+          localizer={localizer}
+          events={myEventsList}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 500,zIndex:1}}
+        />
+        </Grid>
+      </Grid>
     </div>
   );
 }

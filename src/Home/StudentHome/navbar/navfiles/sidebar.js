@@ -10,7 +10,7 @@ import SettingsOutlined from '@mui/icons-material/SettingsOutlined';
 import CalendarTodayOutlined from '@mui/icons-material/CalendarTodayOutlined';
 import ist_logo2 from '../../../../images/editedlogo_2.png'
 import { useMediaQuery } from '@mui/material';
-
+import constants from '../../../../Constants/constants';
 function SidebarComponent(props) {
   const [openSlide, setopenSlide] = useState("");
   const sideNavRef = useRef(null);
@@ -25,6 +25,7 @@ function SidebarComponent(props) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
+    <MenuItem className={classes.menuitem} onClick={handleSocieties}><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Societies </div><div> <img  alt="Event Icon" src={societyicon} className={classes.icon} /></div></div></MenuItem>
     // Remove event listener when the component unmounts or when props.Openstatus changes to true
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
@@ -53,12 +54,31 @@ const handleHome=()=>{
         <Sidebar rootStyles={{border:"0px"}} ref={sideNavRef} className={classes.sidebar} image={Image} transitionDuration={1000} collapsed={props.Openstatus}   collapsedWidth={'0'}>
         {isMobile &&<img src={ist_logo2} alt="Event Icon" style={{position:"absolute",left:"-20px"}}/>}
             <Menu closeOnClick={true} >
-            <MenuItem rootStyles={{}} className={classes.menuitem} style={{marginTop:"15%",display:"flex",borderTop:"2px solid white"}} onClick={handleHome}><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Home </div><div><HomeOutlined style={{color:"black"}}/></div></div></MenuItem>
-            <MenuItem className={classes.menuitem} ><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Events </div><div><StarBorderOutlined style={{color:"black"}}/></div></div></MenuItem>
-            <MenuItem className={classes.menuitem} onClick={handleSocieties}><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Societies </div><div> <img  alt="Event Icon" src={societyicon} className={classes.icon} /></div></div></MenuItem>
-            <MenuItem className={classes.menuitem} onClick={handleCalander}><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Calendar </div><div><CalendarTodayOutlined style={{color:"black"}}/></div></div></MenuItem>
-            <MenuItem className={classes.menuitem} ><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Settings </div><div><SettingsOutlined style={{color:"black"}}/></div></div></MenuItem>
-            
+            {constants.menuitems.map((menuItem, index) => (
+              <MenuItem
+                key={index}
+                className={classes.menuitem}
+                onClick={
+                  menuItem.name === 'Home' ? handleHome :
+                  menuItem.name === 'Societies' ? handleSocieties :
+                  menuItem.name === 'Calander' ? handleCalander :
+                  null // Add more cases if needed
+                }
+              >
+                
+                 <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    {menuItem.name}
+                  </div>
+                  <div>
+                    {menuItem.icon}
+                  </div>
+                </div>
+              </MenuItem>
+              
+            ))}
+<MenuItem className={classes.menuitem} ><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Settings </div><div><SettingsOutlined style={{color:"black"}}/></div></div></MenuItem>
+           
             </Menu>
         </Sidebar>
         </div>}
@@ -92,9 +112,6 @@ const useStyles = makeStyles((theme) => ({
     fontFamily:"arial",
     borderTop:"2px solid white"
   },
-  icon:{
-    width:"24px",
-    height:"24px"
-  }
+
 }));
 export default SidebarComponent;

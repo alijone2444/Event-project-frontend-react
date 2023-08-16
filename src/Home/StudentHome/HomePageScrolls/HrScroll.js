@@ -7,9 +7,12 @@ import ArrowForward from '@mui/icons-material/ArrowForward';
 import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Divider from '@mui/material/Divider';
+import {useMediaQuery} from '@mui/material';
 
 const ScrollingHorizontally = (props) => {
   const navigate = useNavigate();
+  const ismobile = useMediaQuery('(max-width: 768px)'); // Adjust the max-width value as needed
+
     useEffect(()=>{
 
     },props.data)
@@ -61,7 +64,7 @@ return (
       <div className="container" {...bind()}>
         {props.data ? (
           props.data.map((index, i) => (
-            <div key={index.image} style={{ marginTop: `${i % 2 === 0 ? 20 : 0}px` }}>
+            <div key={index.image} style={{ marginTop: ismobile?"10px":`${i % 2 === 0 ? 20 : 0}px` }}>
                 <animated.div
                 className="card"
                 style={{

@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import ArrowForward from '@mui/icons-material/ArrowForward';
 import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import Divider from '@mui/material/Divider';
 
 const ScrollingHorizontally = (props) => {
   const navigate = useNavigate();
@@ -45,6 +46,16 @@ return (
       <Typography className='recent' style={{color:"black"}} variant='h4'>
         {props.title}
       </Typography>
+    </div>
+    <div >
+      <Typography
+        className='subheader'
+        style={{ color: 'DodgerBlue',background:"white", display: 'inline-block'}}
+        variant='h6'
+      >
+        {props.subheader}
+      </Typography>
+      <Divider style={{ background: 'dodgerblue', marginTop: '-15px' ,marginRight:"10%"}} />
     </div>
     <div style={{paddingLeft:"5%"}}>
       <div className="container" {...bind()}>

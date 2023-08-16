@@ -34,9 +34,9 @@ return(
         <CarouselComponent/>
         <ScrollToTopButton/>
         <div style={{marginBottom:"5%"}}>
-          <ScrollingHorizontally data={imageData} title={'Recent'}/>
-          <ScrollingHorizontally data={imageData} title={'Upcomming'}/>
-          <ScrollingHorizontally data={imageData} title={'Hot'}/>
+          <ScrollingHorizontally data={imageData} title={'Recent'} subheader={'Check Latest Happenings'}/>
+          <ScrollingHorizontally data={imageData} title={'Upcomming'} subheader={'Future Gatherings'}/>
+          <ScrollingHorizontally data={imageData} title={'Hot'} subheader={'Find Trending Occasions'}/>
         </div>
         <HomeBody/>
         <ThemedFooter/>

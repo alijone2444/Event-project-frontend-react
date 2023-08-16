@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.common.white,
   },
   text: {
-    marginTop:"15%",
     textAlign: 'center',
   },
   iconButton: {

@@ -6,7 +6,7 @@ function ScrollingText() {
   return (
     <div className="marquee">
       <marquee><Typography variant='h6' className='banner'>
-        Welcome to isthub . Join us in creating unforgettable experiences
+        Welcome to IST HUB . Join us in creating unforgettable experiences
         <AnnouncementIcon/>
       </Typography>
       </marquee>

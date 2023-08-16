@@ -20,6 +20,7 @@
     background-position: center center;
     position: relative; /* Add this line to make sure pseudo-element is positioned relative to .card */
     transition: background-color 0.3s; /* Add a smooth transition for background-color change */
+    margin-top: 20px;
   }
   
   .card::before {
@@ -66,11 +67,20 @@
   align-items: center;
 
 }
+.subheader{
+  padding-left: 10%;
+}
+
 @media  (max-width: 767px) {
     .card {
         width: 300px;
         height: 200px;
         border-radius: 10px;
         margin-left: 10px;
+        margin-top: 10px;
+      }
+      .subheader{
+        padding-left: 15%;
+      
       }
 }

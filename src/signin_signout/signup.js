@@ -67,6 +67,7 @@ function Signupform({onswitch}){
             <div  className={classes.lottie} ><MyLottie  isAnimationStopped={isAnimationStopped} /></div>
             <form onSubmit={handleSubmit} className={classes.form}>
                 <TextField
+                style={{background:"transparent"}}
                 label="User name"
                 type="User name"
                 value={email}
@@ -76,9 +77,10 @@ function Signupform({onswitch}){
                 margin="normal"
                 required
                 className={classes.fields}
-                InputLabelProps={{ style: { color: '#0195db' } }}
+                InputLabelProps={{ style: { color: 'white' } }}
                 />
                 <TextField
+                style={{background:"transparent"}}
                 label="Password"
                 type="password"
                 value={password}
@@ -88,7 +90,7 @@ function Signupform({onswitch}){
                 margin="normal"
                 required
                 className={classes.fields}
-                InputLabelProps={{ style: { color: '#0195db' } }}
+                InputLabelProps={{ style: { color: 'white' } }}
                 />
                 <TextField
                 label="Confirm Password"
@@ -99,12 +101,12 @@ function Signupform({onswitch}){
                 margin="normal"
                 required
                 className={classes.fields}
-                InputLabelProps={{ style: { color: '#0195db' } }}
+                InputLabelProps={{ style: { color: 'white' } }}
                 />
                 
                 <div className={classes.linklg}>
-                    <p>already have an account?</p>
-                    <Link  style={{color:"#0195db"}} onClick={handleSignUpClick}>SignIn</Link>
+                    <p>Already have an account?&nbsp; </p>
+                    <Link  style={{color:"white"}} onClick={handleSignUpClick}>SignIn</Link>
                  </div>
                 <div className={classes.new}>
                     <Button type="submit" variant="contained"  className={classes.buttonlg}>
@@ -122,39 +124,39 @@ function Signupform({onswitch}){
     animation: '$root 2s ease-in-out',
     },
     root: {
-      backdropFilter: 'blur(25px)',
+      backdropFilter: 'blur(25px) ',
       borderRadius: '5%',
       width: '100%',
-      border: '1px solid lightgrey',
+      border: '1px solid white',
     
     },
     form:{
       marginTop:"40%"
     },
     fields: {
-      color: 'black',
+      color: 'white',
       '& input': {
-        color: 'black',
+        color: 'white',
       },
       '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#0195db',
+        borderColor: 'white',
       },
       '&:hover .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#0195db',
+        borderColor: 'white',
       },
       '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-        borderColor: '#0195db',
+        borderColor: 'white',
       },
     },
     buttonlg: {
-      backgroundColor: '#0195db !important',
-      color: 'white !important',
+      backgroundColor: 'white !important',
+      color: 'black !important',
       padding: '5px 10px',
       width: '100%',
       paddingBottom: '10%',
     },
     linklg: {
-      color: 'black',
+      color: 'white',
       display: 'flex',
       flexDirection: 'row',
       justifyContent: 'center',

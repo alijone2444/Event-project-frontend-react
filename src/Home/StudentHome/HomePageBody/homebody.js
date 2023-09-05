@@ -10,7 +10,7 @@ function HomeBody() {
         <Grid item xs={12} sm={6}>
           <div className={classes.infoDiv}>
                 <Typography variant="h3" gutterBottom>
-                IST UNIVERSITY & IST HUb 
+                IST UNIVERSITY & IST HUB
                 </Typography>
                 <Typography variant="body1" gutterBottom sx={{ fontSize: '18px' }}>
                 Seamless Event Planning Meets Innovative Education: Unleashing the Power of Calendarium at IST University

@@ -12,6 +12,8 @@ const NeonCursor = () => {
         outerAlpha={0.5} // Customize the transparency of the outer cursor
         innerScale={0.7} // Customize the scaling of the inner cursor
         outerScale={3} // Customize the scaling of the outer cursor
+        innerStyle={{border:"1px solid white"}}
+        outerStyle={{border:"1px solid white"}}
       />
     </div>
   );

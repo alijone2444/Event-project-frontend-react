@@ -1,33 +1,18 @@
 import { useState ,useEffect} from 'react';
-import { TextField, Button, Container } from '@mui/material';
+import { TextField, Button, Container,FormControl,Select,InputLabel,MenuItem} from '@mui/material';
 import axios from 'axios';
 import { Link, Navigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import MyLottie from './lottieComponent';
 import { useNavigate } from 'react-router-dom';
 
-
 function Loginform({ onswitch }){
-
-  //const classes1 = useStyles();
- useEffect(() => {
-  // Apply the gradient background to the body element
-  document.body.style.background = 'linear-gradient(to bottom, white 5%, #EAF6FF 10%, #EAF6FF)';
-
-  // Set the left border color to white
-  document.body.style.borderLeft = '5% solid white';
-
-  // Clean up the background style when the component is unmounted
-  return () => {
-    document.body.style.background = '';
-    document.body.style.borderLeft = '';
-  };
-}, []);
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isAnimationStopped, setIsAnimationStopped] = useState(false);
     const [isSignUpClicked, setIsSignUpClicked] = useState(false); // New state variable
+    const [userType,setUserType] = useState('Student')
     const [error,seterror] = useState(false)
     const classes = useStyles();
     const navigate = useNavigate()
@@ -70,7 +55,14 @@ function Loginform({ onswitch }){
           });
       }
     };
-  
+    const handleUserType = (e) => {
+      setUserType(e.target.value)
+      console.log(e.target.value)
+      setIsAnimationStopped(false); // Stop the animation
+    };
+    const handlestate = ()=>{
+      setIsAnimationStopped(false); // Stop the animation
+    }
 
     const handlePasswordClick = () => {
       console.log('Password field clicked');
@@ -94,17 +86,35 @@ function Loginform({ onswitch }){
               <MyLottie  isAnimationStopped={isAnimationStopped} />
               </div>
             <form onSubmit={handleSubmit} className={classes.form}>
+                <FormControl fullWidth 
+                  className={classes.fields}>
+                  <InputLabel id="demo-simple-select-label" style={{ color: 'white'}}>User Type</InputLabel>
+                  <Select
+                  style={{background:"transparent",color:'white'}}
+                  className={classes.fields}
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={userType}
+                    label="User Type"
+                    onChange={handleUserType}
+                    onClick={handlestate}
+                  >
+                    <MenuItem value={'Student'}>Student</MenuItem>
+                    <MenuItem value={'Society President'}>Society President</MenuItem>
+                  </Select>
+                </FormControl>
                 <TextField
                 label="User name"
                 type="User name"
                 value={email}
+                style={{background:"transparent"}}
                 onChange={handleEmailChange}
                 onClick={handleusernameClick}
                 fullWidth
                 margin="normal"
                 required
                 className={classes.fields}
-                InputLabelProps={{ style: { color: '#0195db' } }}
+                InputLabelProps={{ style: { color: 'white' } }}
                 />
                 <TextField
                 label="Password"
@@ -116,11 +126,11 @@ function Loginform({ onswitch }){
                 margin="normal"
                 required
                 className={classes.fields}
-                InputLabelProps={{ style: { color: '#0195db' } }}
+                InputLabelProps={{ style: { color: 'white' } }}
                 />
                 <div className={classes.linklg}>
-                    <p>don't have an account?</p>
-                    <Link style={{color:"#0195db"}} onClick={handleSignUpClick}>Signup</Link>
+                    <p>Don't have an account?&nbsp;</p>
+                    <Link style={{color:"white"}} onClick={handleSignUpClick}>Signup</Link>
                  </div>
                  {error && <p className={classes.errorText}>incorrect password or username</p>}
                 <div className={classes.new} >
@@ -143,36 +153,36 @@ const useStyles = makeStyles({
     justifyContent:"center"
   },
   root: {
-    backdropFilter: 'blur(25px)',
+    backdropFilter: 'blur(25px) ',
+    backgroundImage:'linear-gradient(to bottom right, rgba(255, 255, 255, 0.2) 0%, rgba(0, 0, 0, 0.2) 100%)',
     borderRadius: '5%',
     width: '100%',
-    backgroundColor:'white',
-    border: '5% solid white',
-
+    border: '1px solid white',
+  
   },
   fields: {
-    color: 'black',
+    color: 'white',
     '& input': {
-      color: 'black',
+      color: 'white',
     },
     '& .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#0195db',
+      borderColor: 'white',
     },
     '&:hover .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#0195db',
+      borderColor: 'white',
     },
     '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#0195db',
+      borderColor: 'white',
     },
   },
   buttonlg: {
-    backgroundColor: '#0195db !important',
-    color: 'white !important',
+    backgroundColor: 'white !important',
+    color: 'black !important',
     padding: '5px 10px',
     width: '100%',
   },
   linklg: {
-    color: 'black',
+    color: 'white',
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -188,6 +198,7 @@ const useStyles = makeStyles({
   errorText: {
     color: 'red',
     textAlign: 'center',
+    marginTop: '0',
     marginBottom: '0',
     animation: '$blink 1s infinite',
   },

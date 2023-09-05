@@ -37,6 +37,7 @@
     "reactochart": "^6.1.1",
     "three": "^0.153.0",
     "three.js": "^0.77.1",
+    "vanta": "^0.5.24",
     "web-vitals": "^3.3.2"
   },
   "scripts": {

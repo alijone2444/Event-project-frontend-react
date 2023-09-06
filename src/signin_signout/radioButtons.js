@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useMediaQuery} from '@mui/material';
 import {
   Drawer,
   ToggleButton,
@@ -17,7 +18,8 @@ import { Brightness4, Brightness7, EmojiObjects, Settings } from '@mui/icons-mat
 const ThemeChanger = (props) => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [selectedTheme, setSelectedTheme] = useState('light');
-
+  const isSmallScreen = useMediaQuery('(max-width: 768px)'); // Adjust the max-width value as needed
+  
   const toggleDrawer = (open) => (event) => {
     if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
@@ -28,6 +30,7 @@ const ThemeChanger = (props) => {
   const handleThemeChange = (event, newTheme) => {
     if (newTheme !== null) {
       setSelectedTheme(newTheme);
+      toggleDrawer(false)
       // You can implement theme switching logic here
     }
   };
@@ -37,8 +40,8 @@ const ThemeChanger = (props) => {
       <IconButton onClick={toggleDrawer(true)} style={{ color: "white" }}>
         <Settings style={{ fontSize: "40px" }} />
       </IconButton>
-      <Drawer anchor="left" open={openDrawer} onClose={toggleDrawer(false)} style={{ zIndex: "1" }}>
-        <div style={{ zIndex: "5" }}>
+      <Drawer anchor={isSmallScreen?"top":"left"} open={openDrawer} onClose={toggleDrawer(false)} style={{ zIndex: "5" }}>
+        <div style={{ zIndex: "5" ,display:"flex",justifyContent:"center"}}>
           <Box>
             <ToggleButtonGroup
               value={selectedTheme}
@@ -47,7 +50,7 @@ const ThemeChanger = (props) => {
               orientation="vertical"
               aria-label="theme"
             >
-              <ToggleButton value="light" style={{ background: "white" }} onClick={()=>{props.callback('Light')}}>
+              <ToggleButton value="light" style={{ background: "white" ,minWidth:isSmallScreen?"400px":"auto"}} onClick={()=>{props.callback('Light')}}>
                 <Brightness7 /> Light
               </ToggleButton>
               <ToggleButton value="dark" style={{ background: "white" }} onClick={()=>{props.callback('Dark')}}>

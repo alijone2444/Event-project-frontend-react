@@ -6,6 +6,10 @@ import { ClassNames } from '@emotion/react';
 import Grid from '@mui/material/Grid';
 import { useMediaQuery } from "@mui/material";
 import EventDetail from '../../Components/exploreEvents/eventDetail';
+import { useState } from 'react';
+import { Typography } from 'antd';
+import Link from '@mui/material/Link';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 function EventDetailPage() {
     const backgroundImage = {
         backgroundImage: `url('${imagePath}')`,
@@ -17,8 +21,9 @@ function EventDetailPage() {
         height: '100vh',
         zIndex: -1, 
       } 
-      
+        const [ShowDescription,setShowDescription] = useState(false)
         const isSmallScreen = useMediaQuery('(max-width:768px)');
+        const [Desc_text,setDesc_text] = useState('')
       const images = [
         {
           src: "test1.jpg",
@@ -33,6 +38,14 @@ function EventDetailPage() {
           legend: "Welcome to our Secure Dashboard App",
         },
       ];
+      
+      const handleSeeLess=()=>{
+        window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+        setShowDescription(false)
+      }
   return (
     <div style={{ position: 'relative',padding:'5%'}}>
       <div
@@ -41,13 +54,28 @@ function EventDetailPage() {
 
       <div style={{ position: 'relative', zIndex: 1 }}>
         <Navbar />
-        <Grid container  >
-        <Grid item xs={12} md={6} style={{border:'2px solid red'}}>
-                <LoginCarousel images={images}/>
+        <Grid container >
+          <Grid item xs={12} md={6} >
+                  <LoginCarousel images={images}/>
+          </Grid>
+          <Grid item xs={12} md={6} style={{padding:'5%',paddingTop:0}}>
+          <EventDetail callback_seemore={(text)=>{setShowDescription(true);setDesc_text(text);console.log('callbacked')}}/>
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6} style={{padding:'5%'}}>
-        <EventDetail/>
-        </Grid>
+        <Grid container spacing={2} pt={5} pb={5}>
+          {ShowDescription && 
+          <Grid item xs={12} md={12} >
+              <Typography mt={2}>
+                {Desc_text}
+              </Typography>
+              <Link onClick={handleSeeLess} component="button" underline='none' variant="body2">
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' ,alignItems:'center'}}>
+                 show less
+                  <ExpandLessIcon style={{ color: 'Dodgerblue', paddingTop: '2px' }} />
+                </div>
+              </Link>
+
+            </Grid>}
         </Grid>
       </div>
     </div>

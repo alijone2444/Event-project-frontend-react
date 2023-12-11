@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@mui/styles';
 import { Container, Grid, Typography,  createTheme, ThemeProvider, IconButton } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
@@ -8,78 +8,17 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import constants from '../../../../Constants/constants';
 import { useMediaQuery } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#2196f3', // Replace with your desired primary color
-    },
-    common: {
-      white: '#ffffff', // Replace with your desired text color
-    },
-  },
-});
-
-const useStyles = makeStyles((theme) => ({
-  footer: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-    padding: theme.spacing(6, 0),
-  },
-  link: {
-    margin: theme.spacing(1, 2),
-    color: theme.palette.common.white,
-  },
-  text: {
-    textAlign: 'center',
-  },
-  iconButton: {
-    color: theme.palette.common.white,
-  },
-  socialMediaContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    marginTop: theme.spacing(2),
-  },
-  societyContainer: {
-    marginTop: theme.spacing(2),
-    display:"flex",
-    justifyContent:"center",
-  },
-  text2:{
-    display:"flex",
-    alignItems:"center",
-    paddingLeft: theme.spacing(1),
-  },
-  arrowIcon: {
-    verticalAlign: 'middle',
-    marginRight: theme.spacing(1),
-  },
-  texte: {
-    fontWeight: 'bold',
-  },
-  menuButton: {
-    display: 'flex',
-    alignItems: 'center',
-    cursor: 'pointer',
-    transition: '0.3s',
-    '&:hover': {
-      paddingLeft: '8px', // Add space for the arrow icon
-      '& $arrowIcone': {
-        opacity: 1,
-        transform: 'translateX(0)',
-      },
-    },
-  },
-  arrowIcone: {
-    opacity: 0,
-    transform: 'translateX(-10px)',
-    transition: '0.3s',
-  },
-}));
+import { useNavigate,useLocation } from 'react-router-dom';
 
 const Footer = () => {
+  
+  const location = useLocation()
+  useEffect(()=>{
+    if(location.pathname === "/login") {
+      return null
+    }
+  },[])
+  
   const navigate = useNavigate()
   const classes = useStyles();
   const isSmallScreen = useMediaQuery('(max-width: 768px)'); // Adjust the max-width value as needed
@@ -195,5 +134,79 @@ const ThemedFooter = () => {
     </ThemeProvider>
   );
 };
+
+
+
+
+
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#2196f3', // Replace with your desired primary color
+    },
+    common: {
+      white: '#ffffff', // Replace with your desired text color
+    },
+  },
+});
+
+const useStyles = makeStyles((theme) => ({
+  footer: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+    padding: theme.spacing(6, 0),
+  },
+  link: {
+    margin: theme.spacing(1, 2),
+    color: theme.palette.common.white,
+  },
+  text: {
+    textAlign: 'center',
+  },
+  iconButton: {
+    color: theme.palette.common.white,
+  },
+  socialMediaContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: theme.spacing(2),
+  },
+  societyContainer: {
+    marginTop: theme.spacing(2),
+    display:"flex",
+    justifyContent:"center",
+  },
+  text2:{
+    display:"flex",
+    alignItems:"center",
+    paddingLeft: theme.spacing(1),
+  },
+  arrowIcon: {
+    verticalAlign: 'middle',
+    marginRight: theme.spacing(1),
+  },
+  texte: {
+    fontWeight: 'bold',
+  },
+  menuButton: {
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    transition: '0.3s',
+    '&:hover': {
+      paddingLeft: '8px', // Add space for the arrow icon
+      '& $arrowIcone': {
+        opacity: 1,
+        transform: 'translateX(0)',
+      },
+    },
+  },
+  arrowIcone: {
+    opacity: 0,
+    transform: 'translateX(-10px)',
+    transition: '0.3s',
+  },
+}));
 
 export default ThemedFooter;

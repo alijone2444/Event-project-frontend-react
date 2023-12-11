@@ -12,10 +12,11 @@ const navigate = useNavigate()
     <Container maxWidth="sm" style={{width:"100%",}}>
       <Paper elevation={3} style={{ padding: '20px',backdropFilter:'blur(5px)',background:'transparent' }}>
         <Typography variant="h5" gutterBottom style={{padding:"5%",textAlign:"Center",fontFamily:'Brush Script MT, Brush Script Std, cursive',color:"blue"}}>
-          My Student Space
+          IST HUB
         </Typography>
+        {/* Welcome to 'IST HUB' */}
         <Typography variant="h6" gutterBottom style={{color:"grey",padding:"5%",paddingTop:0,paddingBottom:"10%",textAlign:"Center",fontSize:'1em'}}>
-          Welcome to 'My Student Space'
+        Life is an event, make it memorable
         </Typography>
         <form onSubmit={handleSubmit}>
           <Grid container spacing={2}>

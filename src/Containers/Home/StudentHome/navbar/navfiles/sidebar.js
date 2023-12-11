@@ -1,16 +1,16 @@
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import Image from '../../../../images/navbackground.jpg';
+import Image from '../../../../../images/navbackground.jpg';
 import { useRef, useState, useEffect } from "react";
 import {useNavigate} from "react-router-dom"
 import { makeStyles } from '@mui/styles';
 import HomeOutlined from '@mui/icons-material/HomeOutlined';
 import StarBorderOutlined from '@mui/icons-material/StarBorderOutlined';
-import societyicon from '../../../../images/societyicon.png'
+import societyicon from '../../../../../images/societyicon.png'
 import SettingsOutlined from '@mui/icons-material/SettingsOutlined';
 import CalendarTodayOutlined from '@mui/icons-material/CalendarTodayOutlined';
-import ist_logo2 from '../../../../images/editedlogo_2.png'
+import ist_logo2 from '../../../../../images/editedlogo_2.png'
 import { useMediaQuery } from '@mui/material';
-import constants from '../../../../Constants/constants';
+import constants from '../../../../../Constants/constants';
 function SidebarComponent(props) {
   const [openSlide, setopenSlide] = useState("");
   const sideNavRef = useRef(null);
@@ -50,7 +50,7 @@ const handleHome=()=>{
 }
   return (
     <div className={classes.parent} >
-      {<div className={classes.parent2} >
+      <div className={classes.parent2} >
         <Sidebar rootStyles={{border:"0px"}} ref={sideNavRef} className={classes.sidebar} image={Image} transitionDuration={1000} collapsed={props.Openstatus}   collapsedWidth={'0'}>
         {isMobile &&<img src={ist_logo2} alt="Event Icon" style={{position:"absolute",left:"-20px"}}/>}
             <Menu closeOnClick={true} >
@@ -79,9 +79,9 @@ const handleHome=()=>{
             ))}
             <MenuItem className={classes.menuitem} ><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Settings </div><div><SettingsOutlined style={{color:"black"}}/></div></div></MenuItem>
                       
-            </Menu>
+          </Menu>
         </Sidebar>
-        </div>}
+        </div>
     </div>
   );
 }
@@ -99,11 +99,11 @@ const useStyles = makeStyles((theme) => ({
       width: "0%",
        height: "100vh"
   },
-  sidebar:{
-    zIndex:"4",
-    height:"100vh"
-    ,bottom: 0, 
-    
+  sidebar: {
+    zIndex: "4",
+    height: "100vh", // Set a fixed height, adjust as needed
+    bottom: 0,
+    overflowY: "auto", // or "scroll"
   },
   menuitem:{
     background:"rgba(255, 255, 255, 0.3)",

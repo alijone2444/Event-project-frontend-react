@@ -6,14 +6,16 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import HomeIcon from '@mui/icons-material/Home';
 import SettingsIcon from '@mui/icons-material/Settings';
-import Image from '../../../../images/ist_logo.png';
+import Image from '../../../../../images/ist_logo.png';
 import makeStyles from '@mui/styles/makeStyles';
 import Heading from './heading';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
 import {useNavigate} from "react-router-dom"
 import MySettingIcon from './lottieSettingicon'
-import constants from '../../../../Constants/constants'
+import constants from '../../../../../Constants/constants'
+import HideOnScroll from './hideonScroll';
+import { useMediaQuery } from '@mui/material';
 const Header = (props) => {
   const classes = useStyles();
   const [expandedButton, setExpandedButton] = React.useState(null);
@@ -65,16 +67,20 @@ const Header = (props) => {
   const handleHome=()=>{
     navigate("/Home")
   }
+  const isSmallScreen = useMediaQuery('(max-width:600px)');
   return (
-    <AppBar position="static" color="transparent" style={{position:"sticky",top:0,left:0,zIndex:"3",backgroundColor:"white"}}> 
+    
+    <HideOnScroll {...props}>
+    <AppBar  style={{top:0,left:0,zIndex:"3",backgroundColor:"white"}}> 
       <Toolbar className={classes.toolbar}>
         <Heading />
 
-        <div className={classes.logoContainer}>
-          <a>
-            <img src={Image} alt="Logo" className={classes.logoImage} />
-          </a>
-        </div>
+        {!isSmallScreen &&
+            <div className={classes.logoContainer}>
+              <a>
+                <img src={Image} alt="Logo" className={classes.logoImage} />
+              </a>
+        </div>}
 
         <div className={classes.rightContent}>
           {!isMobile && (
@@ -129,6 +135,7 @@ const Header = (props) => {
         </div>
       </Toolbar>
     </AppBar>
+    </HideOnScroll>
   );
 };
 
@@ -137,7 +144,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-  },logoContainer: {
+  },
+  logoContainer: {
     position:'absolute',
     left:"50%",
     transform: "translate(-50%, 0)"
@@ -168,14 +176,9 @@ const useStyles = makeStyles((theme) => ({
     transition: 'transform 0.3s ease',
     transform: 'translateX(-100%)',
   },
-  '@media (max-width: 600px)': {
-    logoImage: {
-      display: 'none',
-    },
-  },
   '@media (max-width: 900px)': {
     toolbar:{
-      paddingLeft:"0 !important"
+      // paddingLeft:"0 !important"
     }
   },
 }));

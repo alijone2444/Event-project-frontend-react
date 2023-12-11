@@ -6,7 +6,7 @@ import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import constants from '../../../Constants/constants';
+import constants from '../../../../Constants/constants';
 import { useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 

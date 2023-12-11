@@ -1,7 +1,7 @@
 import React from 'react';
 import {DashboardData,activities} from '../constants/dashboardConstants';
 import { Layout, Card, Button,List } from 'antd';
-import welcomeImg from '../../../images/dashboard_welcome.png'
+import welcomeImg from '../../../../images/dashboard_welcome.png'
 import './dashboard.css'
 import { DashboardOutlined,ClockCircleOutlined,CalendarOutlined } from '@ant-design/icons';
 import getRandomColor from './randomBulletcolor';

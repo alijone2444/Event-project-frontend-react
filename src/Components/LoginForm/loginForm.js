@@ -11,7 +11,7 @@ const navigate = useNavigate()
   return (
     <Container maxWidth="sm" style={{width:"100%",}}>
       <Paper elevation={3} style={{ padding: '20px',backdropFilter:'blur(5px)',background:'transparent' }}>
-        <Typography variant="h5" gutterBottom style={{padding:"5%",textAlign:"Center",fontFamily:'Brush Script MT, Brush Script Std, cursive',color:"blue"}}>
+        <Typography variant="h5" gutterBottom style={{padding:"5%",textAlign:"Center",fontFamily:'Brush Script MT, cursive, sans-serif',color:"blue"}}>
           IST HUB
         </Typography>
         {/* Welcome to 'IST HUB' */}

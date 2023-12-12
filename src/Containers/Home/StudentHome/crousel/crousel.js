@@ -12,35 +12,33 @@ import { useMediaQuery ,createTheme} from '@mui/material';
 function CarouselComponent(props){
     const classes = useStyles(); // Use the useStyles hook
   const isSmallScreen = useMediaQuery('(max-width: 600px)'); // Adjust the max-width value as needed
-    console.log(isSmallScreen,"width")
- 
-    var items = [
-        {
-            title:"IST HUB",
-            path: imagea,
-            description: "Probably the most random thing you have ever seen!"
-        },
-        {
-            title:"About IST",
-            path: imaged,
-            description: "IST University's event hub serves as a vibrant platform within the university, bringing together students, faculty, and staff."
-        }
-        ,
-        {
-            title:"",
-            path: imageb,
-            description: "Hello World!"
-        }
-        ,
-        {
-            title:"",
-            path: imagec,
-            description: "Hello World!"
-        }
-    ]
+    
+  var items = [
+    {
+      title: "Qawali Event",
+      path: imagea,
+      description: "Enjoy the mesmerizing Qawali performance at IST",
+    },
+    {
+      title: "Conference at IST",
+      path: imaged,
+      description:
+        "IST University's event hub serves as a vibrant platform within the university, bringing together students, faculty, and staff for conferences.",
+    },
+    {
+      title: "Sports Event",
+      path: imageb,
+      description: "Hello World! Welcome to the exciting world of sports.",
+    },
+    {
+      title: "Concert Night",
+      path: imagec,
+      description: "Hello World! Join us for a night of musical delight.",
+    },
+  ];
 
     return (
-        <Carousel className='crousel'  height={"95vh"} animation={'fade'}  indicatorContainerProps={{
+        <Carousel className='crousel' duration={2000} navButtonsAlwaysVisible={true}  height={"95vh"} animation={'fade'}  indicatorContainerProps={{
             style: {
                 position:"absolute",
                 bottom:"0",

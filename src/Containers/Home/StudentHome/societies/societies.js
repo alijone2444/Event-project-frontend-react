@@ -1,11 +1,10 @@
-import Navbar from "../navbar/navbar";
+import WrapperComponent from "../../../../FooterAndHeaderwrapper";
 function SocietiesComponent(){
     return(
-            <div>
-                <Navbar/>
-                <div style={{marginTop:"5%"}}></div>
-                <h1>he;ldaolodoas</h1>
-            </div>
+        <WrapperComponent>
+            <div style={{marginTop:"5%"}}></div>
+            <h1>he;ldaolodoas</h1>
+        </WrapperComponent>
     )
     
 }

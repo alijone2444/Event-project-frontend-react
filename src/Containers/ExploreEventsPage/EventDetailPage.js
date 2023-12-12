@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { Typography } from 'antd';
 import Link from '@mui/material/Link';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import WrapperComponent from '../../FooterAndHeaderwrapper';
 function EventDetailPage() {
     const backgroundImage = {
         backgroundImage: `url('${imagePath}')`,
@@ -24,6 +25,7 @@ function EventDetailPage() {
         const [ShowDescription,setShowDescription] = useState(false)
         const isSmallScreen = useMediaQuery('(max-width:768px)');
         const [Desc_text,setDesc_text] = useState('')
+        const [showMore , setshowMore] = useState(false)
       const images = [
         {
           src: "test1.jpg",
@@ -44,9 +46,11 @@ function EventDetailPage() {
           top: 0,
           behavior: 'smooth'
         });
+        setshowMore(!showMore)
         setShowDescription(false)
       }
   return (
+    <WrapperComponent>
     <div style={{ position: 'relative',padding:'5%'}}>
       <div
         style={backgroundImage}
@@ -56,10 +60,10 @@ function EventDetailPage() {
         <Navbar />
         <Grid container >
           <Grid item xs={12} md={6} >
-                  <LoginCarousel images={images}/>
+            <LoginCarousel images={images}/>
           </Grid>
-          <Grid item xs={12} md={6} style={{padding:'5%',paddingTop:0}}>
-          <EventDetail callback_seemore={(text)=>{setShowDescription(true);setDesc_text(text);console.log('callbacked')}}/>
+            <Grid item xs={12} md={6} style={{padding:'5%',paddingTop:0}}>
+          <EventDetail callback_seemore={(text)=>{setShowDescription(true);setDesc_text(text);}} showmore={showMore}/>
           </Grid>
         </Grid>
         <Grid container spacing={2} pt={5} pb={5}>
@@ -68,8 +72,8 @@ function EventDetailPage() {
               <Typography mt={2}>
                 {Desc_text}
               </Typography>
-              <Link onClick={handleSeeLess} component="button" underline='none' variant="body2">
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' ,alignItems:'center'}}>
+              <Link onClick={handleSeeLess} component="button" underline='none' variant="body2" width={'100%'}>
+                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' ,alignItems:'center',paddingTop:'1%'}}>
                  show less
                   <ExpandLessIcon style={{ color: 'Dodgerblue', paddingTop: '2px' }} />
                 </div>
@@ -79,6 +83,7 @@ function EventDetailPage() {
         </Grid>
       </div>
     </div>
+    </WrapperComponent>
   );
 }
 

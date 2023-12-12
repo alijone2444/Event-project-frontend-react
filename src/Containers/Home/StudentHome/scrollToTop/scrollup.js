@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './scrollup.css';
 import KeyboardDoubleArrowUpRoundedIcon from '@mui/icons-material/KeyboardDoubleArrowUpRounded';
+import { Button } from 'antd';
 function ScrollToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
 
@@ -24,13 +25,14 @@ function ScrollToTopButton() {
   };
 
   return (
-    <button
+    <Button
       className={`scroll-to-top-button ${isVisible ? 'active' : ''}`}
       onClick={scrollToTop}
       title="Scroll to Top"
+      style={{display:"flex",justifyContent:"center",alignItems:"center"}}
     >
       <KeyboardDoubleArrowUpRoundedIcon/>
-    </button>
+    </Button>
   );
 }
 

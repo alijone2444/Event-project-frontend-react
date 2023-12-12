@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Login from './Containers/loginForm.js'
-// import AdminHome from './Home/AdminHome/homepage.js';
 import Home from './Containers/Home/StudentHome/home.js';
 import NeonCursor from "./neonCursor.js";
 import SocietiesComponent from './Containers/Home/StudentHome/societies/societies.js'

@@ -3,7 +3,7 @@ import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import { Grid } from '@mui/material';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-
+import WrapperComponent from '../../../../FooterAndHeaderwrapper';
 function CalanderComponent() {
   const myEventsList = [
     {
@@ -21,21 +21,21 @@ function CalanderComponent() {
   const localizer = momentLocalizer(moment);
 
   return (
-    <div style={{width:"100%"}}>
-   
-      <Navbar />
-      <Grid container style={{padding:"25px"}}> 
-        <Grid item xs={12} >
-        <Calendar
-          localizer={localizer}
-          events={myEventsList}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 500,zIndex:1}}
-        />
+    <WrapperComponent>
+      <div style={{width:"100%"}}>
+        <Grid container style={{padding:"25px"}}> 
+          <Grid item xs={12} >
+          <Calendar
+            localizer={localizer}
+            events={myEventsList}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: 500,zIndex:1}}
+          />
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
+    </WrapperComponent>
   );
 }
 

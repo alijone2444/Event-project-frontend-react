@@ -2,20 +2,23 @@ import LoginCarousel from "../Components/LoginCrousel/loginCrousel"
 import LoginForm from "../Components/LoginForm/loginForm"
 import useMediaQuery from "@mui/material/useMediaQuery/useMediaQuery";
 import Image from '../images/login_background.jpg'
+import image1 from '../images/test1.jpg'
+import image2 from '../images/test2.jpg'
+import image3 from '../images/test3.jpg'
 
 function Login() {
     const isSmallScreen = useMediaQuery('(max-width:900px)');
     const images = [
       {
-        src: "test1.jpg",
+        src: image1,
         legend: "Login and enjoy",
       },
       {
-        src: "test2.jpg",
+        src: image2,
         legend: "Explore  Events, Attendance, Finance, and More",
       },
       {
-        src: "test3.jpg",
+        src: image3,
         legend: "Welcome to our Secure Dashboard App",
       },
     ];

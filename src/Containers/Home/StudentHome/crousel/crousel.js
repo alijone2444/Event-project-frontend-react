@@ -12,8 +12,7 @@ import { useMediaQuery ,createTheme} from '@mui/material';
 function CarouselComponent(props){
     const classes = useStyles(); // Use the useStyles hook
   const isSmallScreen = useMediaQuery('(max-width: 600px)'); // Adjust the max-width value as needed
-    
-  var items = [
+   var items = [
     {
       title: "Qawali Event",
       path: imagea,

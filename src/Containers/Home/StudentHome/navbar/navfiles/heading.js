@@ -33,16 +33,16 @@ function Heading(){
                 </div>
                
                 <div className="wrapper">
-                    <div id="H" className="letter">H</div>
-                    <div className="shadow">H</div>
+                    <div id="H" className="letter">E</div>
+                    <div className="shadow">E</div>
                 </div>
                 <div className="wrapper">
-                    <div id="T" className="letter">U</div>
-                    <div className="shadow">U</div>
+                    <div id="T" className="letter">M</div>
+                    <div className="shadow">M</div>
                 </div>
                 <div className="wrapper">
-                    <div id="N" className="letter">B</div>
-                    <div className="shadow">B</div>
+                    <div id="N" className="letter">S</div>
+                    <div className="shadow">S</div>
                 </div>
                
             </div>

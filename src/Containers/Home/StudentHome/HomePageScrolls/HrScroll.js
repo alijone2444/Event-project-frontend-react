@@ -64,7 +64,7 @@ return (
       <div className="container" {...bind()}>
         {props.data ? (
           props.data.map((index, i) => (
-            <div key={index.image} style={{ marginTop: ismobile?"10px":`${i % 2 === 0 ? 0 : 20}px` }}>
+            <div key={index.image} style={{ marginTop: ismobile?"10px":`${i % 2 === 0 ? 0 : 20}px` }} onClick={()=>navigate(`/eventdetail/${index.title}`)}>
                 <animated.div
                 className="card"
                 style={{

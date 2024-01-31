@@ -3,6 +3,7 @@ import { Button, Radio, Select, Space, Table, Tag } from 'antd';
 import { Grid } from '@mui/material';
 import { Typography} from '@mui/material';
 import './gridview.css'
+import axios from 'axios';
 import {
   PlusOutlined,
   DeleteOutlined,
@@ -12,8 +13,9 @@ import {
 } from '@ant-design/icons';
 import EditCalendarOutlined from '@mui/icons-material/EditCalendarOutlined'
 import EventCard from './gridview';
-const { Option } = Select;
+import CreateEvent from '../../../../Components/EventCreation/eventcreationComponent';
 
+const { Option } = Select;
 const columns = [
   {
     title: 'Event Name',
@@ -66,8 +68,8 @@ const data = [
 
 const EventManagementInterface = () => {
     const [sortOption, setSortOption] = useState('latest');
-    const [viewType, setViewType] = useState('grid');
-  
+    const [viewType, setViewType] = useState('grid');    
+    const [showeventsComponent , setshoweventsComponent] = useState(true)
     const handleSortChange = (value) => {
       setSortOption(value);
     };
@@ -75,10 +77,15 @@ const EventManagementInterface = () => {
     const handleViewTypeChange = (e) => {
       setViewType(e.target.value);
     };
-  
+    
+    const handleEventCreation = () =>{
+      setshoweventsComponent(false)
+    }
     return (
       <Grid container>
-        <Grid container style={{background:"DodgerBlue"}}>
+       
+       {showeventsComponent ? ( 
+       <><Grid container style={{background:"DodgerBlue",position:'sticky',top:0,zIndex:'2'}}>
         <Grid item xs={4} sm={4} md={4} lg={4}>
           <div style={{display:"flex",alignItems:"center",paddingLeft:"5%",height:"100%"}}> 
           <div style={{color:"white", fontSize: '20px'}}>Manage events<span style={{paddingLeft:"5px"}}><EditCalendarOutlined/></span></div>
@@ -95,32 +102,34 @@ const EventManagementInterface = () => {
               </Grid>
             <Grid item xs={12} sm={4} md={4} lg={2} style={{padding:"2%"}}>
               <Radio.Group  onChange={handleViewTypeChange} defaultValue="grid" buttonStyle="solid" value={viewType} > 
-                <Radio.Button value="grid"><AppstoreOutlined style={{color:"black"}}/></Radio.Button>
-                <Radio.Button value="plain"><UnorderedListOutlined /></Radio.Button>
+                <Radio.Button value="grid" style={{border:'2px solid dodgerblue'}}><AppstoreOutlined style={{color:"black",}}/></Radio.Button>
+                <Radio.Button value="plain" style={{border:'2px solid white'}}><UnorderedListOutlined /></Radio.Button>
             </Radio.Group>
             </Grid>
           </Grid>
         </Grid>
         </Grid>
-        <Grid container>
-        <Grid item xs={12}>
-          {viewType === 'grid' ? (
-            <div style={{marginBottom:'15%'}}>
-                <EventCard/>
-            </div>
-          ) : (
-            <div style={{ overflowX: 'auto' }}> {/* Wrap table with overflowX */}
-              <Table columns={columns} dataSource={data} />
-            </div>
-          )}
-        </Grid>
-        </Grid>
+          <Grid container>
+            <Grid item xs={12}>
+              {viewType === 'grid' ? (
+                <div style={{ marginBottom: '15%' }}>
+                  <EventCard />
+                </div>
+              ) : (
+                <div style={{ overflowX: 'auto' }}>
+                  {/* Wrap table with overflowX */}
+                  <Table columns={columns} dataSource={data} />
+                </div>
+              )}
+            </Grid>
+          </Grid>
+
         <Grid container>
         <Grid item xs={12}>
         <div  className='hover-2' style={{ width:"100%",position:"fixed",top: 'auto', bottom: 0,height: '34px',paddingRight:"5%" }}>
         <div>
-        <div style={{textAlign:"center",background:"white"}} >
-            <Button type="primary" icon={<PlusOutlined />} onClick={()=>{console.log("heloo")}} style={{ flexGrow: 1, background: 'white',marginRight:"20%",color: 'DodgerBlue' }}>
+        <div style={{textAlign:"center",background:"white"}} onClick={handleEventCreation}>
+            <Button type="primary" icon={<PlusOutlined />}  style={{ flexGrow: 1, background: 'white',marginRight:"20%",color: 'DodgerBlue' }}>
             Add Event
             </Button>
         </div>
@@ -128,7 +137,15 @@ const EventManagementInterface = () => {
         </div>
         </Grid>
         </Grid>
+          </>
 
+          ) : (
+            <Grid container>
+              <Grid item xs={12}>
+              <CreateEvent onclose={()=>{setshoweventsComponent(true)}}/>
+              </Grid>
+            </Grid>
+          )}
       </Grid>
     );
   };

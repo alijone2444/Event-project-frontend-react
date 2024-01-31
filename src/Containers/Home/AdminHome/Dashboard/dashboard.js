@@ -28,10 +28,12 @@ const Dashboard = (props) => {
   return (
     
     <Grid container>
-      <Grid item xs={12} md={12} lg={12}>
+      <Grid item xs={12} md={12} lg={12} style={{
+            position:'sticky',
+            top:0,
+            zIndex:'2',}}>
         <Header
           style={{
-              
             background: 'DodgerBlue',
             color:"white",
             padding: 0,
@@ -41,7 +43,7 @@ const Dashboard = (props) => {
           }}
         >
           <Grid item xs={8} md={8} lg={8}>
-            <div style={{ fontSize: '20px', marginLeft: '24px' ,paddingRight:"2px"}}>Dashboard<span style={{paddingLeft:"5px"}}><DashboardOutlined/></span></div>
+            <div style={{ fontSize: '20px', marginLeft: '24px' ,paddingRight:"2px",}}>Dashboard<span style={{paddingLeft:"5px"}}><DashboardOutlined/></span></div>
           </Grid>
           <Grid item xs={4} md={4} lg={4}>    
             <div style={{display:"flex",flexDirection:"row",alignItems:"center",justifyContent:"flex-end",paddingRight:"5%"}}><CalendarOutlined/>{currentDate}</div>

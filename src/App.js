@@ -16,7 +16,7 @@ function App() {
           {/* <Route path="/admin" element={<AdminHome />} /> */}
           <Route path="/" exact element={<Login />} />
           <Route path="/Home" element={<Home />} />
-          <Route path="/eventname" element={<EventDetailPage />} />
+          <Route path="/eventdetail/:eventname" element={<EventDetailPage />} />
           <Route path="/societies" element={<SocietiesComponent />} />
           <Route path="/calander" element={<CalanderComponent />} />
           <Route path="/admin" element={<AdminHomePage />} />

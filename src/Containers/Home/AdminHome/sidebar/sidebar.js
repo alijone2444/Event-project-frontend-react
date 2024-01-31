@@ -29,6 +29,7 @@ const AdminSidebar = (props) => {
       height: '100vh',
       position: 'fixed',
       left: 0,
+      top:0
     }}
     onCollapse={onCollapse}
     className={collapsed ? 'collapsed-sidebar' : ''}

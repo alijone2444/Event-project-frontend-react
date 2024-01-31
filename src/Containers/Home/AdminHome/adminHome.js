@@ -28,11 +28,12 @@ function AdminHomePage(){
         setSelectedMenuItem(option);
     }
     return(
-        <Grid container style={{ height: '100vh' }}>
+        <Grid container style={{ height: '100vh',position:'absolute',top:0 }} >
         <Grid item xs={2} sx={{ borderRight: '1px solid #ccc' }}>
           <AdminSidebar  selectedOption={(option)=>handleselect(option)} selected={selectedType}/>
         </Grid>
         <Grid item xs={10}>
+       
         {selectedMenuItem === 'dashboard' && <Dashboard GoTo={(btntype)=>{handleGoTo(btntype)}}/>}
         {selectedMenuItem === 'events' && <EventManagementInterface />}
         {selectedMenuItem === 'registration' && <AttendeesTable />}

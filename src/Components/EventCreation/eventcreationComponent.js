@@ -50,18 +50,34 @@ const CreateEvent = (props) => {
     // };
     const handleSave = async (event) => {
       event.preventDefault();
+      
       console.log(eventData.imageFiles)
       // Create a FormData object to send files
       const formData = new FormData();
-  
-      // Append each image file to the FormData
-      eventData.imageFiles.forEach((file) => {
-        formData.append('images', file);
+      
+      // Generate unique filenames for images and store in FormData
+      eventData.imageFiles.forEach((file, index) => {
+        const fileName = `${eventData.eventName}_${eventData.organizer}_${index}`;
+        formData.append('imageFiles', file, fileName);
       });
-  
-      // Use axios to send a POST request to the server
+
+      // Store image filenames in the database or use them as references
+      const imageFileNames = eventData.imageFiles.map((file, index) => {
+        return `${eventData.eventName}_${eventData.organizer}_${index}`;
+      });
+
+      // Append other form data to FormData
+      Object.entries(eventData).forEach(([key, value]) => {
+        if (key !== 'imageFiles') {
+          formData.append(key, value);
+        }
+      });
+
+      // Append image filenames to FormData
+      formData.append('imageFileNames', JSON.stringify(imageFileNames));
+
       try {
-        const response = await axios.post('http://localhost:3002/upload-images', formData, {
+        const response = await axios.post('http://localhost:3002/events', formData, {
           headers: {
             'Content-Type': 'multipart/form-data', // Set the content type for FormData
           },

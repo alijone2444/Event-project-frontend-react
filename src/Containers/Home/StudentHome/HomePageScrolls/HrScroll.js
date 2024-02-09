@@ -62,25 +62,26 @@ return (
     </div>
     <div style={{paddingLeft:"5%"}}>
       <div className="container" {...bind()}>
-        {props.data ? (
-          props.data.map((index, i) => (
-            <div key={index.image} style={{ marginTop: ismobile?"10px":`${i % 2 === 0 ? 0 : 20}px` }} onClick={()=>navigate(`/eventdetail/${index.title}`)}>
-                <animated.div
-                className="card"
-                style={{
-                  ...style,
-                  backgroundImage: `url(${index.image})`,
-                  cursor: "pointer",
-                }}
-              />
-              <h3 style={{ textAlign: "center", color: "black" }}>{index.title}</h3>
-            </div>
-          ))
-        ) : (
-          <div style={{ display: "flex", justifyContent: "center"}}>
-            <CircularProgress style={{ color: "yellow" }} />
+      {props.data ? (
+        props.data.map((index,i) => (
+          <div key={index.id} style={{ marginTop: ismobile ? "10px" : `${i % 2 === 0 ? 0 : 20}px` }} onClick={() => navigate(`/eventdetail/${index.title}`)}>
+            <animated.div
+              className="card"
+              style={{
+                ...style,
+                backgroundImage: `url(${index.image})`,
+                cursor: "pointer",
+              }}
+            />
+            <h3 style={{ textAlign: "center", color: "black" }}>{index.title}</h3>
           </div>
-        )}
+        ))
+      ) : (
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <CircularProgress style={{ color: "yellow" }} />
+        </div>
+      )}
+
       </div>
     </div>
   </div>

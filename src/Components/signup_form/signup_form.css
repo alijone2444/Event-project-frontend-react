@@ -1,0 +1,87 @@
+/* RightDiv.css */
+
+.signup-container {
+    
+    display: flex;
+    flex: 1;
+    padding: 10%;
+    box-sizing: border-box;
+    background-color: transparent;
+    font-family: orbitron;
+    font-size: large;
+    color: white;   
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .signup-form-container {
+    position:'relative';
+    background: transparent;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.7);
+    padding: 5%;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .signup-title {
+    color: white;
+    text-align: center;
+    margin-bottom: 10%;
+  }
+  
+  .login-form-forgot {
+    float: right;
+    color: white;
+  }
+  
+  .signup-form-button {
+    width: 100%;
+    background: white;
+    border: 1px solid white;
+    color: #001529;
+  }
+  
+  .signup-form-button:hover {
+    background: #001529;
+    color: white;
+    border: 1px solid white;
+  }
+.border{
+  border: 2px solid rgb(255, 255, 255);
+}
+
+.border:hover{
+  border: 2px solid white;
+}
+
+.border::selection{
+  border: 2px solid white;
+}
+
+.top {
+    position: absolute;
+    border-radius: 100vmax;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 5px;
+    background: linear-gradient(
+      90deg,
+      transparent 50%,
+      rgba(255, 255, 255, 0.5),
+      rgb(255, 255, 255)
+    );
+    animation: animateTop 2s ease-in-out infinite;
+  }
+  
+  @keyframes animateTop {
+    25% {
+      width: 100%;
+      opacity: 1;
+    }
+  
+    30%, 100% {
+      opacity: 0;
+    }
+  }
+  

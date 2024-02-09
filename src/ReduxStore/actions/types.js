@@ -1,0 +1,1 @@
+export const SET_BOOLEAN_STATE = 'SET_BOOLEAN_STATE';

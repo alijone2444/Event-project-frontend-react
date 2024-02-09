@@ -1,0 +1,11 @@
+.parent-request-component{
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+.flex-row{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

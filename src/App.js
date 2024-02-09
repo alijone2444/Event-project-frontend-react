@@ -7,14 +7,15 @@ import SocietiesComponent from './Containers/Home/StudentHome/societies/societie
 import CalanderComponent from './Containers/Home/StudentHome/calander/calander.js'
 import AdminHomePage from './Containers/Home/AdminHome/adminHome.js';
 import EventDetailPage from './Containers/ExploreEventsPage/EventDetailPage.js';
+import RequestAprovalWaitPage from './Containers/RequestApprovalPage.js/RequestApprovalwaitPage.js';
 function App() {
   return (
     <div>
       <NeonCursor/>
       <Router>
         <Routes>
-          {/* <Route path="/admin" element={<AdminHome />} /> */}
           <Route path="/" exact element={<Login />} />
+          <Route path="/request" element={<RequestAprovalWaitPage/>} />
           <Route path="/Home" element={<Home />} />
           <Route path="/eventdetail/:eventname" element={<EventDetailPage />} />
           <Route path="/societies" element={<SocietiesComponent />} />

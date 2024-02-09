@@ -1,6 +1,8 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel'
-import { Paper, Button } from '@mui/material'
+import { Paper} from '@mui/material'
+
+import {Button } from 'antd';
 import imagea from '../../../../images/qawali.jpg'
 import imageb from '../../../../images/sports.jpg'
 import imagec from '../../../../images/concert.jpg'

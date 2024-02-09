@@ -8,8 +8,10 @@ import ScrollingHorizontally from "./HomePageScrolls/HrScroll";
 import ScrollToTopButton from "./scrollToTop/scrollup";
 import { useMediaQuery } from "@mui/material";
 import WrapperComponent from "../../../FooterAndHeaderwrapper";
+import { useSelector } from "react-redux";
 function Home(){
-    const imageData = [
+    
+  const imageData = [
         {
           title: 'Image 1',
           image: 'https://via.placeholder.com/150',

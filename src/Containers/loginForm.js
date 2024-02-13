@@ -8,15 +8,16 @@ import backgroundMusic from '../audio/background_Music.mp3';
 import {  Tag } from "antd"; // Import Ant Design components
 import { VolumeUp, VolumeOff } from "@mui/icons-material/"; // Import Material-UI icons
 import SignUp from "../Components/signup_form/signup_form";
+import { useNavigate ,useLocation} from "react-router-dom";
 
-
-function Login() {
+function Login(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [flag, setFlag] = useState(true);
   const [login,setlogin] = useState(true)
   const audioRef = useRef(new Audio(backgroundMusic));
-  
+  const navigate = useNavigate()
+  const location = useLocation();
   
 const start = () => {
     const audio = audioRef.current;
@@ -41,7 +42,7 @@ const start = () => {
       </div>
       <div className="login-screen">
         {!isMobile && <TypewriterEffect />}
-        {login ? <LoginForm issmall={isMobile} showSignup={()=>{setlogin(false)}}/>:<SignUp  issmall={isMobile} showSignIn={()=>{setlogin(true)}}/>}
+        {login ? <LoginForm showAdmin={()=>{ navigate(location.pathname + '/success')}} issmall={isMobile} type={props.type} showSignup={()=>{setlogin(false)}}/>:<SignUp  issmall={isMobile} showSignIn={()=>{setlogin(true)}}/>}
         <div style={{ position: "absolute", bottom: 0, left: 0 ,display:'flex',flexDirection:'row'}}>
           <div onClick={start} style={{background: "transparent", color: "white",cursor:'pointer' }}>
             {flag ? <VolumeUp style={{paddingLeft:'10px',paddingRight:'10px'}}/> 

@@ -15,7 +15,6 @@
   }
   
   .signup-form-container {
-    position:'relative';
     background: transparent;
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.7);
     padding: 5%;
@@ -82,6 +81,25 @@
   
     30%, 100% {
       opacity: 0;
+    }
+  }
+  .errorText {
+    color: red;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 0;
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes blink {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
     }
   }
   

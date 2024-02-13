@@ -15,7 +15,7 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import makeStyles from '@mui/styles/makeStyles';
-import axios from 'axios';
+import AxiosUpgradedRequest from '../../RequestwithHeader';
 
 const CreateEvent = (props) => {
     const classes = useStyles();
@@ -77,7 +77,7 @@ const CreateEvent = (props) => {
       formData.append('imageFileNames', JSON.stringify(imageFileNames));
 
       try {
-        const response = await axios.post('http://localhost:3002/events', formData, {
+        const response = await AxiosUpgradedRequest.post('http://localhost:3002/events', formData, {
           headers: {
             'Content-Type': 'multipart/form-data', // Set the content type for FormData
           },

@@ -14,13 +14,14 @@ function App() {
       <NeonCursor/>
       <Router>
         <Routes>
-          <Route path="/" exact element={<Login />} />
+          <Route path="/" exact element={<Login showAdmin={()=>{console.log()}} type={'default'}/>} />
           <Route path="/request" element={<RequestAprovalWaitPage/>} />
           <Route path="/Home" element={<Home />} />
           <Route path="/eventdetail/:eventname" element={<EventDetailPage />} />
           <Route path="/societies" element={<SocietiesComponent />} />
           <Route path="/calander" element={<CalanderComponent />} />
-          <Route path="/admin" element={<AdminHomePage />} />
+          <Route path="/admin" element={<Login />} />
+          <Route path="/admin/success" element={<AdminHomePage />} />
         </Routes>
       </Router>
     </div>

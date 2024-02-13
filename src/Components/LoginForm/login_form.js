@@ -5,50 +5,28 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
-import { useSelector, useDispatch } from 'react-redux';
-import { setBooleanState } from '../../ReduxStore/actions/action';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import Cookies from 'js-cookie';
+
 
 
 const Login = (props) => {
-  const [email, setEmail] = useState('');
+  const [Rollno, setRollno] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const classes = useStyles();
   const [showBorder, setshowBorder] = useState(false);
-  const booleanState = useSelector((state) => state.boolean.booleanState);
-  const dispatch = useDispatch();
 
 
   const onFinish = (values) => {
     console.log('Received values:', values);
   };
-  const CustomPasswordInput = () => {
-    return (
-      <Input.Password
-      className='border'
-      style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
-      required
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-      placeholder="Password"
-      iconRender={(visible) =>
-        visible ? (
-          <EyeOutlined style={{ color: props.issmall?'white':'black' }} />
-        ) : (
-          <EyeInvisibleOutlined style={{ color:props.issmall? 'white':'grey' }} />
-        )
-      }
-    />
-    );
-  };
-  
   
   const handleSubmit = async () => {
     try {
       const response = await axios.post('http://localhost:3002/login', {
-        username: email,
+        Rollno: Rollno,
         password: password,
       });
 
@@ -56,7 +34,13 @@ const Login = (props) => {
       console.log(response.data);
 
       if (response.data.success === true) {
-        navigate('/Home');
+        Cookies.set('authToken', response.data.token, { expires: 7 });
+        if(props.type){
+          navigate('/Home');
+        }
+        else{
+          props.showAdmin()
+        }
       } else {
         // Handle unsuccessful login
         // For example, display an error message to the user
@@ -76,6 +60,7 @@ const Login = (props) => {
       props.showSignup();
     }, 1000);
   }
+  
   return (
     <div className="login-container">
       <div className="login-form-container">
@@ -88,16 +73,16 @@ const Login = (props) => {
           onFinish={onFinish}
         >
           <Form.Item
-            name="username"
-            rules={[{ required: true, message: 'Please input your username!' }]}
+            name="Rollno"
+            rules={[{ required: true, message: 'Please input your Roll number!' }]}
           >
             <Input
               className='border'
               style={{ width: '250PX', backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
-              placeholder="Username"
+              placeholder="Roll number"
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={Rollno}
+              onChange={(e) => setRollno(e.target.value)}
             />
           </Form.Item>
 
@@ -105,7 +90,7 @@ const Login = (props) => {
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <CustomPasswordInput/>
+            <CustomPasswordInput issmall={props.issmall} sendbackvalue={(value)=>setPassword(value)} password={password}/>
           </Form.Item>
 
           <Form.Item>
@@ -117,7 +102,7 @@ const Login = (props) => {
               Forgot password?
             </a>
           </Form.Item>
-          {error && <p className={classes.errorText}>Incorrect password or username</p>}
+          {error && <p className={classes.errorText}>Incorrect password or Roll number</p>}
           <Form.Item>
             <Button type="primary" htmlType="button" className="login-form-button" style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }} onClick={handleSubmit}>
               Log in
@@ -136,6 +121,7 @@ const Login = (props) => {
     </div>
   );
 };
+
 
 const useStyles = makeStyles({
   errorText: {
@@ -158,4 +144,24 @@ const useStyles = makeStyles({
   },
 });
 
+const CustomPasswordInput = (props) => {
+    
+  return (
+    <Input.Password
+    className='border'
+    style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
+    required
+    value={props.password}
+    onChange={(e) => props.sendbackvalue(e.target.value)}
+    placeholder="Password"
+    iconRender={(visible) =>
+      visible ? (
+        <EyeOutlined style={{ color: props.issmall?'white':'black' }} />
+      ) : (
+        <EyeInvisibleOutlined style={{ color:props.issmall? 'white':'grey' }} />
+      )
+    }
+  />
+  );
+};
 export default Login;

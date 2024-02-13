@@ -1,10 +1,10 @@
-// src/store/reducers/index.js
+
 import { combineReducers } from 'redux';
-import booleanReducer from './reducer';
+import requestsReducer from './RequestsreducerAdmin'; // Adjust the import path based on your actual file structure
 
 const rootReducer = combineReducers({
-  boolean: booleanReducer,
-  // Add other reducers here if needed
+  requests: requestsReducer,
+  // Add other reducers here if you have more
 });
 
 export default rootReducer;

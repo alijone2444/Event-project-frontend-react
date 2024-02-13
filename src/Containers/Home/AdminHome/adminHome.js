@@ -7,6 +7,7 @@ import AttendeesTable from "./registrations/registration";
 import EventScheduler from "./schedules/schedules";
 import HelpAndSupport from "./Help/help_support";
 
+
 function AdminHomePage(){
     const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
     const [selectedType,setselectedType]=useState(['dashboard'])

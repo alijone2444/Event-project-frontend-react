@@ -220,6 +220,7 @@ function ThreeScene(props) {
         // If component is unmounted, exit the loop
         return;
       }
+      console.log('loop running')
       // Rotate spheres
       orbitGroup.rotation.y += 0.002;
       neptune.rotation.x += 0.00001;
@@ -266,15 +267,25 @@ function ThreeScene(props) {
       // Render scene
       composer.render();
     };
-
+    
     animate();
 
     const handleResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
+      const newWidth = window.innerWidth;
+      const newHeight = window.innerHeight;
+    
+      camera.aspect = newWidth / newHeight;
+    
+      // Adjust the FOV based on the new aspect ratio
+      const verticalFOV = 45; // Adjust this value as needed
+      camera.fov = (verticalFOV * newHeight) / window.innerHeight;
+    
       camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setSize(newWidth, newHeight);
+    
+      // Update the size of the bloom pass
+      bloomPass.setSize(newWidth, newHeight);
     };
-
     window.addEventListener("resize", handleResize);
 
         // Add this function definition before your component function

@@ -153,7 +153,7 @@ const theme = createTheme({
 
 const useStyles = makeStyles((theme) => ({
   footer: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: ' rgba(30, 144, 255, 0.7)',
     color: theme.palette.common.white,
     padding: theme.spacing(6, 0),
   },

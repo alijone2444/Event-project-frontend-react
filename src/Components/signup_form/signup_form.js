@@ -5,6 +5,7 @@ import axios from 'axios';
 import './signup_form.css';
 import TermsAndConditions from './termsAndConditions';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import constants from '../../Constants/constants';
 
 const { Option } = Select;
 
@@ -44,7 +45,7 @@ const SignUp = (props) => {
         }
 
         // Assuming you have a backend endpoint for user registration
-        const response = await axios.post('http://localhost:3002/signup', {
+        const response = await axios.post(`${constants.BASE_URL}signup`, {
           Rollno: rollnoInteger, // Use the parsed integer value
           password: password,
           department: selectedDepartment,

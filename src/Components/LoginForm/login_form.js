@@ -6,9 +6,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import Cookies from 'js-cookie';
-
-
+import constants from '../../Constants/constants';
 
 const Login = (props) => {
   const [Rollno, setRollno] = useState('');
@@ -17,15 +15,13 @@ const Login = (props) => {
   const navigate = useNavigate();
   const classes = useStyles();
   const [showBorder, setshowBorder] = useState(false);
-
-
   const onFinish = (values) => {
     console.log('Received values:', values);
   };
   
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('http://localhost:3002/login', {
+      const response = await axios.post(`${constants.BASE_URL}login`, {
         Rollno: Rollno,
         password: password,
       });
@@ -34,7 +30,7 @@ const Login = (props) => {
       console.log(response.data);
 
       if (response.data.success === true) {
-        Cookies.set('authToken', response.data.token, { expires: 7 });
+        localStorage.setItem('authToken', response.data.token);
         if(props.type){
           navigate('/Home');
         }

@@ -64,16 +64,19 @@ return (
       <div className="container" {...bind()}>
       {props.data ? (
         props.data.map((index,i) => (
-          <div key={index.id} style={{ marginTop: ismobile ? "10px" : `${i % 2 === 0 ? 0 : 20}px` }} onClick={() => navigate(`/eventdetail/${index.title}`)}>
+          <div key={index._id} 
+            style={{ marginTop: ismobile ? "10px" : `${i % 2 === 0 ? 0 : 20}px` }} 
+            onClick={() => navigate(`/eventdetail/${index.eventName}`, { state: { data: index } })}
+>
             <animated.div
               className="card"
               style={{
                 ...style,
-                backgroundImage: `url(${index.image})`,
+                backgroundImage: `url(data:image/jpeg;base64,${index.mainImageData})`,
                 cursor: "pointer",
               }}
             />
-            <h3 style={{ textAlign: "center", color: "black" }}>{index.title}</h3>
+            <h3 style={{ textAlign: "center", color: "black" }}>{index.eventName}</h3>
           </div>
         ))
       ) : (

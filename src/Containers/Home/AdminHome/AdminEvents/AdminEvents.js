@@ -1,75 +1,92 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Radio, Select, Space, Table, Tag } from 'antd';
 import { Grid } from '@mui/material';
 import { Typography} from '@mui/material';
 import './gridview.css'
 import axios from 'axios';
+import columns from '../../../../Constants/AdminGridtableColumns';
+import { InboxOutlined } from '@ant-design/icons';
 import {
   PlusOutlined,
+  ArrowLeftOutlined,
   DeleteOutlined,
   EditOutlined,
   AppstoreOutlined,
   UnorderedListOutlined,
 } from '@ant-design/icons';
+import constants from '../../../../Constants/constants';
 import EditCalendarOutlined from '@mui/icons-material/EditCalendarOutlined'
 import EventCard from './gridview';
 import CreateEvent from '../../../../Components/EventCreation/eventcreationComponent';
+import createAuthenticatedRequest from '../../../../RequestwithHeader';
+import { setEventsDataAdmin } from '../../../../ReduxStore/actions/eventsDataAction'; 
+import { useDispatch,useSelector } from 'react-redux';
+import NoDataComponent from '../../../../Components/noData/noDataIcon';
+import OpenEvent from '../../../../Components/OpenEvent/openEvent';
 
 const { Option } = Select;
-const columns = [
-  {
-    title: 'Event Name',
-    dataIndex: 'eventName',
-    key: 'eventName',
-  },
-  {
-    title: 'Date',
-    dataIndex: 'date',
-    key: 'date',
-  },
-  {
-    title: 'Popularity',
-    dataIndex: 'popularity',
-    key: 'popularity',
-    render: (popularity) => (
-      <Tag color={popularity === 'popular' ? 'green' : 'geekblue'}>
-        {popularity.toUpperCase()}
-      </Tag>
-    ),
-  },
-  {
-    title: 'Action',
-    dataIndex: 'action',
-    key: 'action',
-    render: () => (
-      <Space>
-        <Button icon={<EditOutlined />} />
-        <Button icon={<DeleteOutlined />} danger />
-      </Space>
-    ),
-  },
-];
-
-const data = [
-  {
-    key: '1',
-    eventName: 'Event 1',
-    date: '2023-08-10',
-    popularity: 'popular',
-  },
-  {
-    key: '2',
-    eventName: 'Event 2',
-    date: '2023-08-15',
-    popularity: 'latest',
-  },
-  // Add more event data here
-];
 
 const EventManagementInterface = () => {
+    const dispatch = useDispatch()
+    const eventsData = useSelector((state) => state.adminEvents);
     const [sortOption, setSortOption] = useState('latest');
     const [viewType, setViewType] = useState('grid');    
     const [showeventsComponent , setshoweventsComponent] = useState(true)
+    const requestInstance = createAuthenticatedRequest()
+    const [AgainRunUseEffect,setAgainRunUseEffect] = useState(false)
+    const [AgaingetReduxValues,setAgaingetReduxValues] = useState(false)
+    const [showOpenedEvent , setshowOpenedEvent] = useState(false)
+    const [eventToSendToOpenEvent,seteventToSendToOpenEvent] = useState([])
+    const [showLoading,setshowLoading] = useState(false)
+    const [BackgroundImage,setBackgroundImage] = useState(null)
+    const [edit,setEdit] = useState([])
+
+    useEffect(()=>{
+      console.log('thh new value is',AgainRunUseEffect)
+      if(eventsData.length===0 || AgaingetReduxValues){
+        requestInstance
+        .get(`${constants.BASE_URL}get-events`,{    
+          params: {
+          amount:'get-all',
+        },})
+        .then(response => {
+          dispatch(setEventsDataAdmin(response.data.events));
+          console.log('respones:',response.data.events)
+        })
+        .catch(err => {
+          console.error('Error:', err);
+        });
+      }
+    },[dispatch,AgainRunUseEffect])
+
+    const handleDeleteEvent = async (id) =>{
+      setshowLoading(true)
+      try {
+        // Make the DELETE request to the API endpoint
+        const response = await requestInstance.delete(`${constants.BASE_URL}delete-event/${id}`);
+        // Handle the response
+        if(response.data.success===true){
+          setshowLoading(false)
+          setAgainRunUseEffect(!AgainRunUseEffect);
+          setAgaingetReduxValues(true)
+        };
+      } catch (error) {
+        setshowLoading(false)
+        console.error('Error deleting the event:', error.response ? error.response.data : error.message);
+        // Handle errors, e.g., display an error message to the user
+      }
+    }
+    const handleEditEvent=(id)=>{
+      const foundEvent = eventsData.find((event) => event._id === id);
+      if (foundEvent) {
+        console.log('Found event:', foundEvent);
+        setshoweventsComponent(false);
+        setEdit(foundEvent)
+      } else {
+        console.log('Event not found with id:', id);
+      }
+      }
+
     const handleSortChange = (value) => {
       setSortOption(value);
     };
@@ -81,9 +98,28 @@ const EventManagementInterface = () => {
     const handleEventCreation = () =>{
       setshoweventsComponent(false)
     }
+    const handleopenEvent=(id)=>{
+      const foundEvent = eventsData.find((event) => event._id === id);
+      if (foundEvent) {
+        console.log('Found event:', foundEvent);
+        seteventToSendToOpenEvent(foundEvent)
+      } else {
+        console.log('Event not found with id:', id);
+      }
+      setBackgroundImage(`url('data:image/jpeg;base64,${foundEvent.mainImageData}')`)
+      setshowOpenedEvent(true)
+    }
     return (
       <Grid container>
-       
+       <div style={{ 
+              backgroundImage: BackgroundImage,
+              position: 'fixed',
+              height: '100vh',
+              width: '100%',
+              filter: 'blur(50px)', // Apply blur to the content of the div
+            }}>
+              
+            </div>
        {showeventsComponent ? ( 
        <><Grid container style={{background:"DodgerBlue",position:'sticky',top:0,zIndex:'2'}}>
         <Grid item xs={4} sm={4} md={4} lg={4}>
@@ -113,28 +149,47 @@ const EventManagementInterface = () => {
             <Grid item xs={12}>
               {viewType === 'grid' ? (
                 <div style={{ marginBottom: '15%' }}>
-                  <EventCard />
-                </div>
+                {eventsData.length === 0 ? (
+                  <NoDataComponent />
+                ) : (
+                  showOpenedEvent ? <div style={{ padding: '2%' }}><OpenEvent eventData={eventToSendToOpenEvent}/></div> 
+                  : 
+                  <EventCard eventData={eventsData} 
+                    showEditDelete={true} 
+                    openEvent={(id)=>{handleopenEvent(id)}}
+                    editEvent={(id)=>{handleEditEvent(id)}}
+                    showLoading={showLoading}
+                    handleDeleteEvent={(id)=>{handleDeleteEvent(id)}}
+                    />
+                )}
+              </div>
               ) : (
                 <div style={{ overflowX: 'auto' }}>
                   {/* Wrap table with overflowX */}
-                  <Table columns={columns} dataSource={data} />
+                  <Table 
+                    columns={columns(handleDeleteEvent)} // Pass the callback function to the columns configuration
+                    dataSource={eventsData} 
+                    />
+{/* 
+showLoading={showLoading}
+                    handleDeleteEvent={(id)=>{handleDeleteEvent(id)}}
+                   */}
                 </div>
               )}
             </Grid>
           </Grid>
 
         <Grid container>
-        <Grid item xs={12}>
-        <div  className='hover-2' style={{ width:"100%",position:"fixed",top: 'auto', bottom: 0,height: '34px',paddingRight:"5%" }}>
-        <div>
-        <div style={{textAlign:"center",background:"white"}} onClick={handleEventCreation}>
-            <Button type="primary" icon={<PlusOutlined />}  style={{ flexGrow: 1, background: 'white',marginRight:"20%",color: 'DodgerBlue' }}>
-            Add Event
-            </Button>
+        <Grid item xs={12}><div className='hover-2' style={{ width: "100%", zIndex:998,position: "fixed", top: 'auto', bottom: 0, height: '34px', paddingRight: "5%" }}>
+          <div>
+            <div style={{ textAlign: "center", background: "white" }} onClick={showOpenedEvent?()=>{setshowOpenedEvent(false);setBackgroundImage(null)}:handleEventCreation}>
+              <Button type="primary" icon={showOpenedEvent?<ArrowLeftOutlined/>:<PlusOutlined />} style={{ flexGrow: 1, background: 'white', marginRight: "20%", color: 'DodgerBlue' }}>
+                {showOpenedEvent ? "Go Back" : "Add Event"}
+              </Button>
+            </div>
+          </div>
         </div>
-        </div>
-        </div>
+
         </Grid>
         </Grid>
           </>
@@ -142,7 +197,12 @@ const EventManagementInterface = () => {
           ) : (
             <Grid container>
               <Grid item xs={12}>
-              <CreateEvent onclose={()=>{setshoweventsComponent(true)}}/>
+              <CreateEvent 
+                  onclose={()=>
+                    {setshoweventsComponent(true);  
+                    setAgainRunUseEffect(!AgainRunUseEffect);
+                    setAgaingetReduxValues(true)}}
+                    edit={edit}/>
               </Grid>
             </Grid>
           )}

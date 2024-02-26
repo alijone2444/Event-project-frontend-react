@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   AppBar,
   Toolbar,
@@ -15,12 +15,19 @@ import {
 import CloseIcon from '@mui/icons-material/Close';
 import SaveIcon from '@mui/icons-material/Save';
 import makeStyles from '@mui/styles/makeStyles';
-import AxiosUpgradedRequest from '../../RequestwithHeader';
+import createAuthenticatedRequest from '../../RequestwithHeader';
+import constants from '../../Constants/constants';
+import axios from 'axios';
 
 const CreateEvent = (props) => {
+
+    const requestInstance = createAuthenticatedRequest()
     const classes = useStyles();
+    const [imageUrl,setimageUrl] = useState(false)
+    const [image,setimage]= useState(null)
     const [eventData, setEventData] = useState({
         eventName: '',
+        subheader:'',
         description: '',
         location: '',
         startDate: '',
@@ -30,10 +37,31 @@ const CreateEvent = (props) => {
         registrationOpen: true,
         registrationDeadline: '',
         tags: [],
-        imageUrl: '',
         imageFiles: [],
     });
-
+    
+    useEffect(() => {
+      if (props.edit) {
+        setEventData({
+          eventName: props.edit.eventName || '',
+          subheader: props.edit.subheader || '',
+          description: props.edit.description || '',
+          location: props.edit.location || '',
+          startDate: props.edit.startDate ? new Date(props.edit.startDate).toISOString().split('T')[0] : '',
+          endDate: props.edit.endDate ? new Date(props.edit.endDate).toISOString().split('T')[0] : '',
+          organizer: props.edit.organizer || '',
+          maxAttendees: props.edit.maxAttendees || 0,
+          registrationOpen: props.edit.registrationOpen || true,
+          registrationDeadline: props.edit.registrationDeadline ? new Date(props.edit.registrationDeadline).toISOString().split('T')[0] : '',
+          tags: props.edit.tags || [],
+          imageFiles: (props.edit.additionalImagesData || []).map(event => ({
+            src: `data:image/jpeg;base64,${event.imageData}`,
+          })),
+        });
+        setimageUrl(`data:image/jpeg;base64,${props.edit.mainImageData}`);
+      }
+    }, [props]);
+    
     const handleChange = (field, value) => {
         setEventData({
         ...eventData,
@@ -41,13 +69,6 @@ const CreateEvent = (props) => {
         });
     };
 
-    // const handleSave = async (event) => {
-    //     event.preventDefault();
-    //       const response = await axios.post('http://localhost:3002/events', {
-    //         data:eventData
-    //       });
-    //     console.log('Event data:', eventData);
-    // };
     const handleSave = async (event) => {
       event.preventDefault();
       
@@ -55,6 +76,8 @@ const CreateEvent = (props) => {
       // Create a FormData object to send files
       const formData = new FormData();
       
+      const DpfileName = `${eventData.eventName}_${eventData.organizer}_'Dp'`;
+      formData.append('Dpimage',image,DpfileName)
       // Generate unique filenames for images and store in FormData
       eventData.imageFiles.forEach((file, index) => {
         const fileName = `${eventData.eventName}_${eventData.organizer}_${index}`;
@@ -68,7 +91,7 @@ const CreateEvent = (props) => {
 
       // Append other form data to FormData
       Object.entries(eventData).forEach(([key, value]) => {
-        if (key !== 'imageFiles') {
+        if (key !== 'imageFiles'&& key !== 'Dpimage') {
           formData.append(key, value);
         }
       });
@@ -77,13 +100,15 @@ const CreateEvent = (props) => {
       formData.append('imageFileNames', JSON.stringify(imageFileNames));
 
       try {
-        const response = await AxiosUpgradedRequest.post('http://localhost:3002/events', formData, {
+        const response = await requestInstance.post(`${constants.BASE_URL}save-events`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data', // Set the content type for FormData
           },
         });
   
-        console.log('Server response:', response.data);
+        if(response.data.success===true){
+          props.onclose()
+        }
       } catch (error) {
         console.error('Error uploading images:', error);
       }
@@ -95,15 +120,14 @@ const CreateEvent = (props) => {
         const reader = new FileReader();
     
         reader.onloadend = () => {
-          setEventData({
-            ...eventData,
-            imageUrl: reader.result,
-          });
-        };
-    
+            setimageUrl( reader.result) 
+            setimage(file)
+          };
         if (file) {
           reader.readAsDataURL(file);
         }
+      
+      
       };
       const handleImagesChange = (e) => {
         const files = Array.from(e.target.files);
@@ -136,6 +160,14 @@ const CreateEvent = (props) => {
             value={eventData.eventName}
             onChange={(e) => handleChange('eventName', e.target.value)}
             helperText="Enter the name of the event"
+          />
+          <TextField
+            className={classes.data_fields}
+            label="sub header for event"
+            required
+            value={eventData.subheader}
+            onChange={(e) => handleChange('subheader', e.target.value)}
+            helperText="Enter the sub heading of the event"
           />
           <TextField
             className={classes.data_fields}
@@ -215,25 +247,26 @@ const CreateEvent = (props) => {
             onChange={(e) => handleChange('tags', e.target.value.split(','))}
             helperText="Enter tags separated by commas"
           />
-          <div style={{border:'1px solid lightgrey',padding:'2%',marginBottom:'5%'}}>
+          <div style={{border:'1px solid lightgrey',padding:'2%',marginBottom:'5%',zIndex:1}}>
             <Typography variant="body2" color="textSecondary">
                 select the main picture that should be displayed on the front
             </Typography>
             <input
             type="file"
             accept="image/*"
+            name="Dpimage"
             onChange={handleImageChange}
             />
             
-            {eventData.imageUrl && (
+            {imageUrl && (
                 <img
-                    src={eventData.imageUrl}
+                    src={imageUrl}
                     alt="Selected Event Image"
                     style={{ maxWidth: '100%', marginTop: '10px' }}
                 />
             )}
         </div>
-        <div style={{ border: '1px solid lightgrey', padding: '2%' }}>
+        <div style={{ border: '1px solid lightgrey', padding: '2%' ,zIndex:1}}>
           <Typography variant="body2" color="textSecondary">
             Select more images related to event that should also be shown
           </Typography>
@@ -241,13 +274,14 @@ const CreateEvent = (props) => {
             type="file"
             accept="image/*"
             multiple
+            name="imageFiles"
             onChange={handleImagesChange}
           />
           
           {eventData.imageFiles.map((file, index) => (
             <img
               key={index}
-              src={URL.createObjectURL(file)}
+              src={file.src || URL.createObjectURL(file)}
               alt={`Selected Event Image ${index + 1}`}
               style={{ maxWidth: '100%', marginTop: '10px' }}
             />

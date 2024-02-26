@@ -74,4 +74,17 @@
   }
   
   
-  
+  .event-description-truncate {
+      white-space: normal; /* allow text to wrap */
+      display: -webkit-box;
+      -webkit-line-clamp: 3; /* limit the number of lines to 3 */
+      -webkit-box-orient: vertical;
+      overflow: hidden; /* hide any overflowing text */
+  }
+  .trucate-title{
+    white-space: normal; /* allow text to wrap */
+    display: -webkit-box;
+    -webkit-line-clamp: 1; /* limit the number of lines to 3 */
+    -webkit-box-orient: vertical;
+    overflow: hidden; /* hide any overflowing text */
+  }

@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Tag } from 'antd';
+import { Table, Button, Tag ,Space} from 'antd';
 import { Grid, Typography, useMediaQuery } from '@mui/material';
 import axios from 'axios';
 import { setRequestsDataAdmin } from '../../../../ReduxStore/actions/RequestActionAdmin';
 import { useDispatch, useSelector } from 'react-redux';
-import AxiosUpgradedRequest from '../../../../RequestwithHeader';
+import createAuthenticatedRequest from '../../../../RequestwithHeader';
+import {
+  DeleteOutlined,
+  CheckOutlined ,
+} from '@ant-design/icons';
+import constants from '../../../../Constants/constants';
 
 const AttendeesTable = () => {
   const dispatch = useDispatch();
@@ -17,11 +22,13 @@ const AttendeesTable = () => {
   let acceptedRequests;
   let rejectedRequests;
   
+  const requestInstance = createAuthenticatedRequest();
+
   useEffect(() => {
     if(requestsData.length===0 || runuseffect===true){
-      console.log("inside useefect");
-      AxiosUpgradedRequest
-      .get('http://localhost:3002/get-all-requests')
+      console.log("inside useefect");    
+      requestInstance
+      .get(`${constants.BASE_URL}get-all-requests`)
       .then(response => {
         dispatch(setRequestsDataAdmin(response.data));
         navbarvalues()
@@ -42,7 +49,7 @@ const AttendeesTable = () => {
     else if (action==='reject'){
       updatedFields = {status: 'Rejected'}; 
     }
-    AxiosUpgradedRequest.patch(`http://localhost:3002/request-action/${id}`, updatedFields)
+    requestInstance.patch(`${constants.BASE_URL}request-action/${id}`, updatedFields)
       .then(response => {
         console.log('Component updated successfully:', response.data);
         if(response.data.success===true){
@@ -99,19 +106,11 @@ const AttendeesTable = () => {
       title: 'Action',
       key: 'action',
       render: (_, record) => (
-        <span>
-          {(
-            <>
-              <Button type="primary" onClick={() => handleAction(record._id,'accept')}>
-                Accept
-              </Button>
-              <Button danger onClick={() => handleAction(record._id,'reject')}>
-                Reject
-              </Button>
-            </>
-          )}
-        </span>
-      ),
+        
+        <Space>
+          <Button icon={<CheckOutlined  style={{color:'green'}}/> } onClick={() => handleAction(record._id,'accept')} />
+          <Button icon={<DeleteOutlined />} danger  onClick={() => handleAction(record._id,'reject')}/>
+        </Space>      ),
     },
   ];
 

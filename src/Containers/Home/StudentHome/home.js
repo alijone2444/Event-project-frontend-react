@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import CarouselComponent from "./crousel/crousel";
 import '../../../styles/navbar_home.css';
 import HomeBody from "./HomePageBody/homebody";
@@ -8,29 +8,32 @@ import ScrollingHorizontally from "./HomePageScrolls/HrScroll";
 import ScrollToTopButton from "./scrollToTop/scrollup";
 import { useMediaQuery } from "@mui/material";
 import WrapperComponent from "../../../FooterAndHeaderwrapper";
-import { useSelector } from "react-redux";
+import createAuthenticatedRequest from "../../../RequestwithHeader";
+import { useDispatch,useSelector } from 'react-redux';
+import { setEventsDataUserUpcoming } from "../../../ReduxStore/actions/eventsDataActionUser";
+import constants from "../../../Constants/constants";
 function Home(){
-    
-  const imageData = [
-        {
-          title: 'Image 1',
-          image: 'https://via.placeholder.com/150',
-        },
-        {
-          title: 'Image 2',
-          image: 'https://via.placeholder.com/150',
-        },
-        {
-          title: 'Image 3',
-          image: 'https://via.placeholder.com/150',
-        },{
-          title: 'Image 4',
-          image: 'https://via.placeholder.com/150',
-        },{
-          title: 'Image 4',
-          image: 'https://via.placeholder.com/150',
-        },
-      ];
+  const requestInstance = createAuthenticatedRequest()
+  const dispatch = useDispatch()
+  const UpcommingEvent = useSelector((state) => state.userUpcomingEvents);
+
+  useEffect(()=>{
+    if(UpcommingEvent.length===0){
+      requestInstance
+      .get(`${constants.BASE_URL}get-events`,{    
+        params: {
+        amount:'get-upcoming',
+      },})
+      .then(response => {
+        dispatch(setEventsDataUserUpcoming(response.data.events));
+        console.log('respones:',response.data.events)
+      })
+      .catch(err => {
+        console.error('Error:', err);
+      });
+    }
+  },[dispatch])
+
     const [showstyle , setshowstyle] = useState(false)
     const isSmallScreen = useMediaQuery('(max-width:768px)');
 
@@ -40,9 +43,9 @@ return(
         <CarouselComponent/>
         <ScrollToTopButton/>
         <div style={{marginBottom:"5%",marginTop:isSmallScreen?"10%":"5%"}}>
-          <ScrollingHorizontally data={imageData} title={'Recent'} subheader={'Check Latest Happenings'}/>
-          <ScrollingHorizontally data={imageData} title={'Upcomming'} subheader={'Future Gatherings'}/>
-          <ScrollingHorizontally data={imageData} title={'Hot'} subheader={'Find Trending Occasions'}/>
+          <ScrollingHorizontally data={UpcommingEvent} title={'Recent'} subheader={'Check Latest Happenings'}/>
+          <ScrollingHorizontally data={UpcommingEvent} title={'Upcomming'} subheader={'Future Gatherings'}/>
+          <ScrollingHorizontally data={UpcommingEvent} title={'Hot'} subheader={'Find Trending Occasions'}/>
         </div>
         <HomeBody/>
       </WrapperComponent>

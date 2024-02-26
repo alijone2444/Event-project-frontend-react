@@ -1,91 +1,39 @@
+
+import OpenEvent from "../../Components/OpenEvent/openEvent";
 import React from 'react';
-import imagePath from '../../images/EventDetails_background_eddited.jpg';
-import Navbar from '../Home/StudentHome/navbar/navbar';
-import LoginCarousel from '../../Components/LoginCrousel/loginCrousel';
-import { ClassNames } from '@emotion/react';
-import Grid from '@mui/material/Grid';
-import { useMediaQuery } from "@mui/material";
-import EventDetail from '../../Components/exploreEvents/eventDetail';
-import { useState } from 'react';
-import { Typography } from 'antd';
-import Link from '@mui/material/Link';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import WrapperComponent from '../../FooterAndHeaderwrapper';
-import image1 from '../../images/test1.jpg'
-import image2 from '../../images/test2.jpg'
-import image3 from '../../images/test3.jpg'
+import imagePath from '../../images/EventDetails_background_eddited.jpg';
+import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
 function EventDetailPage() {
-    const backgroundImage = {
-        backgroundImage: `url('${imagePath}')`,
-        backgroundSize: 'cover',
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100vh',
-        zIndex: -1, 
-      } 
-        const [ShowDescription,setShowDescription] = useState(false)
-        const isSmallScreen = useMediaQuery('(max-width:768px)');
-        const [Desc_text,setDesc_text] = useState('')
-        const [showMore , setshowMore] = useState(false)
-      const images = [
-        {
-          src: image1,
-          legend: "Login and enjoy",
-        },
-        {
-          src: image2,
-          legend: "Explore  Events, Attendance, Finance, and More",
-        },
-        {
-          src: image3,
-          legend: "Welcome to our Secure Dashboard App",
-        },
-      ];
-      
-      const handleSeeLess=()=>{
-        window.scrollTo({
-          top: 0,
-          behavior: 'smooth'
-        });
-        setshowMore(!showMore)
-        setShowDescription(false)
-      }
+  const { state } = useLocation();
+    const eventData = state?.data; 
+    
+  useEffect(()=>{
+    window.scrollTo(0, 0);
+  },[])
+  const backgroundImage = {
+    backgroundImage:`url('data:image/jpeg;base64,${eventData.mainImageData}')`,
+    backgroundSize: 'cover',
+    filter: 'blur(30px)', 
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100vh',
+    zIndex: -1, 
+  } 
   return (
     <WrapperComponent>
-    <div style={{ position: 'relative',padding:'5%'}}>
-      <div
-        style={backgroundImage}
-      />
+      <div style={{ position: 'relative', padding: '5%' }}>
+        <div style={backgroundImage} />
 
-      <div style={{ position: 'relative', zIndex: 1 }}>
-        <Navbar />
-        <Grid container >
-          <Grid item xs={12} md={6} >
-            <LoginCarousel images={images}/>
-          </Grid>
-            <Grid item xs={12} md={6} style={{padding:'5%',paddingTop:0}}>
-          <EventDetail callback_seemore={(text)=>{setShowDescription(true);setDesc_text(text);}} showmore={showMore}/>
-          </Grid>
-        </Grid>
-        <Grid container spacing={2} pt={5} pb={5}>
-          {ShowDescription && 
-          <Grid item xs={12} md={12} >
-              <Typography mt={2}>
-                {Desc_text}
-              </Typography>
-              <Link onClick={handleSeeLess} component="button" underline='none' variant="body2" width={'100%'}>
-                <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' ,alignItems:'center',paddingTop:'1%'}}>
-                 show less
-                  <ExpandLessIcon style={{ color: 'Dodgerblue', paddingTop: '2px' }} />
-                </div>
-              </Link>
+        <div style={{ position: 'relative', zIndex: 1 }}>
+         
+          <OpenEvent eventData={eventData}/>
 
-            </Grid>}
-        </Grid>
+        </div>
       </div>
-    </div>
     </WrapperComponent>
   );
 }

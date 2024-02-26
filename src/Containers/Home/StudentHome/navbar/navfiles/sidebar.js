@@ -7,14 +7,17 @@ import HomeOutlined from '@mui/icons-material/HomeOutlined';
 import StarBorderOutlined from '@mui/icons-material/StarBorderOutlined';
 import societyicon from '../../../../../images/societyicon.png'
 import SettingsOutlined from '@mui/icons-material/SettingsOutlined';
+import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarTodayOutlined from '@mui/icons-material/CalendarTodayOutlined';
 import ist_logo2 from '../../../../../images/editedlogo_2.png'
 import { useMediaQuery } from '@mui/material';
 import constants from '../../../../../Constants/constants';
+import LogOut from '../../../../../Components/logout/logout';
 function SidebarComponent(props) {
   const [openSlide, setopenSlide] = useState("");
   const sideNavRef = useRef(null);
   const [showsidebar,setshowsidebar] = useState(true)
+  const [logout,setlogout] = useState(false)
   const classes = useStyles() 
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width:600px)');
@@ -77,7 +80,27 @@ const handleHome=()=>{
               </MenuItem>
               
             ))}
-            <MenuItem className={classes.menuitem} ><div style={{display:"flex",justifyContent:"space-between"}}><div style={{display:"flex",alignItems:"center"}}> Settings </div><div><SettingsOutlined style={{color:"black"}}/></div></div></MenuItem>
+            <MenuItem className={classes.menuitem} >
+              <div style={{display:"flex",justifyContent:"space-between"}}>
+                <div style={{display:"flex",alignItems:"center"}}> 
+                  Settings 
+                </div>
+                <div>
+                <SettingsOutlined style={{color:"black"}}/>
+              </div>
+            </div></MenuItem>
+                      
+            <MenuItem className={classes.menuitem} onClick={()=>{setlogout(true)}}>
+              {logout && <LogOut pageToGo={'/'} />}
+              <div style={{display:"flex",justifyContent:"space-between"}}>
+                <div style={{display:"flex",alignItems:"center"}}>
+                   logout 
+                </div>
+                <div>
+                  <LogoutIcon style={{color:"black"}}/>
+                </div>
+              </div>
+            </MenuItem>
                       
           </Menu>
         </Sidebar>

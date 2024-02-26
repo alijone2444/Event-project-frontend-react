@@ -1,11 +1,7 @@
-// api.js
-
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 const createAuthenticatedRequest = () => {
-  const token = Cookies.get('authToken');
-
+  const token = localStorage.getItem('authToken');
   return axios.create({
     headers: {
       Authorization: `Bearer ${token}`,
@@ -13,6 +9,5 @@ const createAuthenticatedRequest = () => {
     },
   });
 };
-const AxiosUpgradedRequest = createAuthenticatedRequest();
 
-export default AxiosUpgradedRequest;
+export default createAuthenticatedRequest;

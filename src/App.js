@@ -8,6 +8,8 @@ import CalanderComponent from './Containers/Home/StudentHome/calander/calander.j
 import AdminHomePage from './Containers/Home/AdminHome/adminHome.js';
 import EventDetailPage from './Containers/ExploreEventsPage/EventDetailPage.js';
 import RequestAprovalWaitPage from './Containers/RequestApprovalPage.js/RequestApprovalwaitPage.js';
+import RequireAuth from './RoutesAuthentication.js';
+import userSettings from './Components/Settings/userSettings.js'
 function App() {
   return (
     <div>
@@ -16,12 +18,14 @@ function App() {
         <Routes>
           <Route path="/" exact element={<Login showAdmin={()=>{console.log()}} type={'default'}/>} />
           <Route path="/request" element={<RequestAprovalWaitPage/>} />
-          <Route path="/Home" element={<Home />} />
-          <Route path="/eventdetail/:eventname" element={<EventDetailPage />} />
-          <Route path="/societies" element={<SocietiesComponent />} />
-          <Route path="/calander" element={<CalanderComponent />} />
+          <Route path="/Home" element={<RequireAuth><Home /></RequireAuth>}/>
+          <Route path="/eventdetail/:eventname" element={<RequireAuth><EventDetailPage /></RequireAuth>} />
+          <Route path="/societies" element={<RequireAuth><SocietiesComponent /></RequireAuth>} />
+          <Route path="/calander" element={<RequireAuth><CalanderComponent /></RequireAuth>} />
           <Route path="/admin" element={<Login />} />
-          <Route path="/admin/success" element={<AdminHomePage />} />
+          <Route path="/admin/success" element={<RequireAuth><AdminHomePage /></RequireAuth>} />
+          <Route path="/settings" element={<RequireAuth><userSettings/></RequireAuth>} />
+          
         </Routes>
       </Router>
     </div>

@@ -6,6 +6,7 @@ import EventManagementInterface from "./AdminEvents/AdminEvents";
 import AttendeesTable from "./registrations/registration";
 import EventScheduler from "./schedules/schedules";
 import HelpAndSupport from "./Help/help_support";
+import LogOut from "../../../Components/logout/logout";
 
 
 function AdminHomePage(){
@@ -17,12 +18,6 @@ function AdminHomePage(){
         setSelectedMenuItem('registration')
         
       }
-      // else if(BtnType==='report'){
-      //   setSelectedMenuItem('registration')
-      // }
-      // else if(BtnType==='users'){
-      //   props.GoTo('users')
-      // }
     }
     const handleselect =(option)=>{
         setselectedType('')
@@ -40,6 +35,7 @@ function AdminHomePage(){
         {selectedMenuItem === 'registration' && <AttendeesTable />}
         {selectedMenuItem === 'schedules' && <EventScheduler />}
         {selectedMenuItem === 'help' && <HelpAndSupport />}
+        {selectedMenuItem === 'logout' && <LogOut pageToGo={'/admin'}/>}
         </Grid>
       </Grid>
     )

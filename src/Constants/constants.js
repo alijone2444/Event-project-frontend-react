@@ -11,6 +11,6 @@ const constants = {
         { name: "Societies", icon: <img alt="Event Icon" src={societyicon} style={{ width: "24px", height: "24px" }} /> },
         { name: "Calander", icon: <CalendarTodayOutlined /> },
     ],
-    BASE_URL: 'http://192.168.1.11:3002',
+    BASE_URL: 'http://localhost:3002/',
 }
 export default constants;

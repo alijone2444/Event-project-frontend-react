@@ -11,7 +11,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import Heading from './heading';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
-import {useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import MySettingIcon from './lottieSettingicon'
 import constants from '../../../../../Constants/constants'
 import HideOnScroll from './hideonScroll';
@@ -55,86 +55,90 @@ const Header = (props) => {
       }
     }
   };
-  const handleSidebar=()=>{
+  const handleSidebar = () => {
     props.callbackToSidebar()
   }
-  const handleSocieties=()=>{
+  const handleSocieties = () => {
     navigate("/societies")
   }
-  const handleCalander=()=>{
+  const handleCalander = () => {
     navigate("/calander")
   }
-  const handleHome=()=>{
+  const handleHome = () => {
     navigate("/Home")
+  }
+  const handleEvents = () => {
+    navigate("/events")
   }
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   return (
-    
-    <HideOnScroll {...props}>
-    <AppBar  style={{top:0,left:0,zIndex:"3",backgroundColor:"white"}}> 
-      <Toolbar className={classes.toolbar}>
-        <Heading />
 
-        {!isSmallScreen &&
+    <HideOnScroll {...props}>
+      <AppBar style={{ top: 0, left: 0, zIndex: "3", backgroundColor: "white" }}>
+        <Toolbar className={classes.toolbar}>
+          <Heading />
+
+          {!isSmallScreen &&
             <div className={classes.logoContainer}>
               <a>
                 <img src={Image} alt="Logo" className={classes.logoImage} />
               </a>
-        </div>}
+            </div>}
 
-        <div className={classes.rightContent}>
-          {!isMobile && (
-            <>
+          <div className={classes.rightContent}>
             {!isMobile && (
-        <>
-          {constants.menuitems.map((item, index) => (
-            <Button
-              key={index}
-              color="inherit"
-              onClick={
-                item.name === 'Home' ? handleHome :
-                item.name === 'Societies' ? handleSocieties :
-                item.name === 'Calander' ? handleCalander :
-                null // Add more cases if needed
-              }
+              <>
+                {!isMobile && (
+                  <>
+                    {constants.menuitems.map((item, index) => (
+                      <Button
+                        key={index}
+                        color="inherit"
+                        onClick={
+                          item.name === 'Home' ? handleHome :
+                            item.name === 'Societies' ? handleSocieties :
+                              item.name === 'Calander' ? handleCalander :
+                                item.name === 'Events' ? handleEvents :
+                                  null // Add more cases if needed
+                        }
+                      >
+                        {item.name}
+                      </Button>
+                    ))}
+
+                    <IconButton
+                      style={{ margin: 0, padding: 0 }}
+                      onClick={() => handleButtonClick('Settings')}
+                      color={settingsButtonActive ? 'primary' : 'default'}
+                    >
+                      <MySettingIcon onClick={() => { console.log("hello"); }} />
+                    </IconButton>
+                  </>
+                )}
+
+                <Collapse
+                  className={classes.iconbutton}
+                  in={expandedButton === 'Settings'}
+                  timeout={1000}
+                  unmountOnExit
+                >
+                  <div className={classes.collapseContent}>
+                    <IconButton>
+                      <Typography variant="body2">Settings</Typography>
+                    </IconButton>
+                  </div>
+                </Collapse>
+              </>
+            )}
+            {isMobile && <IconButton
+              color={settingsButtonActive ? 'primary' : 'default'}
+              onClick={handleSidebar}
             >
-              {item.name}
-            </Button>
-          ))}
-          
-          <IconButton
-            style={{ margin: 0, padding: 0 }}
-            onClick={() => handleButtonClick('Settings')}
-            color={settingsButtonActive ? 'primary' : 'default'}
-          >
-            <MySettingIcon onClick={() => { console.log("hello"); }} />
-          </IconButton>
-        </>
-      )}
-            
-            <Collapse
-              className={classes.iconbutton}
-              in={expandedButton === 'Settings'}
-              timeout={1000}
-              unmountOnExit
-            >
-            <div className={classes.collapseContent}>
-              <IconButton>
-                <Typography variant="body2">Settings</Typography>
-              </IconButton>
-            </div>
-          </Collapse>
-          </>
-          )}
-          {isMobile && <IconButton
-            color={settingsButtonActive ? 'primary' : 'default'}
-            onClick={handleSidebar}
-          >
-            <MenuIcon />
-          </IconButton>}
-        </div>
-      </Toolbar>
-    </AppBar>
+              <MenuIcon />
+            </IconButton>}
+          </div>
+        </Toolbar>
+      </AppBar>
     </HideOnScroll>
   );
 };
@@ -146,22 +150,22 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
   },
   logoContainer: {
-    position:'absolute',
-    left:"50%",
+    position: 'absolute',
+    left: "50%",
     transform: "translate(-50%, 0)"
   },
   Middlecontent: {
-   
+
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center', // Added line
 
   },
   rightContent: {
-    display:"flex",
-    flexDirection:"row",
-    alignItems:"center",
-    color:"#00adef"
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    color: "#00adef"
   },
   logoImage: {
     height: '60px',
@@ -177,7 +181,7 @@ const useStyles = makeStyles((theme) => ({
     transform: 'translateX(-100%)',
   },
   '@media (max-width: 900px)': {
-    toolbar:{
+    toolbar: {
       // paddingLeft:"0 !important"
     }
   },

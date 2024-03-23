@@ -5,8 +5,10 @@ import {
   ScheduleOutlined,
   SettingOutlined,
   QuestionCircleOutlined,
-  LogoutOutlined, // Import the LogoutOutlined icon
+  LogoutOutlined,
 } from '@ant-design/icons';
+
+import societyicon from '../../../images/societyicon.png'
 
 export const menuItems = [
   {
@@ -18,6 +20,12 @@ export const menuItems = [
     key: 'events',
     icon: <CalendarOutlined />,
     name: 'Events',
+  },
+
+  {
+    key: 'societies', // Add a new key for the logout item
+    icon: <img alt="Event Icon" src={societyicon} style={{ width: "18px", height: "18px" }} />,
+    name: 'Societies', // Display 'Logout' as the name
   },
   {
     key: 'registration',
@@ -46,7 +54,7 @@ export const menuItems = [
   },
   {
     key: 'logout', // Add a new key for the logout item
-    icon: <LogoutOutlined style={{color:'red'}}/>, // Use the LogoutOutlined icon
+    icon: <LogoutOutlined style={{ color: 'red' }} />, // Use the LogoutOutlined icon
     name: 'Logout', // Display 'Logout' as the name
   },
 ];

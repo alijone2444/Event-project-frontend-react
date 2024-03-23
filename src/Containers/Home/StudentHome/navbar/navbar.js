@@ -2,7 +2,7 @@ import Header from './navfiles/header'
 import SidebarComponent from './navfiles/sidebar'
 import { useState } from "react";
 
-function Navbar(props) {    
+function Navbar(props) {
   const [showSideBar, setshowSideBar] = useState(true);
 
   const handleSidebar = () => {
@@ -25,7 +25,7 @@ function Navbar(props) {
 
   return (
     <div>
-      <Header callbackToSidebar={handleSidebar} />
+      <Header callbackToSidebar={handleSidebar} transparentNavbar={props.transparentNavbar} />
       <SidebarComponent Openstatus={showSideBar} callbackClose={handleclose} />
     </div>
   );

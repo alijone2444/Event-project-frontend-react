@@ -11,26 +11,30 @@ import RequestAprovalWaitPage from './Containers/RequestApprovalPage.js/RequestA
 import RequireAuth from './RoutesAuthentication.js';
 import userSettings from './Components/Settings/userSettings.js'
 import AllEvents from './Containers/AllEvents/events.js';
+import { SkeletonTheme } from 'react-loading-skeleton';
+
 function App() {
   return (
-    <div>
-      <NeonCursor />
-      <Router>
-        <Routes>
-          <Route path="/" exact element={<Login showAdmin={() => { console.log() }} type={'default'} />} />
-          <Route path="/request" element={<RequestAprovalWaitPage />} />
-          <Route path="/Home" element={<RequireAuth><Home /></RequireAuth>} />
-          <Route path="/eventdetail/:eventname" element={<RequireAuth><EventDetailPage /></RequireAuth>} />
-          <Route path="/societies" element={<RequireAuth><SocietiesPage /></RequireAuth>} />
-          <Route path="/calander" element={<RequireAuth><CalanderComponent /></RequireAuth>} />
-          <Route path="/admin" element={<Login />} />
-          <Route path="/admin/success" element={<RequireAuth><AdminHomePage /></RequireAuth>} />
-          <Route path="/settings" element={<RequireAuth><userSettings /></RequireAuth>} />
-          <Route path="/events" element={<RequireAuth><AllEvents /></RequireAuth>} />
+    <SkeletonTheme baseColor="#CCCCCC" highlightColor="#E5E5E5">
+      <div>
+        {/* <NeonCursor /> */}
+        <Router>
+          <Routes>
+            <Route path="/" exact element={<Login showAdmin={() => { console.log() }} type={'default'} />} />
+            <Route path="/request" element={<RequestAprovalWaitPage />} />
+            <Route path="/Home" element={<RequireAuth><Home /></RequireAuth>} />
+            <Route path="/eventdetail/:eventname" element={<RequireAuth><EventDetailPage /></RequireAuth>} />
+            <Route path="/societies" element={<RequireAuth><SocietiesPage /></RequireAuth>} />
+            <Route path="/calander" element={<RequireAuth><CalanderComponent /></RequireAuth>} />
+            <Route path="/admin" element={<Login />} />
+            <Route path="/admin/success" element={<RequireAuth><AdminHomePage /></RequireAuth>} />
+            <Route path="/settings" element={<RequireAuth><userSettings /></RequireAuth>} />
+            <Route path="/events" element={<RequireAuth><AllEvents /></RequireAuth>} />
 
-        </Routes>
-      </Router>
-    </div>
+          </Routes>
+        </Router>
+      </div>
+    </SkeletonTheme>
   );
 }
 

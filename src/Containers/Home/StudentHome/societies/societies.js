@@ -2,6 +2,8 @@ import React from 'react';
 import { Grid, Card, CardContent, Typography } from '@mui/material';
 import WrapperComponent from "../../../../FooterAndHeaderwrapper";
 import AnimationNumbers from '../../../../Components/animaterNumbers/animatednumbers';
+import VantaBackground from '../../../../Components/vantaJs/vanta';
+import Divider from '@mui/material';
 function SocietiesPage() {
     const societies = [
         {
@@ -18,8 +20,12 @@ function SocietiesPage() {
     ];
 
     return (
-        <WrapperComponent>
-            <div style={{ padding: '20px' }}>
+        <WrapperComponent transparentNavbar={true}>
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zindex: 2 }}>
+                <AnimationNumbers />
+            </div>
+            <VantaBackground />
+            <div style={{ margin: '5%' }}>
                 <Typography variant="h4" gutterBottom>
                     Explore University Societies
                 </Typography>
@@ -43,7 +49,6 @@ function SocietiesPage() {
                         </Grid>
                     ))}
                 </Grid>
-                <AnimationNumbers />
             </div>
         </WrapperComponent>
     );

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef ,useContext} from "react";
+import React, { useEffect, useRef, useContext } from "react";
 import * as THREE from "three";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
@@ -17,7 +17,7 @@ import circleTexture from '../../images/disc.png'; // Replace with your texture 
 
 function ThreeScene(props) {
   const refContainer = useRef(null);
-   useEffect(() => {
+  useEffect(() => {
     // Create scene
     const scene = new THREE.Scene();
 
@@ -49,33 +49,33 @@ function ThreeScene(props) {
     const material2 = new THREE.MeshStandardMaterial({ color: "#00aaff", map: new THREE.TextureLoader().load(image1) });
     const earth = new THREE.Mesh(geometry2, material2);
     scene.add(earth);
-    
+
     //mars
     const geometry7 = new THREE.SphereGeometry(0.7, 64, 64);
     const material7 = new THREE.MeshStandardMaterial({ color: "#e89d3b", map: new THREE.TextureLoader().load(image6) });
     const mars = new THREE.Mesh(geometry7, material7);
     scene.add(mars);
-    
+
     // Create second sphere with different position
     const geometry8 = new THREE.SphereGeometry(1.2, 64, 64);
     const material8 = new THREE.MeshStandardMaterial({ color: "#ff9966", map: new THREE.TextureLoader().load(image7) });
     const jupyter = new THREE.Mesh(geometry8, material8);
     scene.add(jupyter);
 
-    
+
     // Create second sphere with different position
     const geometry9 = new THREE.SphereGeometry(0.8, 64, 64);
     const material9 = new THREE.MeshStandardMaterial({ color: "#00FFFF", map: new THREE.TextureLoader().load(image8) });
     const uranus = new THREE.Mesh(geometry9, material9);
     scene.add(uranus);
 
-    
+
     // Create second sphere with different position
     const geometry10 = new THREE.SphereGeometry(0.8, 64, 64);
     const material10 = new THREE.MeshStandardMaterial({ color: "#0000FF", map: new THREE.TextureLoader().load(image9) });
     const neptune = new THREE.Mesh(geometry10, material10);
     scene.add(neptune);
-    
+
     // Create sphere for Saturn
     const geometry5 = new THREE.SphereGeometry(1, 64, 64);
     const material5 = new THREE.MeshStandardMaterial({ color: "#ffcc00", map: new THREE.TextureLoader().load(image5) });
@@ -203,7 +203,7 @@ function ThreeScene(props) {
     const saturnRingOrbitSpeed = -0.0004;
     const uranusOrbitSpeed = -0.0003;
     const neptuneOrbitSpeed = -0.0002;
-    
+
     const neptuneDistance = -32;
     const uranusDistance = -28;
     const saturnRingDistance = -24;
@@ -213,7 +213,7 @@ function ThreeScene(props) {
     const venusDistance = -8;
     const mercuryDistance = -4;
     var id;
-    let isMounted = true;    
+    let isMounted = true;
     const animate = async () => {
       id = await requestAnimationFrame(animate);
       if (!isMounted) {
@@ -251,7 +251,7 @@ function ThreeScene(props) {
       earth.position.z = Math.sin(earthOrbitSpeed * frameCount) * earthDistance;
       mars.position.x = Math.cos(marsOrbitSpeed * frameCount) * marsDistance;
       mars.position.z = Math.sin(marsOrbitSpeed * frameCount) * marsDistance;
-      
+
       jupyter.position.x = Math.cos(jupyterOrbitSpeed * frameCount) * jupyterDistance;
       jupyter.position.z = Math.sin(jupyterOrbitSpeed * frameCount) * jupyterDistance;
 
@@ -267,28 +267,28 @@ function ThreeScene(props) {
       // Render scene
       composer.render();
     };
-    
+
     animate();
 
     const handleResize = () => {
       const newWidth = window.innerWidth;
       const newHeight = window.innerHeight;
-    
+
       camera.aspect = newWidth / newHeight;
-    
+
       // Adjust the FOV based on the new aspect ratio
       const verticalFOV = 45; // Adjust this value as needed
       camera.fov = (verticalFOV * newHeight) / window.innerHeight;
-    
+
       camera.updateProjectionMatrix();
       renderer.setSize(newWidth, newHeight);
-    
+
       // Update the size of the bloom pass
       bloomPass.setSize(newWidth, newHeight);
     };
     window.addEventListener("resize", handleResize);
 
-        // Add this function definition before your component function
+    // Add this function definition before your component function
     const cleanMaterial = (material) => {
       console.log('dispose material!')
       material.dispose()
@@ -325,7 +325,7 @@ function ThreeScene(props) {
     };
   }, []);
 
-  return <div style={{ height: "100%", width: "100%" ,position:'fixed',top:0,left:0,zIndex:-1}} ref={refContainer}>
+  return <div style={{ height: "100%", width: "100%", position: 'fixed', top: 0, left: 0, zIndex: -1 }} ref={refContainer}>
 
   </div>;
 }

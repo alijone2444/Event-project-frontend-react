@@ -74,7 +74,7 @@ const Header = (props) => {
   return (
 
     <HideOnScroll {...props}>
-      <AppBar style={{ top: 0, left: 0, zIndex: "3", backgroundColor: "white" }}>
+      <AppBar style={{ top: 0, left: 0, zIndex: "3", backgroundColor: !props.transparentNavbar ? "white" : "#d1cffc" }}>
         <Toolbar className={classes.toolbar}>
           <Heading />
 

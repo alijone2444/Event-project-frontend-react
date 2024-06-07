@@ -12,6 +12,7 @@ import RequireAuth from './RoutesAuthentication.js';
 import userSettings from './Components/Settings/userSettings.js'
 import AllEvents from './Containers/AllEvents/events.js';
 import { SkeletonTheme } from 'react-loading-skeleton';
+import SocietyAdminPortal from './Containers/SocietyAdminPortal/SocietyAdminPortal.js';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/admin/success" element={<RequireAuth><AdminHomePage /></RequireAuth>} />
             <Route path="/settings" element={<RequireAuth><userSettings /></RequireAuth>} />
             <Route path="/events" element={<RequireAuth><AllEvents /></RequireAuth>} />
+            <Route path="/SocietyAdminPortal" element={<RequireAuth><SocietyAdminPortal /></RequireAuth>} />
 
           </Routes>
         </Router>

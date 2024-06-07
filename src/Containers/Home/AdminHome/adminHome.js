@@ -8,7 +8,8 @@ import EventScheduler from "./schedules/schedules";
 import HelpAndSupport from "./Help/help_support";
 import LogOut from "../../../Components/logout/logout";
 import SocietiesAdminComponent from "../../../Components/adminSociety/adminSocietyComponent";
-
+import CreateSocietyAdmin from "../../../Components/CreateSocietyAdmin/CreateSocietyAdmin";
+import SetCrouselImages from "../../../Components/Crousel-Images/setCrouselImages";
 
 function AdminHomePage() {
   const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
@@ -33,10 +34,11 @@ function AdminHomePage() {
 
         {selectedMenuItem === 'dashboard' && <Dashboard GoTo={(btntype) => { handleGoTo(btntype) }} />}
         {selectedMenuItem === 'events' && <EventManagementInterface />}
-        {selectedMenuItem === 'registration' && <AttendeesTable />}
+        {selectedMenuItem === 'registration' && <AttendeesTable name={'registration'} showSetAdminOption={false} showADDRemove={true} showTage={true} />}
         {selectedMenuItem === 'schedules' && <EventScheduler />}
         {selectedMenuItem === 'help' && <HelpAndSupport />}
         {selectedMenuItem === 'societies' && <SocietiesAdminComponent />}
+        {selectedMenuItem === 'Crousel-Images' && <SetCrouselImages />}
         {selectedMenuItem === 'logout' && <LogOut pageToGo={'/admin'} />}
       </Grid>
     </Grid>

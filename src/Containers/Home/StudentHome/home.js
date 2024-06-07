@@ -12,7 +12,6 @@ import createAuthenticatedRequest from "../../../RequestwithHeader";
 import { useDispatch, useSelector } from 'react-redux';
 import { setEventsDataUserUpcoming, setEventsDataUserRecent } from "../../../ReduxStore/actions/eventsDataActionUser";
 import constants from "../../../Constants/constants";
-import getAllEvents from "../../../Components/functions/getAllEvents";
 
 function Home() {
   const requestInstance = createAuthenticatedRequest()
@@ -54,7 +53,6 @@ function Home() {
     }
   }, [dispatch])
 
-  getAllEvents(0)
   const [showstyle, setshowstyle] = useState(false)
   const isSmallScreen = useMediaQuery('(max-width:768px)');
 

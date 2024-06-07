@@ -32,7 +32,7 @@ const VantaBackground = () => {
 
     return (
         <div >
-            <div style={{ height: "80vh", position: "relative", zIndex: -1 }} ref={vantaRef}></div>
+            <div style={{ height: "90vh", position: "relative", zIndex: -1 }} ref={vantaRef}></div>
         </div>
     );
 };

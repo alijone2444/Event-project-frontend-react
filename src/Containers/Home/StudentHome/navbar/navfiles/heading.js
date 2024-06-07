@@ -1,52 +1,40 @@
-import '../../../../../styles/navbar_home.css'
+import '../../../../../styles/navbar_home.css';
 import { useMediaQuery } from '@mui/material';
-import Image from '../../../../../images/Header_logo.png';
+import Image from '../../../../../images/paint_logo.png';
 
-function Heading(){
+function Heading(props) {
     const isSmallScreen = useMediaQuery('(max-width:600px)');
-    return(
-        
-        <div className='parent'>
-            {isSmallScreen &&
-              <a>
-                <img src={Image} alt="Logo" style={{height: '60px',}} />
-              </a>}
-            <div className="overlay"></div>
 
+    const letters1 = ["I", "S", "T", "\u00A0", "E", "M", "S"];
+    const letters2 = ["E", "V", "E", "N", "T", "\u00A0", "M", "A", "N", "A", "G", "E", "M", "E", "N", "T", "\u00A0", "S", "Y", "S", "T", "E", "M"];
+
+    return (
+        <div className='parent'>
+            {isSmallScreen && (
+                <a>
+                    <img src={Image} alt="Logo" style={{ height: '60px' }} />
+                </a>
+            )}
+            <div className="overlay"></div>
             <div className="heading-text">
-                <div className="wrapper">
-                    <div id="L" className="letter">I</div>
-                    <div className="shadow">I</div>
-                </div>
-                <div className="wrapper">
-                    <div id="I" className="letter">S</div>
-                    <div className="shadow">S</div>
-                </div>
-                <div className="wrapper">
-                    <div id="G" className="letter">T</div>
-                    <div className="shadow">T</div>
-                </div>
-               
-                <div className="wrapper">
-                    <div className="letter">&nbsp;</div>
-                    <div className="shadow">&nbsp;</div>
-                </div>
-               
-                <div className="wrapper">
-                    <div id="H" className="letter">E</div>
-                    <div className="shadow">E</div>
-                </div>
-                <div className="wrapper">
-                    <div id="T" className="letter">M</div>
-                    <div className="shadow">M</div>
-                </div>
-                <div className="wrapper">
-                    <div id="N" className="letter">S</div>
-                    <div className="shadow">S</div>
-                </div>
-               
+                {props.heading === 'heading1' ? (
+                    letters1.map((letter, index) => (
+                        <div key={index} className="wrapper">
+                            <div className="letter">{letter}</div>
+                            <div className="shadow">{letter}</div>
+                        </div>
+                    ))
+                ) : (
+                    letters2.map((letter, index) => (
+                        <div key={index} className="wrapper">
+                            <div className="letter">{letter}</div>
+                            <div className="shadow">{letter}</div>
+                        </div>
+                    ))
+                )}
             </div>
         </div>
-    )
+    );
 }
+
 export default Heading;

@@ -21,6 +21,8 @@ function SidebarComponent(props) {
   const classes = useStyles()
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width:600px)');
+
+  const token = localStorage.getItem('userType');
   useEffect(() => {
     if (props.Openstatus === false) {
       setshowsidebar(true)
@@ -85,16 +87,13 @@ function SidebarComponent(props) {
               </MenuItem>
 
             ))}
-            <MenuItem className={classes.menuitem} >
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  Settings
-                </div>
-                <div>
-                  <SettingsOutlined style={{ color: "black" }} />
-                </div>
-              </div></MenuItem>
 
+            <SubMenu label="Settings" className={classes.menuitem}>
+              {(token !== 'student' && token !== 'undefined') && constants.settings.map((val, index) => {
+                return <MenuItem style={{ background: 'rgba(255,255,255,0.3)' }}>{val.name}</MenuItem>
+              })}
+
+            </SubMenu>
             <MenuItem className={classes.menuitem} onClick={() => { setlogout(true) }}>
               {logout && <LogOut pageToGo={'/'} />}
               <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -136,6 +135,7 @@ const useStyles = makeStyles((theme) => ({
   menuitem: {
     background: "rgba(255, 255, 255, 0.3)",
     color: "black",
+    fontWeight: 'bold',
     padding: "2%",
     fontFamily: "arial",
     borderTop: "2px solid white"

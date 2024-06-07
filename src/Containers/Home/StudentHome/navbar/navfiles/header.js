@@ -70,13 +70,16 @@ const Header = (props) => {
   const handleEvents = () => {
     navigate("/events")
   }
+  const handleDrawer = () => {
+    props.showDrawer()
+  }
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   return (
 
     <HideOnScroll {...props}>
-      <AppBar style={{ top: 0, left: 0, zIndex: "3", backgroundColor: !props.transparentNavbar ? "white" : "#d1cffc" }}>
+      <AppBar style={{ top: 0, left: 0, zIndex: "3", backgroundColor: !props.transparentNavbar ? "white" : "white" }}>
         <Toolbar className={classes.toolbar}>
-          <Heading />
+          <Heading heading={isSmallScreen ? 'heading1' : 'heading2'} />
 
           {!isSmallScreen &&
             <div className={classes.logoContainer}>
@@ -111,7 +114,7 @@ const Header = (props) => {
                       onClick={() => handleButtonClick('Settings')}
                       color={settingsButtonActive ? 'primary' : 'default'}
                     >
-                      <MySettingIcon onClick={() => { console.log("hello"); }} />
+                      <MySettingIcon onClick={() => { console.log("hello"); }} start={settingsButtonActive} />
                     </IconButton>
                   </>
                 )}
@@ -123,7 +126,7 @@ const Header = (props) => {
                   unmountOnExit
                 >
                   <div className={classes.collapseContent}>
-                    <IconButton>
+                    <IconButton onClick={handleDrawer}>
                       <Typography variant="body2">Settings</Typography>
                     </IconButton>
                   </div>
@@ -134,7 +137,7 @@ const Header = (props) => {
               color={settingsButtonActive ? 'primary' : 'default'}
               onClick={handleSidebar}
             >
-              <MenuIcon />
+              <MenuIcon style={{ color: '#00abe5' }} />
             </IconButton>}
           </div>
         </Toolbar>
@@ -165,7 +168,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    color: "#00adef"
+    color: "#0292c2"
   },
   logoImage: {
     height: '60px',

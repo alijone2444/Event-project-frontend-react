@@ -95,21 +95,16 @@ const SignUp = (props) => {
           <>
             <h2 className="signup-title">Sign Up</h2>
             <Form name="signupForm" initialValues={{ remember: true }} onFinish={onFinish}>
-              
-            <Form.Item name="department" rules={[{ required: true, message: 'Please select your department!' }]}>
+
+              <Form.Item name="department" rules={[{ required: true, message: 'Please select your department!' }]}>
                 <Select
                   placeholder="Select Department"
                   style={{ width: '250PX', backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
                   onChange={(value) => setSelectedDepartment(value)}
                 >
-                  <Option value="Aeronautics and Astronautics">Aeronautics and Astronautics</Option>
-                  <Option value="Electrical Engineering">Electrical Engineering</Option>
-                  <Option value="Materials Science and Engineering">Materials Science and Engineering</Option>
-                  <Option value="Mechanical Engineering">Mechanical Engineering</Option>
-                  <Option value="Avionics Engineering">Avionics Engineering</Option>
-                  <Option value="Space Science">Space Science</Option>
-                  <Option value="Applied Mathematics & Statistics">Applied Mathematics & Statistics</Option>
-                  <Option value="Humanities & Sciences">Humanities & Sciences</Option>
+                  {constants.departmentOptions.map((department, index) => (
+                    <Option key={index} value={department}>{department}</Option>
+                  ))}
                 </Select>
               </Form.Item>
 

@@ -1,20 +1,47 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel'
-import { Paper} from '@mui/material'
+import { Paper } from '@mui/material'
 
-import {Button } from 'antd';
+import { Button } from 'antd';
 import imagea from '../../../../images/qawali.jpg'
 import imageb from '../../../../images/sports.jpg'
 import imagec from '../../../../images/concert.jpg'
 import imaged from '../../../../images/conference.jpg'
 import '../../../../styles/navbar_home.css'
-import  {makeStyles} from '@mui/styles';
-import { useMediaQuery ,createTheme} from '@mui/material';
-
-function CarouselComponent(props){
-    const classes = useStyles(); // Use the useStyles hook
+import { makeStyles } from '@mui/styles';
+import { useMediaQuery, createTheme } from '@mui/material';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+import createAuthenticatedRequest from '../../../../RequestwithHeader';
+import { useDispatch, useSelector } from 'react-redux';
+import { setcrouselImagesData } from '../../../../ReduxStore/actions/crouselImagesAction';
+import constants from '../../../../Constants/constants';
+import { useEffect } from 'react';
+import ToolbarBelowNavbar from '../../../../Components/ChatbotBar/chatbotToolbar';
+function CarouselComponent(props) {
+  const classes = useStyles(); // Use the useStyles hook
   const isSmallScreen = useMediaQuery('(max-width: 600px)'); // Adjust the max-width value as needed
-   var items = [
+  const CrouselDataFetched = useSelector((state) => state.crouselData);
+  const requestInstance = createAuthenticatedRequest()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    if (CrouselDataFetched.length === 0) {
+      requestInstance
+        .get(`${constants.BASE_URL}get-carousel-images`)
+        .then(response => {
+          dispatch(setcrouselImagesData(response.data));
+          console.log('respones:', response.data)
+        })
+        .catch(err => {
+          console.error('Error:', err);
+        });
+    }
+  }, [dispatch])
+  useEffect(() => {
+    console.log('ths is test again', CrouselDataFetched)
+  }, [dispatch, CrouselDataFetched])
+  var items = [
     {
       title: "Qawali Event",
       path: imagea,
@@ -38,84 +65,94 @@ function CarouselComponent(props){
     },
   ];
 
-    return (
-        <Carousel className='crousel' duration={2000} navButtonsAlwaysVisible={true}  height={"95vh"} animation={'fade'}  indicatorContainerProps={{
-            style: {
-                position:"absolute",
-                bottom:"0",
-                color:"white",
-                left:"50%",
-                transform:"translate(-50%,0)"  , // 3
-                zIndex:1 // 5
-            }
-        }}
+  return (
+    <div style={{ position: 'relative' }}>
+      <div style={{ position: 'absolute', top: 0, zIndex: 2, width: '100%' }}>
+        <ToolbarBelowNavbar />
+      </div>
+      <Carousel duration={2000} navButtonsAlwaysVisible={true} height={"95vh"} animation={'fade'} indicatorContainerProps={{
+        style: {
+          position: "absolute",
+          bottom: "0",
+          color: "white",
+          left: "50%",
+          transform: "translate(-50%,0)", // 3
+          zIndex: 1 // 5
+        }
+      }}
         navButtonsWrapperProps={{   // Move the buttons to the bottom. Unsetting top here to override default style.
           style: {
-              bottom: '50px',
-              top: 'unset'
+            bottom: isSmallScreen ? '100px' : '50px',
+            top: 'unset'
           }
-      }} 
+        }}
         indicatorIconButtonProps={{
-            ...classes.indicatorIconButtonProps,
-            style: {
-              ...classes.indicatorIconButtonProps.style,
-              marginBottom: isSmallScreen ? '20%' : '5%', // Apply different margin based on screen size
-            },
-          }}>
+          ...classes.indicatorIconButtonProps,
+          style: {
+            ...classes.indicatorIconButtonProps.style,
+            marginBottom: isSmallScreen ? '25%' : '5%', // Apply different margin based on screen size
+          },
+        }}>
 
 
-            {
-                items.map( (item, i) => <Item  key={i} item={item} /> )
-            }
-        </Carousel>
-    )
+        {
+          CrouselDataFetched.map((item, i) => <Item key={i} item={item} />)
+        }
+      </Carousel>
+    </div>
+  )
 }
 
-function Item(props)
-{
-    return (
-        <Paper style={{height:"95vh"}} >
-           <div style={{ position: "relative" }}>
-        <img
-          src={props.item.path}
+function Item(props) {
+  console.log(`${constants.BASE_URL}${props.item.path}${props.item.dpimageFileName}`)
+  const isSmallScreen = useMediaQuery('(max-width: 600px)'); // Adjust the max-width value as needed
+  return (
+    <Paper style={{ height: isSmallScreen ? "90vh" : '95vh' }} >
+      <div style={{ position: "relative" }}>
+        {props.item ? <img
+          src={`${constants.BASE_URL}${props.item.path}${props.item.dpimageFileName}`}
           alt='.'
           style={{
-            height: "95vh",
+            height: isSmallScreen ? "90vh" : '95vh',
             width: "100%",
             objectFit: "cover",
           }}
         />
-        </div>
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "95vh",
-            background: "rgba(0, 0, 0, 0.5)", // Adjust the opacity as desired
-          }}
-        ></div>
-            <div style={{position:"absolute",top:"40%",left:"50%",transform:"translate(-50%,-50%)",width:"50%",
-                        display:"flex",justifyContent:"center",flexDirection:"column"}}>
-                <h1 style={{textAlign:"center",color:"white",marginBottom:'2%'}}>{props.item.title}</h1>
-                <p style={{textAlign:"Center",color:"white",marginTop:0}}>{props.item.description}</p>
-                <div style={{display:"flex",justifyContent:"center"}}>
-                    <Button className="CheckButton" style={{backgroundColor:"#f4373a",color:"white",maxWidth:"150px"}}>
-                        Check it out!
-                    </Button></div>
-            </div>
-        </Paper>
-    )
+          :
+          <Skeleton height={isSmallScreen ? "90vh" : '95vh'} />}
+      </div>
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: isSmallScreen ? "90vh" : '95vh',
+          background: "rgba(0, 0, 0, 0.5)", // Adjust the opacity as desired
+        }}
+      ></div>
+      <div style={{
+        position: "absolute", top: isSmallScreen ? "35%" : "40%", left: "50%", transform: "translate(-50%,-50%)", width: "70%",
+        display: "flex", justifyContent: "center", flexDirection: "column"
+      }}>
+        <h1 style={{ textAlign: "center", color: "white", marginBottom: '2%' }}>{props.item.title}</h1>
+        <p style={{ textAlign: "Center", color: "white", marginTop: 0 }}>{props.item.subheader}</p>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <Button className="CheckButton" style={{ backgroundColor: "#f4373a", color: "white", maxWidth: "150px" }}>
+            Check it out!
+          </Button></div>
+      </div>
+    </Paper>
+  )
 }
 const useStyles = makeStyles((theme) => ({
-    // Your other styles...
-    indicatorIconButtonProps: {
-      style: {
-        padding: '2px',
-        marginBottom: '10%', // Default value for bigger screens
-      },
+  // Your other styles...
+  indicatorIconButtonProps: {
+    style: {
+      padding: '2px',
+      marginBottom: '10%', // Default value for bigger screens
     },
-    // Your other styles...
-  }));
+  },
+  // Your other styles...
+}));
 export default CarouselComponent;

@@ -5,10 +5,10 @@ import { useEffect } from 'react';
 
 const MySettingIcon = (props) => {
   const [isAnimationStopped, setIsAnimationStopped] = useState(false);
-    console.log("these",props)
-    useEffect(() => {
-        setIsAnimationStopped(!isAnimationStopped);
-      }, [props]);
+  console.log("these", props)
+  useEffect(() => {
+    setIsAnimationStopped(!isAnimationStopped);
+  }, [props.start]);
   return (
     <div>
       <Lottie
@@ -17,9 +17,9 @@ const MySettingIcon = (props) => {
           loop: true,
         }}
         isStopped={isAnimationStopped}
-      height={50}
-      width={50}
-     
+        height={50}
+        width={50}
+
       />
     </div>
   );

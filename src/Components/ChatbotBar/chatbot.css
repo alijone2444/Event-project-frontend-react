@@ -1,0 +1,92 @@
+.text {
+  text-shadow: 0 0 7px rgb(255, 255, 255), 0 0 3px rgb(255, 255, 255);
+  color: white;
+}
+
+.animation-2 {
+  height: 30px;
+  /* Decrease height */
+  margin: 0;
+  overflow: hidden;
+  color: white;
+  text-align: center;
+  font-size: 15px;
+  /* Decrease font size */
+  text-shadow: 0 0 7px rgb(255, 255, 255), 0 0 3px rgb(255, 255, 255);
+}
+
+.animation-2>div>div {
+  padding: 0.25rem 0.75rem;
+  height: 1.81rem;
+  /* Decrease div height */
+  margin-bottom: 1.81rem;
+  /* Decrease margin bottom */
+  display: inline-block;
+}
+
+.animation-2 div:first-child {
+  animation: text-animatione 12s infinite;
+}
+
+.first-text div {
+  background-color: rgba(255, 80, 80, 0.3);
+}
+
+.second-text div {
+  background-color: rgba(59, 157, 255, 0.37);
+}
+
+.third-text div {
+  background-color: rgba(154, 65, 255, 0.349);
+}
+
+.fourth-text div {
+  background-color: rgba(255, 255, 255, 0.342);
+}
+
+@keyframes text-animatione {
+  0% {
+    margin-top: 0;
+  }
+
+  10% {
+    margin-top: 0;
+  }
+
+  20% {
+    margin-top: -3.62rem;
+  }
+
+  30% {
+    margin-top: -7.60rem;
+  }
+
+  40% {
+    margin-top: -9.24rem;
+  }
+
+  50% {
+    margin-top: -11.24rem;
+  }
+
+  60% {
+    margin-top: -11.24rem;
+  }
+
+  70% {
+    margin-top: -9.24rem;
+  }
+
+  80% {
+    margin-top: -7.60rem;
+  }
+
+  90% {
+    margin-top: -3.62rem;
+    /* Maintain position until the end */
+  }
+
+  100% {
+    margin-top: 0;
+  }
+}

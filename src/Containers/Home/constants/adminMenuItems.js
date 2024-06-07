@@ -6,6 +6,8 @@ import {
   SettingOutlined,
   QuestionCircleOutlined,
   LogoutOutlined,
+  UserAddOutlined,
+  PictureOutlined
 } from '@ant-design/icons';
 
 import societyicon from '../../../images/societyicon.png'
@@ -21,12 +23,23 @@ export const menuItems = [
     icon: <CalendarOutlined />,
     name: 'Events',
   },
-
+  {
+    key: 'Crousel-Images',
+    icon: <PictureOutlined />,
+    name: 'Crousel Images',
+  }
+  ,
   {
     key: 'societies', // Add a new key for the logout item
     icon: <img alt="Event Icon" src={societyicon} style={{ width: "18px", height: "18px" }} />,
     name: 'Societies', // Display 'Logout' as the name
   },
+  {
+    key: 'society-admin', // Add a new key for the logout item
+    icon: <UserAddOutlined />,
+    name: 'Create Society admin', // Display 'Logout' as the name
+  },
+
   {
     key: 'registration',
     icon: <UsergroupAddOutlined />,

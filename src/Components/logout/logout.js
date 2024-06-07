@@ -5,7 +5,7 @@ import constants from "../../Constants/constants";
 function LogOut(props) {
   const navigate = useNavigate();
   const [checkDeletedToken, setCheckDeletedToken] = useState(false);
-    const requestInstance = createAuthenticatedRequest()
+  const requestInstance = createAuthenticatedRequest()
   useEffect(() => {
     const logout = async () => {
       try {
@@ -16,6 +16,7 @@ function LogOut(props) {
         if (response.data.success) {
           // Clear the token from local storage
           localStorage.removeItem("authToken");
+          localStorage.removeItem("userType");
 
           // Update state to trigger a re-render
           setCheckDeletedToken(!checkDeletedToken);

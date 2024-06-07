@@ -18,7 +18,7 @@ const Login = (props) => {
   const onFinish = (values) => {
     console.log('Received values:', values);
   };
-  
+
   const handleSubmit = async () => {
     try {
       const response = await axios.post(`${constants.BASE_URL}login`, {
@@ -31,10 +31,11 @@ const Login = (props) => {
 
       if (response.data.success === true) {
         localStorage.setItem('authToken', response.data.token);
-        if(props.type){
+        localStorage.setItem('userType', response.data.userType);
+        if (props.type) {
           navigate('/Home');
         }
-        else{
+        else {
           props.showAdmin()
         }
       } else {
@@ -50,18 +51,18 @@ const Login = (props) => {
       setError(true);
     }
   };
-  const handleShowSignup=()=>{
+  const handleShowSignup = () => {
     setshowBorder(true)
     setTimeout(() => {
       props.showSignup();
     }, 1000);
   }
-  
+
   return (
     <div className="login-container">
       <div className="login-form-container">
-      {showBorder && <><span class="top"></span>
-      </>}
+        {showBorder && <><span class="top"></span>
+        </>}
         <h2 className="login-title">Login</h2>
         <Form
           name="loginForm"
@@ -86,7 +87,7 @@ const Login = (props) => {
             name="password"
             rules={[{ required: true, message: 'Please input your password!' }]}
           >
-            <CustomPasswordInput issmall={props.issmall} sendbackvalue={(value)=>setPassword(value)} password={password}/>
+            <CustomPasswordInput issmall={props.issmall} sendbackvalue={(value) => setPassword(value)} password={password} />
           </Form.Item>
 
           <Form.Item>
@@ -94,7 +95,7 @@ const Login = (props) => {
               <Checkbox style={{ color: 'white' }}>Remember me</Checkbox>
             </Form.Item>
 
-            <a style={{float:'right',color: 'dodgerblue'}} >
+            <a style={{ float: 'right', color: 'dodgerblue' }} >
               Forgot password?
             </a>
           </Form.Item>
@@ -103,15 +104,15 @@ const Login = (props) => {
             <Button type="primary" htmlType="button" className="login-form-button" style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }} onClick={handleSubmit}>
               Log in
             </Button>
-            <div style={{display:'flex',flexDirection:'row',paddingTop:'5%'}}>
-              <p style={{ color: 'white', margin: 0 }}>Already have an account?&nbsp;&nbsp;</p> 
-              <a  onClick={handleShowSignup}>register now!</a>
+            <div style={{ display: 'flex', flexDirection: 'row', paddingTop: '5%' }}>
+              <p style={{ color: 'white', margin: 0 }}>Already have an account?&nbsp;&nbsp;</p>
+              <a onClick={handleShowSignup}>register now!</a>
             </div>
           </Form.Item>
-          
-            <div style={{textAlign:'center',color:'white',marginTop:'20px'}}>
-              Copyright @ IstEMS.com
-            </div>
+
+          <div style={{ textAlign: 'center', color: 'white', marginTop: '20px' }}>
+            Copyright @ IstEMS.com
+          </div>
         </Form>
       </div>
     </div>
@@ -141,23 +142,23 @@ const useStyles = makeStyles({
 });
 
 const CustomPasswordInput = (props) => {
-    
+
   return (
     <Input.Password
-    className='border'
-    style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
-    required
-    value={props.password}
-    onChange={(e) => props.sendbackvalue(e.target.value)}
-    placeholder="Password"
-    iconRender={(visible) =>
-      visible ? (
-        <EyeOutlined style={{ color: props.issmall?'white':'black' }} />
-      ) : (
-        <EyeInvisibleOutlined style={{ color:props.issmall? 'white':'grey' }} />
-      )
-    }
-  />
+      className='border'
+      style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
+      required
+      value={props.password}
+      onChange={(e) => props.sendbackvalue(e.target.value)}
+      placeholder="Password"
+      iconRender={(visible) =>
+        visible ? (
+          <EyeOutlined style={{ color: props.issmall ? 'white' : 'black' }} />
+        ) : (
+          <EyeInvisibleOutlined style={{ color: props.issmall ? 'white' : 'grey' }} />
+        )
+      }
+    />
   );
 };
 export default Login;

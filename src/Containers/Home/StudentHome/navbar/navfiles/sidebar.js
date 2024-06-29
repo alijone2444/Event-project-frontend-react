@@ -10,9 +10,13 @@ import SettingsOutlined from '@mui/icons-material/SettingsOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import CalendarTodayOutlined from '@mui/icons-material/CalendarTodayOutlined';
 import ist_logo2 from '../../../../../images/editedlogo_2.png'
-import { useMediaQuery } from '@mui/material';
+import { useMediaQuery, IconButton } from '@mui/material';
 import constants from '../../../../../Constants/constants';
 import LogOut from '../../../../../Components/logout/logout';
+import { Avatar, Box, Typography } from '@mui/material'; // Import Avatar, Box, and Typography from MUI
+
+import Profile from '../../../../../images/noProfile.png';
+import EditIcon from '@mui/icons-material/Edit';
 function SidebarComponent(props) {
   const [openSlide, setopenSlide] = useState("");
   const sideNavRef = useRef(null);
@@ -61,8 +65,24 @@ function SidebarComponent(props) {
     <div className={classes.parent} >
       <div className={classes.parent2} >
         <Sidebar rootStyles={{ border: "0px" }} ref={sideNavRef} className={classes.sidebar} image={Image} transitionDuration={1000} collapsed={props.Openstatus} collapsedWidth={'0'}>
-          {isMobile && <img src={ist_logo2} alt="Event Icon" style={{ position: "absolute", left: "-20px" }} />}
+          {isMobile && <img src={ist_logo2} alt="Event Icon" style={{ position: "absolute", left: "-20px", top: '150px' }} />}
           <Menu closeOnClick={true} >
+
+            <Box sx={{ background: 'rgba(255,255,255,0.5)', position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
+              <Avatar sx={{ width: 64, height: 64, mb: 1 }}
+                onClick={() => {
+                  navigate('/user-profile');
+                }}>U</Avatar>
+              <IconButton sx={{ position: 'absolute', top: 10, right: 10, backgroundColor: 'white', zIndex: 999 }}
+                onClick={() => {
+                  navigate('/user-profile', { state: { data: 'edit' } });
+                }}>
+                <EditIcon style={{ fontSize: 15 }} />
+              </IconButton>
+              <Typography variant="h6" style={{ zIndex: 999 }}>username</Typography>
+              <Typography variant="body1" style={{ zIndex: 999, textAlign: 'justify' }}>Welcome aboard, username!</Typography>
+            </Box>
+
             {constants.menuitems.map((menuItem, index) => (
               <MenuItem
                 key={index}
@@ -135,7 +155,6 @@ const useStyles = makeStyles((theme) => ({
   menuitem: {
     background: "rgba(255, 255, 255, 0.3)",
     color: "black",
-    fontWeight: 'bold',
     padding: "2%",
     fontFamily: "arial",
     borderTop: "2px solid white"

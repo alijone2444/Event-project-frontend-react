@@ -5,17 +5,20 @@
     background-color: transparent;
     padding: 10%;
     padding-right: 0;
-    box-sizing: border-box; /* Include padding and border in the element's total width */
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width */
     display: flex;
     align-items: center;
     justify-content: center;
 }
+
 .cursorSize {
-    font-size: 45px; /*Setting this to a ridiculous size as an example*/
+    font-size: 45px;
+    /*Setting this to a ridiculous size as an example*/
     color: white;
     font-style: italic;
-  }
-.Typewriter__wrapper{
+}
+
+.Typewriter__wrapper {
     font-family: Orbitron;
 }
-  

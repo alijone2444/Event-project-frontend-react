@@ -1,9 +1,10 @@
 .parent {
     z-index: 1;
     /* Standard syntax */
-    color: #0292c2;
+    color: #0294c5;
 
     padding-top: 1%;
+    padding-bottom: 1%;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -22,9 +23,12 @@
 }
 
 .heading-text {
-    font-family: '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-    font-size: 20px;
+    padding-left: 5%;
+    font-family: 'roboto';
+    font-size: 17px;
     display: flex;
+    font-weight: bold;
+    letter-spacing: 1px;
     flex-direction: row;
     user-select: none;
 }
@@ -61,6 +65,8 @@
 @media(max-width:600px) {
     .heading-text {
         font-size: 20px;
+        font-family: '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+
     }
 
     .parent {

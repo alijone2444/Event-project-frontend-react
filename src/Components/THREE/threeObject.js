@@ -14,74 +14,104 @@ import image7 from '../../images/Jupyter_Texture.jpg'
 import image8 from '../../images/Uranus_Texture.jpg'
 import image9 from '../../images/Neptune_Texture.jpg'
 import circleTexture from '../../images/disc.png'; // Replace with your texture path
-
+import { useState } from "react";
 function ThreeScene(props) {
   const refContainer = useRef(null);
+  const [hoveredObject, setHoveredObject] = useState(null);
+  const [hoveredPosition, setHoveredPosition] = useState({ x: 0, y: 0 });
+
   useEffect(() => {
     // Create scene
     const scene = new THREE.Scene();
 
-    // Create first sphere
-    const geometry = new THREE.SphereGeometry(0.82, 64, 64);
-    const material = new THREE.MeshStandardMaterial({
-      emissive: "#ffff00",
-      emissiveMap: new THREE.TextureLoader().load(image2), // Sun texture
-    });
+    // Function to create a planet with description
+    const createPlanet = (geometry, material, name, description, position) => {
+      const planet = new THREE.Mesh(geometry, material);
+      planet.name = name;
+      planet.description = description; // Add description to the planet object
+      planet.position.set(...position);
+      scene.add(planet);
+      return planet;
+    };
 
-    const sun = new THREE.Mesh(geometry, material);
-    sun.position.set(0, 0, 0);
-    scene.add(sun);
+    const sun = createPlanet(
+      new THREE.SphereGeometry(0.82, 64, 64),
+      new THREE.MeshStandardMaterial({
+        emissive: "#ffff00",
+        emissiveMap: new THREE.TextureLoader().load(image2), // Sun texture
+      }),
+      "Sun",
+      "The Sun is the star at the center of our solar system. It has a diameter of about 1.4 million kilometers and contains 99.86% of the total mass of the solar system. The Sun's core temperature reaches about 15 million degrees Celsius (27 million degrees Fahrenheit), where nuclear fusion reactions convert hydrogen into helium, releasing enormous amounts of energy in the form of sunlight and heat.",
+      [0, 0, 0]
+    );
 
-    // Create second sphere with different position
-    const geometry4 = new THREE.SphereGeometry(0.3, 64, 64);
-    const material4 = new THREE.MeshStandardMaterial({ color: "#D3D3D3", map: new THREE.TextureLoader().load(image4) });
-    const Mercury = new THREE.Mesh(geometry4, material4);
-    scene.add(Mercury);
+    const Mercury = createPlanet(
+      new THREE.SphereGeometry(0.3, 64, 64),
+      new THREE.MeshStandardMaterial({ color: "#D3D3D3", map: new THREE.TextureLoader().load(image4) }),
+      "Mercury",
+      "Mercury is the smallest planet in our solar system with a diameter of approximately 4,880 kilometers. It orbits the Sun at a distance of about 57.9 million kilometers and completes one orbit in just 88 Earth days. Mercury has a very thin atmosphere composed mostly of helium and hydrogen, and it has no natural satellites (moons)."
+      ,
+      [0, 0, 0]
+    );
 
-    // Create second sphere with different position
-    const geometry3 = new THREE.SphereGeometry(0.5, 64, 64);
-    const material3 = new THREE.MeshStandardMaterial({ color: "#F5F5F5", map: new THREE.TextureLoader().load(image3) });
-    const venus = new THREE.Mesh(geometry3, material3);
-    scene.add(venus);
+    const venus = createPlanet(
+      new THREE.SphereGeometry(0.5, 64, 64),
+      new THREE.MeshStandardMaterial({ color: "#F5F5F5", map: new THREE.TextureLoader().load(image3) }),
+      "Venus",
+      "Venus is often called Earth's twin due to its similar size and proximity. It has a diameter of around 12,104 kilometers and orbits the Sun at a distance of about 108.2 million kilometers, completing one orbit in 225 Earth days. Venus has a dense atmosphere primarily made up of carbon dioxide (96.5%) and nitrogen (3.5%). Like Mercury, Venus has no moons.",
+      [0, 0, 0]
+    );
 
-    // Create second sphere with different position
-    const geometry2 = new THREE.SphereGeometry(1, 64, 64);
-    const material2 = new THREE.MeshStandardMaterial({ color: "#00aaff", map: new THREE.TextureLoader().load(image1) });
-    const earth = new THREE.Mesh(geometry2, material2);
-    scene.add(earth);
+    const earth = createPlanet(
+      new THREE.SphereGeometry(1, 64, 64),
+      new THREE.MeshStandardMaterial({ color: "#00aaff", map: new THREE.TextureLoader().load(image1) }),
+      "Earth",
+      "Earth is the third planet from the Sun and the only planet known to support life. It has a diameter of approximately 12,742 kilometers and orbits the Sun at an average distance of about 149.6 million kilometers, completing one orbit in 365.25 days (one Earth year). Earth's atmosphere consists mainly of nitrogen (78%) and oxygen (21%), and it has one natural satellite, the Moon.",
+      [0, 0, 0]
+    );
 
-    //mars
-    const geometry7 = new THREE.SphereGeometry(0.7, 64, 64);
-    const material7 = new THREE.MeshStandardMaterial({ color: "#e89d3b", map: new THREE.TextureLoader().load(image6) });
-    const mars = new THREE.Mesh(geometry7, material7);
-    scene.add(mars);
+    const mars = createPlanet(
+      new THREE.SphereGeometry(0.7, 64, 64),
+      new THREE.MeshStandardMaterial({ color: "#e89d3b", map: new THREE.TextureLoader().load(image6) }),
+      "Mars",
+      "Mars is known as the Red Planet due to its reddish appearance caused by iron oxide on its surface. It has a diameter of about 6,779 kilometers and orbits the Sun at a distance of approximately 227.9 million kilometers, completing one orbit in 687 Earth days. Mars has a thin atmosphere primarily composed of carbon dioxide (95.32%) and nitrogen (2.7%). It has two small moons, Phobos and Deimos.",
+      [0, 0, 0]
+    );
 
-    // Create second sphere with different position
-    const geometry8 = new THREE.SphereGeometry(1.2, 64, 64);
-    const material8 = new THREE.MeshStandardMaterial({ color: "#ff9966", map: new THREE.TextureLoader().load(image7) });
-    const jupyter = new THREE.Mesh(geometry8, material8);
-    scene.add(jupyter);
+    const jupyter = createPlanet(
+      new THREE.SphereGeometry(1.2, 64, 64),
+      new THREE.MeshStandardMaterial({ color: "#ff9966", map: new THREE.TextureLoader().load(image7) }),
+      "Jupiter",
+      "Jupiter is the largest planet in our solar system, with a diameter of about 139,820 kilometers. It orbits the Sun at a distance of approximately 778.6 million kilometers and takes about 11.9 Earth years to complete one orbit. Jupiter's atmosphere is mainly hydrogen (89%) and helium (10%). It has a vast system of rings and at least 79 known moons, including the four largest: Io, Europa, Ganymede, and Callisto.",
+      [0, 0, 0]
+    );
 
+    const uranus = createPlanet(
+      new THREE.SphereGeometry(0.8, 64, 64),
+      new THREE.MeshStandardMaterial({ color: "#00FFFF", map: new THREE.TextureLoader().load(image8) }),
+      "Uranus",
+      "Uranus is an ice giant with a diameter of about 50,724 kilometers. It orbits the Sun at a distance of approximately 2.9 billion kilometers and takes about 84 Earth years to complete one orbit. Uranus has a hydrogen-rich atmosphere (82.5% hydrogen, 15% helium) and is known for its unusual rotation axis, which is almost parallel to its orbit. It has 27 known moons, including Titania, Oberon, and Miranda.",
+      [0, 0, 0]
+    );
 
-    // Create second sphere with different position
-    const geometry9 = new THREE.SphereGeometry(0.8, 64, 64);
-    const material9 = new THREE.MeshStandardMaterial({ color: "#00FFFF", map: new THREE.TextureLoader().load(image8) });
-    const uranus = new THREE.Mesh(geometry9, material9);
-    scene.add(uranus);
+    const neptune = createPlanet(
+      new THREE.SphereGeometry(0.8, 64, 64),
+      new THREE.MeshStandardMaterial({ color: "#0000FF", map: new THREE.TextureLoader().load(image9) }),
+      "Neptune",
+      "Neptune is the farthest planet from the Sun in our solar system. It has a diameter of about 49,244 kilometers and orbits the Sun at a distance of approximately 4.5 billion kilometers, completing one orbit in 165 Earth years. Neptune's atmosphere is mainly hydrogen (80%) and helium (19%). It has 14 known moons, the largest of which is Triton.",
+      [0, 0, 0]
+    );
 
-
-    // Create second sphere with different position
-    const geometry10 = new THREE.SphereGeometry(0.8, 64, 64);
-    const material10 = new THREE.MeshStandardMaterial({ color: "#0000FF", map: new THREE.TextureLoader().load(image9) });
-    const neptune = new THREE.Mesh(geometry10, material10);
-    scene.add(neptune);
-
-    // Create sphere for Saturn
-    const geometry5 = new THREE.SphereGeometry(1, 64, 64);
-    const material5 = new THREE.MeshStandardMaterial({ color: "#ffcc00", map: new THREE.TextureLoader().load(image5) });
-    const saturn = new THREE.Mesh(geometry5, material5);
     const saturnGroup = new THREE.Group();
+    const saturn = createPlanet(
+      new THREE.SphereGeometry(1, 64, 64),
+      new THREE.MeshStandardMaterial({ color: "#ffcc00", map: new THREE.TextureLoader().load(image5) }),
+      "Saturn",
+      "Saturn is famous for its prominent ring system, made up of icy particles and debris. It has a diameter of approximately 116,460 kilometers and orbits the Sun at a distance of about 1.4 billion kilometers, completing one orbit in 29.5 Earth years. Saturn's atmosphere is primarily hydrogen (96.3%) and helium (3.25%). It has 82 known moons, with Titan being the largest.",
+      [0, 0, 0]
+    );
     saturnGroup.add(saturn);
+
     const ringParticles = new THREE.BufferGeometry();
     const ringVertices = [];
     const numParticles = 15000;
@@ -161,6 +191,7 @@ function ThreeScene(props) {
     bloomPass.radius = 0.55;
     composer.addPass(bloomPass);
 
+
     var orbitGroup = new THREE.Group();
     scene.add(orbitGroup);
     orbitGroup.add(sun);
@@ -185,13 +216,31 @@ function ThreeScene(props) {
       }
       frameCount++;
     };
-
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
     const handleMouseMove = (event) => {
       const movementX = event.movementX || event.mozMovementX || 0;
       const movementY = event.movementY || event.mozMovementY || 0;
 
       controls.moveRight(-movementX * 0.0007);
       controls.moveForward(-movementY * 0.0007);
+
+      // Calculate mouse position in normalized device coordinates (-1 to +1)
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+      // Update the raycaster with the camera and mouse position
+      raycaster.setFromCamera(mouse, camera);
+
+      // Calculate objects intersecting the picking ray
+      const intersects = raycaster.intersectObjects(scene.children, true);
+
+      if (intersects.length > 0) {
+        setHoveredObject(intersects[0].object);
+        setHoveredPosition({ x: event.clientX, y: event.clientY });
+      } else {
+        setHoveredObject(null);
+      }
     };
 
     document.addEventListener('mousemove', handleMouseMove);
@@ -212,15 +261,16 @@ function ThreeScene(props) {
     const earthDistance = -12;
     const venusDistance = -8;
     const mercuryDistance = -4;
-    var id;
+
     let isMounted = true;
-    const animate = async () => {
-      id = await requestAnimationFrame(animate);
+
+    const animate = () => {
+      requestAnimationFrame(animate);
       if (!isMounted) {
         // If component is unmounted, exit the loop
         return;
       }
-      console.log('loop running')
+      console.log(props.propchange)
       // Rotate spheres
       orbitGroup.rotation.y += 0.002;
       neptune.rotation.x += 0.00001;
@@ -263,7 +313,9 @@ function ThreeScene(props) {
 
       neptune.position.x = Math.cos(neptuneOrbitSpeed * frameCount) * neptuneDistance;
       neptune.position.z = Math.sin(neptuneOrbitSpeed * frameCount) * neptuneDistance;
+
       blink();
+
       // Render scene
       composer.render();
     };
@@ -271,63 +323,43 @@ function ThreeScene(props) {
     animate();
 
     const handleResize = () => {
-      const newWidth = window.innerWidth;
-      const newHeight = window.innerHeight;
-
-      camera.aspect = newWidth / newHeight;
-
-      // Adjust the FOV based on the new aspect ratio
-      const verticalFOV = 45; // Adjust this value as needed
-      camera.fov = (verticalFOV * newHeight) / window.innerHeight;
-
+      camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
-      renderer.setSize(newWidth, newHeight);
-
-      // Update the size of the bloom pass
-      bloomPass.setSize(newWidth, newHeight);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      camera.updateProjectionMatrix();
     };
+
     window.addEventListener("resize", handleResize);
 
-    // Add this function definition before your component function
-    const cleanMaterial = (material) => {
-      console.log('dispose material!')
-      material.dispose()
-
-      // Dispose of textures
-      for (const key of Object.keys(material)) {
-        const value = material[key]
-        if (value && typeof value === 'object' && 'minFilter' in value) {
-          console.log('dispose texture!')
-          value.dispose()
-        }
-      }
-    };
     return () => {
-      props.stopAudio()
       isMounted = false;
       window.removeEventListener("resize", handleResize);
       document.removeEventListener('mousemove', handleMouseMove);
-      console.log('dispose renderer!')
-      renderer.dispose()
-      scene.traverse(object => {
-        if (!object.isMesh) return
-
-        console.log('dispose geometry!')
-        object.geometry.dispose()
-
-        if (object.material.isMaterial) {
-          cleanMaterial(object.material)
-        } else {
-          // an array of materials
-          for (const material of object.material) cleanMaterial(material)
-        }
-      })
     };
-  }, []);
+  }, [props.propchange]);
 
-  return <div style={{ height: "100%", width: "100%", position: 'fixed', top: 0, left: 0, zIndex: -1 }} ref={refContainer}>
-
-  </div>;
+  return (
+    <div style={{ height: "100%", width: "100%", position: 'fixed', top: 0, left: 0, zIndex: -1 }} ref={refContainer}>
+      {hoveredObject && (
+        <div
+          style={{
+            position: 'absolute',
+            top: hoveredPosition.y,
+            left: hoveredPosition.x,
+            pointerEvents: 'none',
+            background: 'rgba(0, 0, 0, 0.7)',
+            color: 'white',
+            padding: '5px',
+            borderRadius: '3px',
+            border: '1px solid white'
+          }}
+        >
+          <h3 style={{ margin: 0, padding: '2%' }}>{hoveredObject.name}</h3>
+          <p style={{ margin: 0, padding: '2%', paddingTop: 0, fontSize: 14 }}>{hoveredObject.description}</p>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default ThreeScene;

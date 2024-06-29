@@ -33,7 +33,7 @@ const ChatModal = ({ open, handleClose }) => {
             const response = await requestInstance.post(`${constants.BASE_URL_2}ask-evento`, { message: text });
             const responseData = response.data;
             setLoading(false);
-            const botResponse = { text: responseData, sender: 'bot' };
+            const botResponse = { text: responseData ? responseData : 'sorry i cant find an answer to you question', sender: 'bot' };
             setMessages([...updatedMessages, botResponse]);
         } catch (error) {
             console.error('Error:', error);

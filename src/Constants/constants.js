@@ -21,8 +21,11 @@ const constants = {
         // },
 
     ],
-    BASE_URL: 'http://192.168.1.15:3002/',
-    BASE_URL_2: 'http://192.168.1.15:5000/',
+    // BASE_URL: 'http://192.168.1.15:3002/',
+    // BASE_URL_2: 'http://192.168.1.15:5000/',
+
+    BASE_URL: 'http://192.168.60.129:3002/',
+    BASE_URL_2: 'http://192.168.60.129:5000/',
     departmentOptions: [
         "Aeronautics and Astronautics",
         "Electrical Engineering",

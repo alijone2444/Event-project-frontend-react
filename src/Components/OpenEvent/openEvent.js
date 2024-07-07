@@ -6,6 +6,7 @@ import { Typography, Link } from '@mui/material';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import Background from 'three/examples/jsm/renderers/common/Background.js';
 
 const OpenEvent = (props) => {
   const [ShowDescription, setShowDescription] = useState(false);
@@ -30,10 +31,10 @@ const OpenEvent = (props) => {
 
 
   return (
-    <div>
+    <div >
 
       {/* Add your styling or background image here if needed */}
-      <Grid container>
+      <Grid container >
         <Grid item xs={12} md={6}>
           <LoginCarousel mainImage={mainImage} images={images} />
         </Grid>
@@ -47,10 +48,11 @@ const OpenEvent = (props) => {
             showmore={showMore}
           />
         </Grid>
-      </Grid>
-      <Grid container spacing={2} pt={5} pb={5}>
         {ShowDescription && (
-          <Grid item xs={12} md={12}>
+          <Grid item xs={12} md={12} style={{
+            marginTop: '5%',
+            marginBottom: '5%'
+          }}>
             <Typography style={{ color: 'white', filter: 'blur(0px)' }} mt={2}>{Desc_text}</Typography>
             <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
               <Button
@@ -61,7 +63,7 @@ const OpenEvent = (props) => {
                   justifyContent: 'center',
                   alignItems: 'center',
                   color: 'Dodgerblue',
-                  width: 'auto'
+                  width: 'auto',
                 }}
               >
                 Show less
@@ -71,6 +73,7 @@ const OpenEvent = (props) => {
           </Grid>
         )}
       </Grid>
+
     </div>
   );
 };

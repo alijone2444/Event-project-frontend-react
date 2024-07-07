@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Toolbar, Button } from '@mui/material';
+import { Toolbar } from '@mui/material';
 import Lottie from 'react-lottie';
 import { makeStyles } from '@mui/styles';
 import { Wave } from 'react-animated-text';
 import animationData from '../../lottie/Evento_bot.json';
 import ChatModal from './chatmodal'; // Import the ChatModal component
 import './chatbot.css';
+import { Button } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import SearchModal from '../SearchModal/searchModal';
 
 const useStyles = makeStyles((theme) => ({
     toolbar: {
@@ -21,7 +24,20 @@ function ToolbarBelowNavbar() {
     const classes = useStyles();
     const [paused, setPaused] = useState(false);
     const [open, setOpen] = useState(false);
+    const [opensearh, setopensearh] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 1000);
+        };
+
+        handleResize(); // Check initial width
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize);
+        };
+    }, []);
     const handleOpen = () => {
         setOpen(true);
     };
@@ -69,18 +85,28 @@ function ToolbarBelowNavbar() {
                     <div className="fourth-text"><div>Get Support</div></div>
                 </section>
             </div>
-            <Button variant="contained" sx={{ fontSize: '0.75rem', padding: '6px 12px' }} style={{ backgroundColor: 'transparent', border: '1px solid white', color: 'white', }} className={classes.button} onClick={handleOpen}>
-                <Wave
-                    text="Try Evento Now"
-                    effect="stretch"
-                    effectChange={2.5}
-                    effectDuration={0.5}
-                    iterations={1}
-                    paused={paused}
-                />
-            </Button>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <Button variant="contained" sx={{ fontSize: '0.75rem', padding: '6px 12px' }} style={{ backgroundColor: 'transparent', border: '1px solid white', color: 'white', }} className={classes.button} onClick={handleOpen}>
+                    <Wave
+                        text="Try Evento Now"
+                        effect="stretch"
+                        effectChange={2.5}
+                        effectDuration={0.5}
+                        iterations={1}
+                        paused={paused}
+                    />
+                </Button>
+                {!isMobile && <Button
+                    icon={<SearchOutlined />}
+                    style={{ backgroundColor: 'transparent', color: 'white', marginLeft: '5%' }}
+                    onClick={() => { setopensearh(true) }}
+                    shape="circle"
+                />}
+            </div>
             {/* Use ChatModal component */}
             <ChatModal open={open} handleClose={handleClose} />
+            <SearchModal open={opensearh} onclose={() => { setopensearh(false) }} />
+
         </Toolbar>
     );
 }

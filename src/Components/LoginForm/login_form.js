@@ -70,12 +70,13 @@ const Login = (props) => {
           onFinish={onFinish}
         >
           <Form.Item
+            style={{ zIndex: 2 }}
             name="Rollno"
             rules={[{ required: true, message: 'Please input your Roll number!' }]}
           >
             <Input
               className='border'
-              style={{ width: '250PX', backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
+              style={{ width: '250PX', backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black', zIndex: 5 }}
               placeholder="Roll number"
               required
               value={Rollno}
@@ -101,7 +102,7 @@ const Login = (props) => {
           </Form.Item>
           {error && <p className={classes.errorText}>Incorrect password or Roll number</p>}
           <Form.Item>
-            <Button type="primary" htmlType="button" className="login-form-button" style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }} onClick={handleSubmit}>
+            <Button type="primary" htmlType="button" className="login-form-button" style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black', zIndex: 1 }} onClick={handleSubmit}>
               Log in
             </Button>
             <div style={{ display: 'flex', flexDirection: 'row', paddingTop: '5%' }}>
@@ -146,7 +147,7 @@ const CustomPasswordInput = (props) => {
   return (
     <Input.Password
       className='border'
-      style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
+      style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black', zIndex: 5 }}
       required
       value={props.password}
       onChange={(e) => props.sendbackvalue(e.target.value)}

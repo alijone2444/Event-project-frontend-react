@@ -11,17 +11,21 @@ import makeStyles from '@mui/styles/makeStyles';
 import Heading from './heading';
 import Button from '@mui/material/Button';
 import MenuIcon from '@mui/icons-material/Menu';
+import Search from '@mui/icons-material/Search';
 import { useNavigate } from "react-router-dom"
 import MySettingIcon from './lottieSettingicon'
 import constants from '../../../../../Constants/constants'
 import HideOnScroll from './hideonScroll';
 import { useMediaQuery } from '@mui/material';
+import { SearchOutlined } from '@ant-design/icons';
+import SearchModal from '../../../../../Components/SearchModal/searchModal';
 const Header = (props) => {
   const classes = useStyles();
   const [expandedButton, setExpandedButton] = React.useState(null);
   const [homeButtonActive, setHomeButtonActive] = React.useState(false);
   const [settingsButtonActive, setSettingsButtonActive] = React.useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [opensearh, setopensearh] = useState(false);
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -133,12 +137,23 @@ const Header = (props) => {
                 </Collapse>
               </>
             )}
-            {isMobile && <IconButton
-              color={settingsButtonActive ? 'primary' : 'default'}
-              onClick={handleSidebar}
-            >
-              <MenuIcon style={{ color: '#00abe5' }} />
-            </IconButton>}
+            {isMobile &&
+              <>
+                <IconButton
+                  color={settingsButtonActive ? 'primary' : 'default'}
+                  onClick={() => { setopensearh(true) }}
+                >
+                  <Search style={{ color: '#00abe5' }} />
+                </IconButton>
+                <IconButton
+                  color={settingsButtonActive ? 'primary' : 'default'}
+                  onClick={handleSidebar}
+                >
+                  <MenuIcon style={{ color: '#00abe5' }} />
+                </IconButton>
+              </>}
+
+            <SearchModal open={opensearh} onclose={() => { setopensearh(false) }} />
           </div>
         </Toolbar>
       </AppBar>

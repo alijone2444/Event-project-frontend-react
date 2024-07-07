@@ -9,7 +9,9 @@ import {
   userRecentEventsReducer,
   userAllEventsReducer,
 } from './EventsUserReducer';
+import paginationReducer from './eventspaginationReducers';
 import CrouselImagesDataReducer from './crouselImagesDatareducer';
+import setGotTokenFcmReducer from './firebaseReducers';
 const rootReducer = combineReducers({
   requests: requestsReducer,
   adminEvents: AdminEventsReducer,
@@ -19,7 +21,9 @@ const rootReducer = combineReducers({
   // Add other reducers here if you have more
   userAllEvents: userAllEventsReducer,
   Societies: SocietiesReducer,
-  crouselData: CrouselImagesDataReducer
+  crouselData: CrouselImagesDataReducer,
+  FCMToken: setGotTokenFcmReducer,
+  eventspagination: paginationReducer
 });
 
 export default rootReducer;

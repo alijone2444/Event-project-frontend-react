@@ -77,10 +77,9 @@ function Navbar(props) {
       <Drawer title="Basic Drawer" onClose={() => { setOpen(false) }} open={open}>
         {constants.settings.map((val, index) => {
           return (
-            <div style={{ width: '100%' }}>
+            <div style={{ width: '100%', }}>
               <p key={index}>{val.description}</p>
-              <Button onClick={() => { handleClick(val.name) }} style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{val.name}{val.Icon}</Button>
-
+              <Button onClick={() => { handleClick(val.name) }} style={{ border: `1px solid ${val.name === 'Logout' ? 'red' : 'grey'}`, width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><div style={{ textAlign: 'center', width: "100%", color: val.name === 'Logout' ? 'red' : 'grey', }}>{val.name}</div>{val.Icon}</Button>
             </div>
           )
         })}

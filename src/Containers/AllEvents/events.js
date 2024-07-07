@@ -5,17 +5,16 @@ import { useEffect, useState } from "react";
 import { Spin, Pagination } from "antd";
 import { useNavigate } from "react-router-dom";
 import { setEventsDataAll } from "../../ReduxStore/actions/eventsDataActionUser";
+import { setCurrentPage, setPageSize, setTotalPages, setLastvisited } from "../../ReduxStore/actions/eventsPaginationActions";
 import createAuthenticatedRequest from '../../RequestwithHeader';
 import constants from '../../Constants/constants';
+
 function AllEvents() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
     const Events = useSelector((state) => state.userAllEvents);
-    const [currentPage, setCurrentPage] = useState(1); // Current page state
-    const [pageSize, setPageSize] = useState(6); // Items per page state
-    const [totalPages, setTotalPages] = useState(1); // Total pages state
-    const [lastVisitedPage, setLastVisitedPage] = useState(1); // Track last visited page
+    const { currentPage, pageSize, totalPages, lastVisitedPage } = useSelector((state) => state.eventspagination);
 
     const fetchEvents = async (page, size) => {
         try {
@@ -30,8 +29,8 @@ function AllEvents() {
             });
             if (response && response.data) {
                 dispatch(setEventsDataAll([...Events, ...response.data.events]));
-                setCurrentPage(response.data.currentPage);
-                setTotalPages(response.data.totalPages);
+                dispatch(setCurrentPage(response.data.currentPage));
+                dispatch(setTotalPages(response.data.totalPages));
             }
             setLoading(false);
         } catch (error) {
@@ -41,19 +40,24 @@ function AllEvents() {
     };
 
     useEffect(() => {
-        fetchEvents(currentPage, pageSize);
-    }, []); // Fetch data only once when the component mounts
+        if (Events.length === 0) {
+            fetchEvents(currentPage, pageSize);
+        } else {
+            setLoading(false);
+        }
+    }, [dispatch]); // Fetch data only once when the component mounts
 
     const handleOpenEvent = (id) => {
         const foundEvent = Events.find((event) => event._id === id);
         navigate(`/eventdetail/${foundEvent.eventName}`, { state: { data: foundEvent, toNavigate: '/events' } });
     };
 
+
     const handlePageChange = (page) => {
-        setCurrentPage(page); // Update currentPage state
+        dispatch(setCurrentPage(page)); // Update currentPage state
         if (page > lastVisitedPage) {
             fetchEvents(page, pageSize); // Fetch data only when navigating to a new page
-            setLastVisitedPage(page);
+            dispatch(setLastvisited(page));
         }
     };
 
@@ -84,4 +88,5 @@ function AllEvents() {
         </WrapperComponent>
     );
 }
+
 export default AllEvents;

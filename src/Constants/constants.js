@@ -14,6 +14,7 @@ const constants = {
     ],
     settings: [
         { name: "Society Admin Portal", description: 'These are the some available options for a society leader to maintain his information of society', Icon: '' },
+        { name: "Logout", description: 'A logout option allows users to securely end their current session and sign out of their account.', Icon: <LogoutIcon style={{ color: 'red' }} /> },
         // {
         //     name: 'Logout',
         //     description: '',
@@ -24,7 +25,7 @@ const constants = {
     // BASE_URL: 'http://192.168.1.15:3002/',
     // BASE_URL_2: 'http://192.168.1.15:5000/',
 
-    BASE_URL: 'http://192.168.60.129:3002/',
+    BASE_URL: 'http://192.168.1.9:3002/',
     BASE_URL_2: 'http://192.168.60.129:5000/',
     departmentOptions: [
         "Aeronautics and Astronautics",
@@ -36,5 +37,7 @@ const constants = {
         "Applied Mathematics & Statistics",
         "Humanities & Sciences"
     ]
+    ,
+
 }
 export default constants;

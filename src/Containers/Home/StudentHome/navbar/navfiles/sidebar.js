@@ -14,19 +14,25 @@ import { useMediaQuery, IconButton } from '@mui/material';
 import constants from '../../../../../Constants/constants';
 import LogOut from '../../../../../Components/logout/logout';
 import { Avatar, Box, Typography } from '@mui/material'; // Import Avatar, Box, and Typography from MUI
-
+import { useSelector } from 'react-redux';
 import Profile from '../../../../../images/noProfile.png';
 import EditIcon from '@mui/icons-material/Edit';
+import { useDispatch } from 'react-redux';
+import { setProfileData } from '../../../../../ReduxStore/actions/profileDataAction';
+import createAuthenticatedRequest from '../../../../../RequestwithHeader';
+import EditProfileModal from '../../../../Profile/profileEditModal';
 function SidebarComponent(props) {
   const [openSlide, setopenSlide] = useState("");
   const sideNavRef = useRef(null);
+  const dispatch = useDispatch()
   const [showsidebar, setshowsidebar] = useState(true)
   const [logout, setlogout] = useState(false)
   const classes = useStyles()
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width:600px)');
-
+  const profileData = useSelector(state => state.profiledata);
   const token = localStorage.getItem('userType');
+  const [showprofilemodal, setshowprofilemodal] = useState(false)
   useEffect(() => {
     if (props.Openstatus === false) {
       setshowsidebar(true)
@@ -41,6 +47,27 @@ function SidebarComponent(props) {
     };
   }, [props.Openstatus]);
 
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const requestInstance = createAuthenticatedRequest();
+        const response = await requestInstance.get(`${constants.BASE_URL}get-profile-data`);
+        if (response.data) {
+          dispatch(setProfileData(response.data.profile));
+        }
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+      }
+    };
+
+    // Fetch profile data when the component mounts or updates
+    fetchProfileData();
+  }, [dispatch]);
+  // useEffect(() => {
+  //     if (profileData) {
+  //         setshowfakeprofile(false)
+  //     }
+  // }, [profileData])
   function handleClickOutside(event) {
     if (sideNavRef.current && !sideNavRef.current.contains(event.target)) {
       console.log("bello");
@@ -70,17 +97,20 @@ function SidebarComponent(props) {
 
             <Box sx={{ background: 'rgba(255,255,255,0.5)', position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
               <Avatar sx={{ width: 64, height: 64, mb: 1 }}
+                src={profileData?.profileImageUrl || "/path/to/profile/image.jpg"} // Use profile image URL or fallback
+
                 onClick={() => {
-                  navigate('/user-profile');
-                }}>U</Avatar>
+                  navigate('/user-profile', { state: profileData });
+                }}></Avatar>
               <IconButton sx={{ position: 'absolute', top: 10, right: 10, backgroundColor: 'white', zIndex: 999 }}
                 onClick={() => {
-                  navigate('/user-profile', { state: { data: 'edit' } });
+                  setshowprofilemodal(true)
                 }}>
                 <EditIcon style={{ fontSize: 15 }} />
               </IconButton>
-              <Typography variant="h6" style={{ zIndex: 999 }}>username</Typography>
-              <Typography variant="body1" style={{ zIndex: 999, textAlign: 'justify' }}>Welcome aboard, username!</Typography>
+              <EditProfileModal open={showprofilemodal} onClose={() => { setshowprofilemodal(false) }} />
+              <Typography variant="h6" style={{ zIndex: 999 }}>{profileData?.username}</Typography>
+              <Typography variant="body1" style={{ zIndex: 999, textAlign: 'justify' }}>Welcome aboard, {profileData ? profileData.username : 'user'}!</Typography>
             </Box>
 
             {constants.menuitems.map((menuItem, index) => (

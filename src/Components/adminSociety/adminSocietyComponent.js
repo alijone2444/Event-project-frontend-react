@@ -11,12 +11,16 @@ import { useDispatch } from 'react-redux';
 import { setSocietiesData } from '../../ReduxStore/actions/societyDataAction';
 import { useSelector } from "react-redux";
 import { Spin } from 'antd';
+import { useNavigate } from 'react-router-dom';
 const SocietiesAdminComponent = () => {
     const dispatch = useDispatch();
     const requestInstance = createAuthenticatedRequest()
     const societies = useSelector((state) => state.Societies);
     const [runAfterUpdate, setrunAfterUpdate] = useState(false)
     const [rerun, setrerun] = useState(false)
+    const [Previousvalues, setPreviousvalues] = useState(null)
+    const [edit, setedit] = useState(false)
+    const navigate = useNavigate()
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -44,7 +48,9 @@ const SocietiesAdminComponent = () => {
     const [form] = Form.useForm();
 
     const handleEdit = (record) => {
+        setedit(true)
         form.setFieldsValue(record);
+        setPreviousvalues(record)
         setVisible(true);
     };
     const handleDelete = async (id) => {
@@ -93,7 +99,8 @@ const SocietiesAdminComponent = () => {
                             </Typography>
                         </Grid>
                         <Grid item >
-                            <Button type="primary" onClick={() => setVisible(true)}>Create Society
+
+                            <Button type="primary" onClick={() => { setVisible(true); setedit(false) }}>Create Society
                                 <PlusCircleOutlined style={{ color: 'white' }} />
                             </Button>
                         </Grid>
@@ -109,6 +116,7 @@ const SocietiesAdminComponent = () => {
                                         <div style={{ textAlign: 'center' }}>
                                             <div style={{ fontWeight: 'bold', fontSize: 17 }}>{society.name}</div>
                                             <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{society.description}</p>
+                                            <Button type="link" onClick={() => { navigate('society-page', { state: society }) }}>Visit</Button>
                                             <Button type="link" onClick={() => handleEdit(society)}>Edit</Button>
                                             <Button type="link" danger onClick={() => handleDelete(society._id)}>Delete</Button>
                                         </div>
@@ -122,14 +130,14 @@ const SocietiesAdminComponent = () => {
                             <Modal
                                 title="Edit Society"
                                 visible={visible}
-                                onCancel={() => setVisible(false)}
+                                onCancel={() => { setVisible(false); setedit(false) }}
                                 footer={null}
                             >
-                                <SocietyForm onclose={handleUpdate} />
+                                <SocietyForm onclose={handleUpdate} Previousvalues={edit ? Previousvalues : {}} />
                             </Modal>
                         </Grid>
                     </div>
-                </div>
+                </div >
             }
         </>
     );

@@ -4,13 +4,13 @@ import WrapperComponent from "../../../../FooterAndHeaderwrapper";
 import AnimationNumbers from '../../../../Components/animaterNumbers/animatednumbers';
 import VantaBackground from '../../../../Components/vantaJs/vanta';
 import Star from '@mui/icons-material/StarBorderOutlined';
-import Divider from '@mui/material/Divider';
 import { useSelector } from 'react-redux';
 import createAuthenticatedRequest from '../../../../RequestwithHeader';
 import { useDispatch } from 'react-redux';
 import { setSocietiesData } from '../../../../ReduxStore/actions/societyDataAction';
 import constants from '../../../../Constants/constants';
-
+import { useNavigate } from 'react-router-dom';
+import { Divider } from 'antd';
 function SocietiesPage() {
     const Societies = useSelector((state) => state.Societies);
     console.log(Societies)
@@ -20,10 +20,15 @@ function SocietiesPage() {
     const dispatch = useDispatch()
     const [page, setPage] = useState(1); // Initialize page state
     const [limit, setLimit] = useState(10); // Initialize limit state
+    const [FetchDocsAgain, setFetchDocsAgain] = useState(false)
+    const navigate = useNavigate()
+
 
     useEffect(() => {
-        fetchData(page, limit); // Fetch data with initial page and limit
-    }, [page]);
+        if (Societies.length === 0 || FetchDocsAgain) {
+            fetchData(page, limit);
+        }// Fetch data with initial page and limit
+    }, [page, dispatch, FetchDocsAgain]);
 
     const fetchData = async (page, limit) => {
         try {
@@ -32,6 +37,7 @@ function SocietiesPage() {
             // Assuming the response contains societies data
             dispatch(setSocietiesData([...Societies, ...response.data.societies]));
             setLoading(false)
+            setFetchDocsAgain(false)
             // Handle the societies data as needed
             // Return data or perform any other actions if needed
         } catch (error) {
@@ -43,6 +49,7 @@ function SocietiesPage() {
 
     const handleViewMore = () => {
         setPage(page + 1); // Increment page number to fetch more data
+        setFetchDocsAgain(true)
     };
 
     return (
@@ -81,12 +88,18 @@ function SocietiesPage() {
                                     <Typography variant="body2" color="text.secondary">
                                         {society.description}
                                     </Typography>
+                                    <Button style={{ color: 'purple' }} onClick={() => { navigate('society-page', { state: society }) }}>visit</Button>
                                 </CardContent>
                             </Card>
                         </Grid>
                     ))}
                 </Grid>
-                <Button variant="contained" color="primary" onClick={handleViewMore}>View More</Button>
+                <Divider />
+                <Grid container >
+                    <Grid item xs={12} sm={12} >
+                        <Button variant="contained" style={{ backgroundColor: 'purple', color: "white", width: '100%' }} onClick={handleViewMore}>View More</Button>
+                    </Grid>
+                </Grid>
             </div>
         </WrapperComponent>
     );

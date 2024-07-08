@@ -2,10 +2,13 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import createAuthenticatedRequest from "../../RequestwithHeader";
 import constants from "../../Constants/constants";
+import { logoutUser } from "../../ReduxStore/actions/userlogout";
+import { useDispatch } from "react-redux";
 function LogOut(props) {
   const navigate = useNavigate();
   const [checkDeletedToken, setCheckDeletedToken] = useState(false);
   const requestInstance = createAuthenticatedRequest()
+  const dispatch = useDispatch()
   useEffect(() => {
     const logout = async () => {
       try {
@@ -17,7 +20,7 @@ function LogOut(props) {
           // Clear the token from local storage
           localStorage.removeItem("authToken");
           localStorage.removeItem("userType");
-
+          dispatch(logoutUser());
           // Update state to trigger a re-render
           setCheckDeletedToken(!checkDeletedToken);
         } else {

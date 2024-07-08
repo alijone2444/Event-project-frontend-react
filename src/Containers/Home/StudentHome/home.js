@@ -18,6 +18,8 @@ import useVisibilityChange from "../../../Components/Firebase/usevisibilityChang
 import { register } from "../../../Components/Firebase/serviceWorker";
 import Greeting from "../../../Components/notificationsComponents/greeting";
 import { setGotTokenFcm } from "../../../ReduxStore/actions/firebaseActions";
+import { setProfileData } from "../../../ReduxStore/actions/profileDataAction";
+import { dashSize } from "three/examples/jsm/nodes/Nodes.js";
 function Home() {
   const requestInstance = createAuthenticatedRequest()
   const dispatch = useDispatch()
@@ -27,6 +29,7 @@ function Home() {
   const isForeground = useVisibilityChange();
   const FCMTOKEN = useSelector(state => state.FCMToken.flag); // Assuming FCMToken is your root reducer name
 
+  const profileData = useSelector(state => state.profiledata)
   useEffect(() => {
     const handleNotification = (message) => {
       const { title, body } = message.notification;
@@ -60,6 +63,23 @@ function Home() {
 
     }
   }, [isForeground]);
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      try {
+        const requestInstance = createAuthenticatedRequest(); // Initialize authenticated request
+        const response = await requestInstance.get(`${constants.BASE_URL}get-profile-data`); // Replace with your endpoint
+        if (response.data) {
+          dispatch(setProfileData(response.data.profile)) // Set profile data upon successful fetch
+        }
+      } catch (error) {
+        console.error('Error fetching profile data:', error);
+      }
+    };
+    if (profileData.length === 0) {
+      fetchProfileData();
+    }
+  }, [dispatch]);
   useEffect(() => {
     if (UpcommingEvent.length === 0) {
       requestInstance

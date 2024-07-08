@@ -49,12 +49,12 @@ const ScrollingHorizontally = (props) => {
       <div>
         <Typography
           className='subheader'
-          style={{ color: 'DodgerBlue', background: "white", display: 'inline-block' }}
+          style={{ color: props.subheaderColor ? 'purple' : 'dodgerblue', background: "white", display: 'inline-block' }}
           variant='h6'
         >
           {props.subheader}
         </Typography>
-        <Divider style={{ background: 'dodgerblue', marginTop: '-15px', marginRight: "10%" }} />
+        <Divider style={{ background: props.subheaderColor ? 'purple' : 'dodgerblue', marginTop: '-15px', marginRight: "10%" }} />
       </div>
       <div style={{ paddingLeft: "5%" }}>
         <div className="container" {...bind()}>

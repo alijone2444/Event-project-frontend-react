@@ -25,10 +25,14 @@ const AttendeesTable = (props) => {
   const requestInstance = createAuthenticatedRequest();
 
   useEffect(() => {
-    if (requestsData.length === 0 || runuseffect === true) {
+    if (requestsData.length === 0 || runuseffect === true || props.showOnlyActiveUsers) {
       console.log("inside useefect");
       requestInstance
-        .get(`${constants.BASE_URL}get-all-requests`)
+        .get(`${constants.BASE_URL}get-all-requests`, {
+          params: {
+            getActiveonly: props.showOnlyActiveUsers === true ? true : false
+          }
+        })
         .then(response => {
           dispatch(setRequestsDataAdmin(response.data));
           navbarvalues()
@@ -38,7 +42,7 @@ const AttendeesTable = (props) => {
         });
     }
     setrunuseffect(false)
-  }, [dispatch, isupdatedAfterAction]);
+  }, [dispatch, isupdatedAfterAction, props.showOnlyActiveUsers]);
 
   const handleAction = (id, action) => {
     console.log(id, action)

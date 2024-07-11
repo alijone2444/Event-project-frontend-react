@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Grid, Card, CardContent, Typography, Button, useMediaQuery } from '@mui/material';
+import { Grid, Card, CardContent, Typography, useMediaQuery, ButtonGroup } from '@mui/material';
 import WrapperComponent from "../../../../FooterAndHeaderwrapper";
 import AnimationNumbers from '../../../../Components/animaterNumbers/animatednumbers';
 import VantaBackground from '../../../../Components/vantaJs/vanta';
@@ -10,7 +10,8 @@ import { useDispatch } from 'react-redux';
 import { setSocietiesData } from '../../../../ReduxStore/actions/societyDataAction';
 import constants from '../../../../Constants/constants';
 import { useNavigate } from 'react-router-dom';
-import { Divider } from 'antd';
+import { Divider, Button } from 'antd';
+import { PlusOutlined } from '@ant-design/icons';
 function SocietiesPage() {
     const Societies = useSelector((state) => state.Societies);
     console.log(Societies)
@@ -22,7 +23,23 @@ function SocietiesPage() {
     const [limit, setLimit] = useState(10); // Initialize limit state
     const [FetchDocsAgain, setFetchDocsAgain] = useState(false)
     const navigate = useNavigate()
+    const followSociety = async (name, action) => {
+        try {
+            const response = await requestInstance.post(`${constants.BASE_URL}follow-society`, {
+                name: name,
+                action: action
+            });
 
+            const updatedSocieties = Societies.map(society =>
+                society._id === response.data.society._id ? response.data.society : society
+            );
+
+            dispatch(setSocietiesData(updatedSocieties));
+        } catch (error) {
+            console.error('Error following/unfollowing society:', error);
+            // Handle errors as needed
+        }
+    };
 
     useEffect(() => {
         if (Societies.length === 0 || FetchDocsAgain) {
@@ -33,7 +50,7 @@ function SocietiesPage() {
     const fetchData = async (page, limit) => {
         try {
             setLoading(true)
-            const response = await requestInstance.get(`${constants.BASE_URL}get-societies?page=${page}&limit=${limit}`);
+            const response = await requestInstance.get(`${constants.BASE_URL}get-societies?page=${page}&limit=${limit}&amount=${'All'}`);
             // Assuming the response contains societies data
             dispatch(setSocietiesData([...Societies, ...response.data.societies]));
             setLoading(false)
@@ -79,7 +96,7 @@ function SocietiesPage() {
                 <Grid container spacing={2}>
                     {Societies.map((society, index) => (
                         <Grid item xs={12} sm={6} md={4} key={index}>
-                            <Card>
+                            <Card style={{ border: '1px solid lightgrey' }}>
                                 <img src={society.cover_photo} alt={society.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
                                 <CardContent>
                                     <Typography variant="h5" component="div">
@@ -88,7 +105,16 @@ function SocietiesPage() {
                                     <Typography variant="body2" color="text.secondary">
                                         {society.description}
                                     </Typography>
-                                    <Button style={{ color: 'purple' }} onClick={() => { navigate('society-page', { state: society }) }}>visit</Button>
+                                    <ButtonGroup
+                                        orientation="vertical"
+                                        aria-label="Vertical button group"
+                                        variant="contained"
+                                        style={{ width: '100%' }}
+                                    >
+                                        <Button style={{ backgroundColor: 'purple', color: 'white', width: '100%', marginTop: '2%' }} onClick={() => { followSociety(society.name, society.ismember ? 'Unfollow' : 'Follow') }}>{society.ismember ? 'Unfollow' : 'Follow'}</Button>
+                                        <Button style={{ backgroundColor: 'purple', color: 'white', width: '100%', marginTop: '2%' }} onClick={() => { navigate('society-page', { state: society }) }}>visit</Button>
+                                    </ButtonGroup>
+
                                 </CardContent>
                             </Card>
                         </Grid>

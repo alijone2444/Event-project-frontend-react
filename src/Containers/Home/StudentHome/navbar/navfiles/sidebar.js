@@ -88,6 +88,10 @@ function SidebarComponent(props) {
   const handleEvents = () => {
     navigate("/events")
   }
+  const handleSettings = (item) => {
+    if (item === 'Society Admin Portal')
+      navigate('/SocietyAdminPortal');
+  }
   return (
     <div className={classes.parent} >
       <div className={classes.parent2} >
@@ -138,9 +142,9 @@ function SidebarComponent(props) {
 
             ))}
 
-            <SubMenu label="Settings" className={classes.menuitem}>
-              {(token !== 'student' && token !== 'undefined') && constants.settings.map((val, index) => {
-                return <MenuItem style={{ background: 'rgba(255,255,255,0.3)' }}>{val.name}</MenuItem>
+            <SubMenu label="Settings" className={classes.menuitem} >
+              {(props.usertype !== 'student' && props.usertype !== 'undefined') && constants.settings.map((val, index) => {
+                return <MenuItem style={{ background: 'rgba(255,255,255,0.3)' }} onClick={() => { handleSettings(val.name) }}>{val.name}</MenuItem>
               })}
 
             </SubMenu>

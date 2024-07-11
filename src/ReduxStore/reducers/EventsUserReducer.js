@@ -34,9 +34,19 @@ const userAllEventsReducer = (state = [], action) => {
   }
 };
 
+const userPopularEventsReducer = (state = [], action) => {
+  switch (action.type) {
+    case 'SET_EVENTS_DATA_FOR_USER_POPULAR':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
 export {
   userUpcomingEventsReducer,
   userHotEventsReducer,
   userRecentEventsReducer,
-  userAllEventsReducer
+  userAllEventsReducer,
+  userPopularEventsReducer
 };

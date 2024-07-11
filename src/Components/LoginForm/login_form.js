@@ -21,22 +21,31 @@ const Login = (props) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post(`${constants.BASE_URL}login`, {
+      let dataToSend = {
         Rollno: Rollno,
         password: password,
-      });
+      };
+
+      if (!props.type) {
+        dataToSend = {
+          ...dataToSend,
+          UserType: 'Admin',
+        };
+      }
+
+      const response = await axios.post(`${constants.BASE_URL}login`, dataToSend);
 
       // Handle the response on successful login
       console.log(response.data);
 
-      if (response.data.success === true) {
+      if (response.data.success === true && response.data.token) {
         localStorage.setItem('authToken', response.data.token);
         localStorage.setItem('userType', response.data.userType);
+
         if (props.type) {
           navigate('/Home');
-        }
-        else {
-          props.showAdmin()
+        } else {
+          props.showAdmin();
         }
       } else {
         // Handle unsuccessful login

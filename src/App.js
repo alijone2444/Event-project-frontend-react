@@ -8,7 +8,8 @@ import CalanderComponent from './Containers/Home/StudentHome/calander/calander.j
 import AdminHomePage from './Containers/Home/AdminHome/adminHome.js';
 import EventDetailPage from './Containers/ExploreEventsPage/EventDetailPage.js';
 import RequestAprovalWaitPage from './Containers/RequestApprovalPage.js/RequestApprovalwaitPage.js';
-import RequireAuth from './RoutesAuthentication.js';
+import { RequireAuth } from './RoutesAuthentication.js';
+import { RequireAdminAuth } from './RoutesAuthentication.js';
 import userSettings from './Components/Settings/userSettings.js'
 import AllEvents from './Containers/AllEvents/events.js';
 import { SkeletonTheme } from 'react-loading-skeleton';
@@ -31,7 +32,7 @@ function App() {
             <Route path="/societies" element={<RequireAuth><SocietiesPage /></RequireAuth>} />
             <Route path="/calander" element={<RequireAuth><CalanderComponent /></RequireAuth>} />
             <Route path="/admin" element={<Login />} />
-            <Route path="/admin/success" element={<RequireAuth><AdminHomePage /></RequireAuth>} />
+            <Route path="/admin/success" element={<RequireAdminAuth><AdminHomePage /></RequireAdminAuth>} />
             <Route path="/settings" element={<RequireAuth><userSettings /></RequireAuth>} />
             <Route path="/events" element={<RequireAuth><AllEvents /></RequireAuth>} />
             <Route path="/SocietyAdminPortal" element={<RequireAuth><SocietyAdminPortal /></RequireAuth>} />

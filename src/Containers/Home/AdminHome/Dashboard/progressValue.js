@@ -2,16 +2,21 @@ import React from 'react';
 import { Card, Progress } from 'antd';
 import getRandomColor from './randomBulletcolor';
 
-const ProgressTrackerCard = () => {
-  const progressValue = 60; // Change this value to set the progress (0-100)
-
+const ProgressTrackerCard = (props) => {
+  const progressValue = 60;
+  let percentage;
+  percentage = (props.stats?.totalSize / 512000000) * 100
+  const rounded = percentage.toFixed(2)
+  console.log(2)
+  const users = (props.usersData.activeUsers / props.usersData.NoOfUsers) * 100
+  const roundedusers = users.toFixed(2)
   return (
     <Card title="Progress Tracker" bordered>
       <div style={{ textAlign: 'left' }}>
-      <div>Account Setup</div>
-        <Progress percent={progressValue} strokeColor={getRandomColor()}/>
-       <div>Customer Database</div>
-        <Progress percent={progressValue} strokeColor={getRandomColor()}/>
+        <div>Active users out of total</div>
+        <Progress percent={roundedusers} strokeColor={getRandomColor()} />
+        <div> Database Storage</div>
+        <Progress percent={rounded} strokeColor={getRandomColor()} />
       </div>
     </Card>
   );

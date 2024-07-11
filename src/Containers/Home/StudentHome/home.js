@@ -10,7 +10,7 @@ import { useMediaQuery } from "@mui/material";
 import WrapperComponent from "../../../FooterAndHeaderwrapper";
 import createAuthenticatedRequest from "../../../RequestwithHeader";
 import { useDispatch, useSelector } from 'react-redux';
-import { setEventsDataUserUpcoming, setEventsDataUserRecent } from "../../../ReduxStore/actions/eventsDataActionUser";
+import { setEventsDataUserUpcoming, setEventsDataUserRecent, setEventsDataPopular } from "../../../ReduxStore/actions/eventsDataActionUser";
 import constants from "../../../Constants/constants";
 import { setupNotifications } from "../../../Components/Firebase/firebase";
 import { toastNotification, sendNativeNotification } from "../../../Components/Firebase/notificationHelper";
@@ -25,6 +25,7 @@ function Home() {
   const dispatch = useDispatch()
   const UpcommingEvent = useSelector((state) => state.userUpcomingEvents);
   const recentEvents = useSelector((state) => state.userRecentEvents);
+  const popularEvents = useSelector((state) => state.userpopularEvents)
   const [showGreeting, setShowGreeting] = useState(false);
   const isForeground = useVisibilityChange();
   const FCMTOKEN = useSelector(state => state.FCMToken.flag); // Assuming FCMToken is your root reducer name
@@ -80,6 +81,23 @@ function Home() {
       fetchProfileData();
     }
   }, [dispatch]);
+
+  useEffect(() => {
+    if (popularEvents.length === 0) {
+      requestInstance
+        .get(`${constants.BASE_URL}get-events`, {
+          params: {
+            amount: 'get-popular',
+          },
+        })
+        .then(response => {
+          dispatch(setEventsDataPopular(response.data.events));
+        })
+        .catch(err => {
+          console.error('Error:', err);
+        });
+    }
+  }, [dispatch])
   useEffect(() => {
     if (UpcommingEvent.length === 0) {
       requestInstance
@@ -126,7 +144,7 @@ function Home() {
         <div style={{ marginBottom: "5%", marginTop: isSmallScreen ? "10%" : "5%" }}>
           <ScrollingHorizontally data={recentEvents} title={'Recent'} subheader={'Check Latest Happenings'} />
           <ScrollingHorizontally data={UpcommingEvent} title={'Upcomming'} subheader={'Future Gatherings'} />
-          <ScrollingHorizontally data={UpcommingEvent} title={'Hot'} subheader={'Find Trending Occasions'} />
+          <ScrollingHorizontally data={popularEvents} title={'Hot'} subheader={'Find Trending Occasions'} />
         </div>
         <HomeBody />
       </WrapperComponent>

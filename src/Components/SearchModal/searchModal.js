@@ -65,13 +65,13 @@ const SearchModal = (props) => {
 
     return (
         <><Modal
-            title="Search"
+            title="Search Events"
             visible={props.open}
             onCancel={props.onclose}
             footer={null} // Remove OK and Cancel buttons
         >
             <Input
-                placeholder="Search..."
+                placeholder="Type event name or some thing related"
                 value={searchTerm}
                 onChange={handleSearchChange}
             /> {showloading && <Loader />}

@@ -12,7 +12,8 @@ import {
 import paginationReducer from './eventspaginationReducers';
 import CrouselImagesDataReducer from './crouselImagesDatareducer';
 import setGotTokenFcmReducer from './firebaseReducers';
-
+import AdminSocietiesReducer from './adminSocietydataReducer';
+import { userPopularEventsReducer } from './EventsUserReducer';
 const appReducer = combineReducers({
   requests: requestsReducer,
   adminEvents: AdminEventsReducer,
@@ -20,11 +21,13 @@ const appReducer = combineReducers({
   userHotEvents: userHotEventsReducer,
   userRecentEvents: userRecentEventsReducer,
   userAllEvents: userAllEventsReducer,
+  userpopularEvents: userPopularEventsReducer,
   Societies: SocietiesReducer,
   crouselData: CrouselImagesDataReducer,
   FCMToken: setGotTokenFcmReducer,
   eventspagination: paginationReducer,
-  profiledata: ProfileDataReducer
+  profiledata: ProfileDataReducer,
+  Adminsocieties: AdminSocietiesReducer
 });
 
 const rootReducer = (state, action) => {

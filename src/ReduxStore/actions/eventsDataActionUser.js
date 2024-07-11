@@ -19,3 +19,9 @@ export const setEventsDataAll = (data) => ({
   payload: data,
 }
 );
+
+export const setEventsDataPopular = (data) => ({
+  type: 'SET_EVENTS_DATA_FOR_USER_POPULAR',
+  payload: data,
+}
+);

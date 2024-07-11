@@ -17,13 +17,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setcrouselImagesData } from '../../../../ReduxStore/actions/crouselImagesAction';
 import constants from '../../../../Constants/constants';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Spin } from 'antd';
 import ToolbarBelowNavbar from '../../../../Components/ChatbotBar/chatbotToolbar';
+import { useState } from 'react';
 function CarouselComponent(props) {
   const classes = useStyles(); // Use the useStyles hook
   const isSmallScreen = useMediaQuery('(max-width: 600px)'); // Adjust the max-width value as needed
   const CrouselDataFetched = useSelector((state) => state.crouselData);
   const requestInstance = createAuthenticatedRequest()
   const dispatch = useDispatch()
+  const [showloading, setshowloading] = useState(false)
 
   useEffect(() => {
     if (CrouselDataFetched.length === 0) {
@@ -41,29 +45,6 @@ function CarouselComponent(props) {
   useEffect(() => {
     console.log('ths is test again', CrouselDataFetched)
   }, [dispatch, CrouselDataFetched])
-  var items = [
-    {
-      title: "Qawali Event",
-      path: imagea,
-      description: "Enjoy the mesmerizing Qawali performance at IST",
-    },
-    {
-      title: "Conference at IST",
-      path: imaged,
-      description:
-        "IST University's event hub serves as a vibrant platform within the university, bringing together students, faculty, and staff for conferences.",
-    },
-    {
-      title: "Sports Event",
-      path: imageb,
-      description: "Hello World! Welcome to the exciting world of sports.",
-    },
-    {
-      title: "Concert Night",
-      path: imagec,
-      description: "Hello World! Join us for a night of musical delight.",
-    },
-  ];
 
   return (
     <div style={{ position: 'relative' }}>
@@ -96,7 +77,7 @@ function CarouselComponent(props) {
 
 
         {
-          CrouselDataFetched.map((item, i) => <Item key={i} item={item} />)
+          CrouselDataFetched.map((item, i) => <Item key={i} item={item} showloading={showloading} setshowloading={setshowloading} />)
         }
       </Carousel>
     </div>
@@ -104,7 +85,35 @@ function CarouselComponent(props) {
 }
 
 function Item(props) {
-  console.log(`${constants.BASE_URL}${props.item.path}${props.item.dpimageFileName}`)
+  const navigate = useNavigate()
+  const getParticularEvent = async (eventname) => {
+    const requestInstance = createAuthenticatedRequest()
+    try {
+      props.setshowloading(true)
+      const response = await requestInstance.get(`${constants.BASE_URL}get-events`, {
+        params: {
+          amount: 'One',
+          eventName: eventname
+        },
+
+      })
+      if (response && response.data) {
+        console.log(response)
+        props.setshowloading(false)
+        navigate(`/eventdetail/${response.data.events[0].eventName}`, { state: { data: response.data.events[0], toNavigate: '/Home' } });
+
+      }
+    }
+    catch (error) {
+      console.error('Error fetching events:', error);
+      props.setshowloading(false)
+    }
+  }
+  const Loader = () => (
+    <div style={{ textAlign: 'center', marginTop: 16 }}>
+      <Spin size="large" />
+    </div>
+  );
   const isSmallScreen = useMediaQuery('(max-width: 600px)'); // Adjust the max-width value as needed
   return (
     <Paper style={{ height: isSmallScreen ? "90vh" : '95vh' }} >
@@ -138,10 +147,14 @@ function Item(props) {
         <h1 style={{ textAlign: "center", color: "white", marginBottom: '2%' }}>{props.item.title}</h1>
         <p style={{ textAlign: "Center", color: "white", marginTop: 0 }}>{props.item.subheader}</p>
         <div style={{ display: "flex", justifyContent: "center" }}>
-          <Button className="CheckButton" style={{ backgroundColor: "#f4373a", color: "white", maxWidth: "150px" }}>
+          <Button className="CheckButton" style={{ backgroundColor: "#f4373a", color: "white", maxWidth: "150px" }}
+            onClick={() => {
+              getParticularEvent(props.item.eventName)
+            }}>
             Check it out!
           </Button></div>
       </div>
+      {props.showloading && <Loader />}
     </Paper>
   )
 }

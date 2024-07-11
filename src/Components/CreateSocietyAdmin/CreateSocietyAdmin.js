@@ -2,7 +2,7 @@ import AttendeesTable from "../../Containers/Home/AdminHome/registrations/regist
 const CreateSocietyAdmin = () => {
     return (
         <div>
-            <AttendeesTable name={'Create a society Admin'} showSetAdminOption={false} showADDRemove={false} showTage={false} />
+            <AttendeesTable name={'Create society Admin/ Active Users'} showSetAdminOption={false} showADDRemove={false} showTage={false} showOnlyActiveUsers={true} />
         </div>
     )
 }

@@ -3,7 +3,9 @@ import { Grid, Typography } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { makeStyles } from '@mui/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
-
+import { HeartFilled } from '@ant-design/icons';
+import Lottie from 'react-lottie';
+import HeardBubbling from '../../lottie/heartBubbling.json'
 import '@fontsource/roboto/400.css';
 import { Button } from 'antd';
 
@@ -63,6 +65,22 @@ const EventDetail = (props) => {
         <Typography variant="body1" className={classes.field}>
           <strong>Organizer:</strong> {props.eventData.organizer}
         </Typography>
+      </Grid>
+      <Grid item xs={12} style={{ position: 'relative' }}>
+        <Typography variant="body1" className={classes.field} >
+          <strong>Likes:</strong> {props.eventData.NoOfLikes}
+        </Typography>
+        {props.eventData.NoOfLikes > 0 && <div style={{ position: 'absolute', top: -80, left: 10 }}>
+          <Lottie
+            options={{
+              loop: true,
+              autoplay: true,
+              animationData: HeardBubbling,
+            }}
+            height={150}
+            width={150}
+          />
+        </div>}
       </Grid>
 
       {halfDescription &&

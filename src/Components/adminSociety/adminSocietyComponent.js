@@ -8,14 +8,14 @@ import SocietyForm from './societyFormFields';
 import constants from '../../Constants/constants';
 import createAuthenticatedRequest from '../../RequestwithHeader';
 import { useDispatch } from 'react-redux';
-import { setSocietiesData } from '../../ReduxStore/actions/societyDataAction';
+import { setAdminSocietiesData } from '../../ReduxStore/actions/AdminSocietyAction';
 import { useSelector } from "react-redux";
 import { Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
-const SocietiesAdminComponent = () => {
+const SocietiesAdminComponent = (props) => {
     const dispatch = useDispatch();
     const requestInstance = createAuthenticatedRequest()
-    const societies = useSelector((state) => state.Societies);
+    const societies = useSelector((state) => state.Adminsocieties);
     const [runAfterUpdate, setrunAfterUpdate] = useState(false)
     const [rerun, setrerun] = useState(false)
     const [Previousvalues, setPreviousvalues] = useState(null)
@@ -28,7 +28,7 @@ const SocietiesAdminComponent = () => {
                 const response = await requestInstance.get(`${constants.BASE_URL}get-societies`);
                 // Assuming the response contains societies data
                 console.log(response, 'fanoiwio')
-                dispatch(setSocietiesData(response.data.societies));
+                dispatch(setAdminSocietiesData(response.data.societies));
                 setLoading(false)
                 // Handle the societies data as needed
                 // Return data or perform any other actions if needed
@@ -58,7 +58,7 @@ const SocietiesAdminComponent = () => {
         try {
             const response = await requestInstance.delete(`${constants.BASE_URL}delete-societies/${id}`);
             // Assuming response.data contains updated societies data after deletion 
-            dispatch(setSocietiesData(response.data.societies));
+            dispatch(setAdminSocietiesData(response.data.societies));
             message.success('Society deleted successfully.');
             setLoading(false);
         } catch (error) {

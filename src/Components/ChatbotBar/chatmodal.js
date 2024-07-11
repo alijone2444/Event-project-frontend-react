@@ -11,6 +11,7 @@ import HelpIcon from '@mui/icons-material/HelpOutlined';
 import ServicesIcon from '@mui/icons-material/MiscellaneousServices';
 import createAuthenticatedRequest from '../../RequestwithHeader';
 import constants from '../../Constants/constants';
+import { Alert } from 'antd';
 
 const ChatModal = ({ open, handleClose }) => {
     const [messages, setMessages] = useState([]);
@@ -84,6 +85,13 @@ const ChatModal = ({ open, handleClose }) => {
             </DialogTitle>
             <DialogContent dividers ref={chatContainerRef} sx={{ background: 'white', color: 'black', padding: '8px 16px', overflowY: 'auto', flex: '1' }}>
                 <List>
+                    <Alert
+                        message="Under Maintenance"
+                        description="Sorry, I'm under maintenance. My creator is working on me 😊 ."
+                        type="error"
+                        showIcon
+                        closable={false}
+                    />
                     {messages.map((message, index) => (
                         <ListItem key={index} alignItems="flex-start">
                             <ListItemText

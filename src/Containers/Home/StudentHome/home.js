@@ -67,7 +67,6 @@ function Home() {
   useEffect(() => {
     const fetchProfileData = async () => {
       try {
-        const requestInstance = createAuthenticatedRequest(); // Initialize authenticated request
         const response = await requestInstance.get(`${constants.BASE_URL}get-profile-data`); // Replace with your endpoint
         if (response.data) {
           console.log('data,', response.data.profile)

@@ -8,9 +8,8 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import rootreducer from './ReduxStore/reducers/rootreducer';
 import { register } from './Components/Firebase/serviceWorker';
-
+import Store from './ReduxStore/reducers/rootreducer';
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const Store = createStore(rootreducer)
 root.render(
   <Provider store={Store}>
     <App />

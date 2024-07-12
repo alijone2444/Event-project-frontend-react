@@ -19,7 +19,6 @@ import { register } from "../../../Components/Firebase/serviceWorker";
 import Greeting from "../../../Components/notificationsComponents/greeting";
 import { setGotTokenFcm } from "../../../ReduxStore/actions/firebaseActions";
 import { setProfileData } from "../../../ReduxStore/actions/profileDataAction";
-import { dashSize } from "three/examples/jsm/nodes/Nodes.js";
 function Home() {
   const requestInstance = createAuthenticatedRequest()
   const dispatch = useDispatch()
@@ -71,6 +70,7 @@ function Home() {
         const requestInstance = createAuthenticatedRequest(); // Initialize authenticated request
         const response = await requestInstance.get(`${constants.BASE_URL}get-profile-data`); // Replace with your endpoint
         if (response.data) {
+          console.log('data,', response.data.profile)
           dispatch(setProfileData(response.data.profile)) // Set profile data upon successful fetch
         }
       } catch (error) {

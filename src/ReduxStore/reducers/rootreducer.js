@@ -14,6 +14,7 @@ import CrouselImagesDataReducer from './crouselImagesDatareducer';
 import setGotTokenFcmReducer from './firebaseReducers';
 import AdminSocietiesReducer from './adminSocietydataReducer';
 import { userPopularEventsReducer } from './EventsUserReducer';
+import { createStore } from 'redux'
 const appReducer = combineReducers({
   requests: requestsReducer,
   adminEvents: AdminEventsReducer,
@@ -40,4 +41,6 @@ const rootReducer = (state, action) => {
   return appReducer(state, action);
 };
 
-export default rootReducer;
+const Store = createStore(rootReducer)
+export default Store
+

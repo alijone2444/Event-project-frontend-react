@@ -7,7 +7,7 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import Background from 'three/examples/jsm/renderers/common/Background.js';
-
+import constants from '../../Constants/constants';
 const OpenEvent = (props) => {
   const [ShowDescription, setShowDescription] = useState(false);
   const [Desc_text, setDesc_text] = useState('');
@@ -21,13 +21,13 @@ const OpenEvent = (props) => {
     setshowMore(!showMore);
     setShowDescription(false);
   };
-
-  const images = props.eventData.additionalImagesData.map((event) => ({
-    src: `data:image/jpeg;base64,${event.imageData}`,
+  console.log('famiodhewaoo', props.eventData.imageFileNames)
+  const images = props.eventData.imageFileNames.map((event) => ({
+    src: `${constants.BASE_URL}images/${event}`,
     // legend: `Event ${props.eventData.tags}`, 
   }));
 
-  const mainImage = [{ src: `data:image/jpeg;base64,${props.eventData.mainImageData}` }]
+  const mainImage = [{ src: `${constants.BASE_URL}images/${props.eventData.dpimageFileName}` }]
 
 
   return (

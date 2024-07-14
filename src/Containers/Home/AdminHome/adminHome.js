@@ -42,8 +42,10 @@ function AdminHomePage() {
     const fetchStats = async () => {
       try {
         const response = await requestInstance.get(`${constants.BASE_URL}database-stats`); // Replace with your API endpoint
-        setStats(response.data);
-        console.log('rse', response.data)
+        if (response.data) {
+          setStats(response.data);
+          console.log('rse', response.data)
+        }
       } catch (err) {
         console.log(err.message);
       }
@@ -55,7 +57,9 @@ function AdminHomePage() {
     const fetchActiveUsers = async () => {
 
       const usersResponse = await requestInstance.get(`${constants.BASE_URL}active-total-users`);
-      setUsersInfo(usersResponse.data)
+      if (usersResponse.data) {
+        setUsersInfo(usersResponse.data)
+      }
     };
     fetchActiveUsers()
   }, [])
@@ -63,7 +67,9 @@ function AdminHomePage() {
     const fetchActiveUsers = async () => {
 
       const ActivityResponse = await requestInstance.get(`${constants.BASE_URL}user-activity`);
-      setActivities(ActivityResponse.data)
+      if (ActivityResponse.data) {
+        setActivities(ActivityResponse.data)
+      }
     };
     fetchActiveUsers()
   }, [])

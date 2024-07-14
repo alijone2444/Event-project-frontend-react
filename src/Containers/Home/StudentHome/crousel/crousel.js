@@ -114,6 +114,7 @@ function Item(props) {
       <Spin size="large" />
     </div>
   );
+  console.log('props item', props.item)
   const isSmallScreen = useMediaQuery('(max-width: 600px)'); // Adjust the max-width value as needed
   return (
     <Paper style={{ height: isSmallScreen ? "90vh" : '95vh' }} >

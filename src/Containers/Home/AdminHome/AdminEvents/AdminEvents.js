@@ -119,7 +119,7 @@ const EventManagementInterface = () => {
     } else {
       console.log('Event not found with id:', id);
     }
-    setBackgroundImage(`url('data:image/jpeg;base64,${foundEvent.mainImageData}')`)
+    setBackgroundImage(`url(${constants.BASE_URL}images/${foundEvent.dpimageFileName})`)
     setshowOpenedEvent(true)
   }
   const handlePageChange = (page) => {

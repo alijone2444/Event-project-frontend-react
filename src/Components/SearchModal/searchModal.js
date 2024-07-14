@@ -26,8 +26,10 @@ const SearchModal = (props) => {
                         query: value
                     }
                 });
-                const fetchedSuggestions = response.data.map(event => event.eventName); // Assuming eventName is what you want to display
-                setSuggestions(fetchedSuggestions);
+                if (response.data) {
+                    const fetchedSuggestions = response.data.map(event => event.eventName); // Assuming eventName is what you want to display
+                    setSuggestions(fetchedSuggestions);
+                }
             } catch (error) {
                 console.error('Error fetching suggestions:', error);
                 setSuggestions([]);

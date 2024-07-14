@@ -1,6 +1,4 @@
-const ProfileDataReducer = (state = [], action) => {
-    console.log('don flaming', state, action)
-
+const ProfileDataReducer = (state = {}, action) => {
     switch (action.type) {
         case 'SET_PROFILE_DATA':
             return action.payload;

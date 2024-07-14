@@ -14,6 +14,7 @@ import CrouselImagesDataReducer from './crouselImagesDatareducer';
 import setGotTokenFcmReducer from './firebaseReducers';
 import AdminSocietiesReducer from './adminSocietydataReducer';
 import { userPopularEventsReducer } from './EventsUserReducer';
+import CalanderDataReducer from './calanderDatareducer';
 import { createStore } from 'redux'
 const appReducer = combineReducers({
   requests: requestsReducer,
@@ -28,7 +29,8 @@ const appReducer = combineReducers({
   FCMToken: setGotTokenFcmReducer,
   eventspagination: paginationReducer,
   profiledata: ProfileDataReducer,
-  Adminsocieties: AdminSocietiesReducer
+  Adminsocieties: AdminSocietiesReducer,
+  CalanderEvents: CalanderDataReducer
 });
 
 const rootReducer = (state, action) => {

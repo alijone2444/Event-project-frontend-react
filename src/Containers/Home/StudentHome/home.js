@@ -76,7 +76,7 @@ function Home() {
         console.error('Error fetching profile data:', error);
       }
     };
-    if (profileData.length === 0) {
+    if (Object.keys(profileData).length === 0) {
       fetchProfileData();
     }
   }, [dispatch]);

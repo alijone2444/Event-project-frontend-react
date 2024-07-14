@@ -7,6 +7,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import AppBarComponent from "../../Components/SubAppbar/appbar";
 import { useNavigate } from "react-router-dom";
+import constants from "../../Constants/constants";
 
 function EventDetailPage() {
   const { state } = useLocation();
@@ -17,7 +18,7 @@ function EventDetailPage() {
     window.scrollTo(0, 0);
   }, [])
   const backgroundImage = {
-    backgroundImage: `url('data:image/jpeg;base64,${eventData.mainImageData}')`,
+    backgroundImage: `url(${constants.BASE_URL}images/${eventData.dpimageFileName})`,
     backgroundSize: 'cover',
     filter: 'blur(30px)',
     position: 'fixed',

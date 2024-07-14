@@ -17,15 +17,17 @@ const EventCard = (props) => {
   const toggleLike = async (eventId, isLIKE) => {
     try {
       const response = await requestInstance.post(`${constants.BASE_URL}like-event`, { eventId, isLIKE });
-      const result = response.data;
-      console.log('res', result)
-      // Update the specific event in the Redux state
-      const updatedEvents = events.map((event) =>
-        event._id === eventId ? { ...event, isLiked: result.events.isLiked, NoOfLikes: result.events.NoOfLikes } : event
-      );
+      if (response.data) {
+        const result = response.data;
+        console.log('res', result)
+        // Update the specific event in the Redux state
+        const updatedEvents = events.map((event) =>
+          event._id === eventId ? { ...event, isLiked: result.events.isLiked, NoOfLikes: result.events.NoOfLikes } : event
+        );
 
-      dispatch(setEventsDataAll(updatedEvents));
-      console.log(events)
+        dispatch(setEventsDataAll(updatedEvents));
+        console.log(events)
+      }
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : error.message);
     }
@@ -42,7 +44,7 @@ const EventCard = (props) => {
               <img
                 className="event-image"
                 style={{ height: '150px' }}
-                src={`data:image/jpeg;base64,${event.mainImageData}`}
+                src={`${constants.BASE_URL}images/${event.dpimageFileName}`}
                 alt="Event"
               />
             </div>

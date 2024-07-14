@@ -52,7 +52,7 @@ function SidebarComponent(props) {
       try {
         const requestInstance = createAuthenticatedRequest();
         const response = await requestInstance.get(`${constants.BASE_URL}get-profile-data`);
-        if (response.data) {
+        if (response.data.profile) {
           dispatch(setProfileData(response.data.profile));
         }
       } catch (error) {
@@ -61,7 +61,9 @@ function SidebarComponent(props) {
     };
 
     // Fetch profile data when the component mounts or updates
-    fetchProfileData();
+    if (Object.keys(profileData).length === 0) {
+      fetchProfileData();
+    }
   }, [dispatch]);
   // useEffect(() => {
   //     if (profileData) {

@@ -19,11 +19,13 @@ function Navbar(props) {
   const CheckUserType = async () => {
     try {
       const response = await requestInstance.get(`${constants.BASE_URL}check-drawer`);
-      const data = response.data;
-      console.log(data);
-      setUserType(data);
-      setLoading(false);
-      return data;
+      if (response.data) {
+        const data = response.data;
+        console.log(data);
+        setUserType(data);
+        setLoading(false);
+        return data;
+      }
     } catch (error) {
       console.error('Error fetching data:', error);
       setLoading(false);

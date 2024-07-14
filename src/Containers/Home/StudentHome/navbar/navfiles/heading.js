@@ -24,16 +24,17 @@ function Heading(props) {
             try {
                 const requestInstance = createAuthenticatedRequest();
                 const response = await requestInstance.get(`${constants.BASE_URL}get-profile-data`);
-                if (response.data) {
+                if (response.data.profile) {
                     dispatch(setProfileData(response.data.profile));
                 }
             } catch (error) {
                 console.error('Error fetching profile data:', error);
             }
         };
-
-        // Fetch profile data when the component mounts or updates
-        fetchProfileData();
+        if (Object.keys(profileData).length === 0) {
+            // Fetch profile data when the component mounts or updates
+            fetchProfileData();
+        }
     }, [dispatch]);
     const handleEditProfile = () => {
         setEditModal(true);

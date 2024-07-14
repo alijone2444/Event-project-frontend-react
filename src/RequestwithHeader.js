@@ -6,6 +6,8 @@ const createAuthenticatedRequest = () => {
     headers: {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      "ngrok-skip-browser-warning": "any",
     },
   });
 };

@@ -54,11 +54,12 @@ const CreateEvent = (props) => {
         registrationOpen: props.edit.registrationOpen || true,
         registrationDeadline: props.edit.registrationDeadline ? new Date(props.edit.registrationDeadline).toISOString().split('T')[0] : '',
         tags: props.edit.tags || [],
-        imageFiles: (props.edit.additionalImagesData || []).map(event => ({
-          src: `data:image/jpeg;base64,${event.imageData}`,
+        imageFiles: (props.edit.imageFileNames || []).map(event => ({
+          src: `${constants.BASE_URL}images/${event}`,
+          // src={`${constants.BASE_URL}images/${event.dpimageFileName}`}
         })),
       });
-      setimageUrl(`data:image/jpeg;base64,${props.edit.mainImageData}`);
+      setimageUrl(`${constants.BASE_URL}images/${props.edit.dpimageFileName}`);
     }
   }, [props]);
 
@@ -89,7 +90,7 @@ const CreateEvent = (props) => {
       return `${eventData.eventName}_${eventData.organizer}_${index}`;
     });
 
-    formData.append('societyName', props.societyName)
+    formData.append('societyName', props.societyName ? props.societyName : 'None')
     // Append other form data to FormData
     Object.entries(eventData).forEach(([key, value]) => {
       if (key !== 'imageFiles' && key !== 'Dpimage') {

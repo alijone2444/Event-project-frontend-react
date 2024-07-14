@@ -27,9 +27,11 @@ const SocietiesAdminComponent = (props) => {
                 setLoading(true)
                 const response = await requestInstance.get(`${constants.BASE_URL}get-societies`);
                 // Assuming the response contains societies data
-                console.log(response, 'fanoiwio')
-                dispatch(setAdminSocietiesData(response.data.societies));
-                setLoading(false)
+                if (response.data.societies) {
+                    console.log(response, 'fanoiwio')
+                    dispatch(setAdminSocietiesData(response.data.societies));
+                    setLoading(false)
+                }
                 // Handle the societies data as needed
                 // Return data or perform any other actions if needed
             } catch (error) {
@@ -58,9 +60,11 @@ const SocietiesAdminComponent = (props) => {
         try {
             const response = await requestInstance.delete(`${constants.BASE_URL}delete-societies/${id}`);
             // Assuming response.data contains updated societies data after deletion 
-            dispatch(setAdminSocietiesData(response.data.societies));
-            message.success('Society deleted successfully.');
-            setLoading(false);
+            if (response.data.societies) {
+                dispatch(setAdminSocietiesData(response.data.societies));
+                message.success('Society deleted successfully.');
+                setLoading(false);
+            }
         } catch (error) {
             console.error('Error deleting society:', error);
             message.error('Failed to delete society.');

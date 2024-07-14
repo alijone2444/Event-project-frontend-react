@@ -29,12 +29,13 @@ function SocietiesPage() {
                 name: name,
                 action: action
             });
+            if (response.data) {
+                const updatedSocieties = Societies.map(society =>
+                    society._id === response.data.society._id ? response.data.society : society
+                );
 
-            const updatedSocieties = Societies.map(society =>
-                society._id === response.data.society._id ? response.data.society : society
-            );
-
-            dispatch(setSocietiesData(updatedSocieties));
+                dispatch(setSocietiesData(updatedSocieties));
+            }
         } catch (error) {
             console.error('Error following/unfollowing society:', error);
             // Handle errors as needed

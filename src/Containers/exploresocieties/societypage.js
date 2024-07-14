@@ -30,10 +30,11 @@ const AboutSocietyPage = () => {
                 const requestInstance = createAuthenticatedRequest();
 
                 const response = await requestInstance.get(`${constants.BASE_URL}check-drawer`);
-                const data = response.data;
-                console.log(data);
-                setUserType(data);
-                return data;
+                if (response.data) {
+                    setUserType(response.data);
+                    return response.data;
+                }
+
             } catch (error) {
                 console.error('Error fetching data:', error);
                 setLoading(false);
@@ -60,7 +61,9 @@ const AboutSocietyPage = () => {
             }
         };
         if (society || rerun) {
+            console.log('rerunned')
             fetchEvents();
+            setrerun(false)
         }
     }, [society, runuseeffectagain]);
 
@@ -146,7 +149,10 @@ const AboutSocietyPage = () => {
                 ))}
                 <Divider />
                 {societyEvents.length !== 0 ? (
-                    <ScrollingHorizontally data={societyEvents} title={'Events'} subheader={'Check This Society Events'} subheaderColor={"purple"} />
+                    <ScrollingHorizontally data={societyEvents} title={'Events'} subheader={'Check This Society Events'} subheaderColor={"purple"} showdel={true} deletesucess={() => {
+                        setrunuseeffectagain(!runuseeffectagain)
+                        setrerun(true)
+                    }} />
                 ) : (
                     <>
                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>

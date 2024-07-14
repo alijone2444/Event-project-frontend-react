@@ -25,8 +25,8 @@ const constants = {
     // BASE_URL: 'http://192.168.1.15:3002/',
     // BASE_URL_2: 'http://192.168.1.15:5000/',
 
-    // BASE_URL: 'http://192.168.1.9:3002/',
-    BASE_URL: 'https://53d5-182-180-46-244.ngrok-free.app/',
+    BASE_URL: 'http://192.168.1.9:3002/',
+    // BASE_URL: 'https://5c6b-182-180-46-244.ngrok-free.app/',
 
     BASE_URL_2: 'http://192.168.60.129:5000/',
     departmentOptions: [

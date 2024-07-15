@@ -41,6 +41,11 @@ const EventDetail = (props) => {
           {props.eventData.subheader}
         </Typography>
       </Grid>
+      <Grid item xs={12}>
+        <Typography variant="body1" className={classes.field}>
+          <strong>Organizer:</strong> {props.eventData.organizer}
+        </Typography>
+      </Grid>
 
       {/* Other fields */}
       <Grid item xs={12}>
@@ -48,6 +53,7 @@ const EventDetail = (props) => {
           <strong>Location:</strong> {props.eventData.location}
         </Typography>
       </Grid>
+
       <Grid item xs={12}>
         <Typography variant="body1" className={classes.field}>
           <strong>Start Date:</strong> {new Date(props.eventData.startDate).toLocaleDateString()}
@@ -60,7 +66,7 @@ const EventDetail = (props) => {
       </Grid>
       <Grid item xs={12}>
         <Typography variant="body1" className={classes.field}>
-          <strong>Organizer:</strong> {props.eventData.organizer}
+          <strong>Registration Deadline:</strong> {new Date(props.eventData.registrationDeadline).toLocaleDateString()}
         </Typography>
       </Grid>
       <Grid item xs={12} style={{ position: 'relative' }}>
@@ -82,18 +88,32 @@ const EventDetail = (props) => {
         )}
       </Grid>
 
+      <Grid item xs={12}>
+        <Typography variant="body1" className={classes.field}>
+          <strong>Registration status:</strong> {props.eventData.registrationOpen ? 'opened' : 'Not opened yet'}
+        </Typography>
+      </Grid>
       {/* Description */}
       {halfDescription && (
         <Grid item xs={12}>
           {isSmallScreen ? (
-            <Typography variant="body1" p={2} style={{ color: 'white', filter: 'blur(0px)' }}>
-              {desc_text}
+            <Typography variant="body1" style={{ color: 'white', filter: 'blur(0px)' }}>
+              {desc_text} {props.eventData.tags[0].split(',').map((item, index) => (
+                <Typography variant="body1" key={index} style={{ fontWeight: 'bold', color: 'dodgerBlue' }}>
+                  #{item}
+                </Typography>
+              ))}
+
             </Typography>
           ) : (
             <>
               <Typography variant="body1" className={classes.description} p={2}>
                 <div style={{ position: 'absolute', padding: '5%', top: 0, left: 0, width: '100%', height: '100px', zIndex: 1, pointerEvents: 'none', backgroundImage: 'linear-gradient(to bottom, transparent, white)' }} />
-                {desc_text}
+                {desc_text}{props.eventData.tags[0].split(',').map((item, index) => (
+                  <Typography variant="body1" key={index} style={{ fontWeight: 'bold', color: 'dodgerBlue' }}>
+                    #{item}
+                  </Typography>
+                ))}
               </Typography>
               <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
                 <Button onClick={handleSeeMore} className={classes.readMoreLink}>

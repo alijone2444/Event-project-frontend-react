@@ -14,13 +14,6 @@ const useStyles = makeStyles((theme) => ({
     '&::-webkit-scrollbar': {
       width: '8px',
     },
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: 'red',
-      borderRadius: '4px',
-    },
-    '&::-webkit-scrollbar-track': {
-      backgroundColor: 'green',
-    },
   },
 }));
 
@@ -67,7 +60,11 @@ const OpenEvent = (props) => {
         </Grid>
         {ShowDescription && (
           <Grid item xs={12} md={12} style={{ marginTop: '5%', marginBottom: '5%' }}>
-            <Typography style={{ color: 'white', filter: 'blur(0px)' }} mt={2}>{Desc_text}</Typography>
+            <Typography style={{ color: 'white', filter: 'blur(0px)' }} mt={2}>{Desc_text}{props.eventData.tags[0].split(',').map((item, index) => (
+              <Typography variant="body1" key={index} style={{ fontWeight: 'bold', color: 'dodgerBlue' }}>
+                #{item}
+              </Typography>
+            ))}</Typography>
             <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
               <Button
                 onClick={handleSeeLess}

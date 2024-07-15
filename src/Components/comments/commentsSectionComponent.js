@@ -96,12 +96,13 @@ const CommentSection = ({ eventName }) => {
                         <Avatar alt={comment.name} src={comment.avatar} className={classes.avatar} />
                         <div className={classes.commentContent}>
                             <div className={classes.commentHeader}>
-                                <Typography variant="body1" gutterBottom>
+                                <Typography variant="body1" >
                                     <strong>{comment.name}</strong>
                                 </Typography>
                                 <Typography variant="body2" className={classes.commentTime}>
-                                    {comment.createdAt ? moment(comment.createdAt.toDate()).format('HH:mm:ss [UTC]Z') : ''}
+                                    {comment.createdAt ? moment(comment.createdAt.toDate()).format('DD MMMM YYYY [at] HH:mm') : ''}
                                 </Typography>
+
                             </div>
                             <Typography variant="body2" className={classes.commentText}>
                                 {comment.text}

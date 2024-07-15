@@ -1,8 +1,9 @@
-// firebase.js
-import { initializeApp } from '@firebase/app';
-import { getMessaging, getToken, onMessage } from '@firebase/messaging';
-import constants from '../../Constants/constants';
+import { initializeApp } from 'firebase/app';
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 import createAuthenticatedRequest from '../../RequestwithHeader';
+import constants from '../../Constants/constants';
 
 const firebaseConfig = {
     apiKey: "AIzaSyBZC4X_NNkjDv82ZtZWskZtFASGtMW0mCc",
@@ -16,20 +17,16 @@ const firebaseConfig = {
 
 const firebaseApp = initializeApp(firebaseConfig);
 const messaging = getMessaging(firebaseApp);
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
 const requestInstance = createAuthenticatedRequest();
 
 const setupNotifications = async (onMessageCallback) => {
     try {
-        // Request permission for notifications
         const permission = await Notification.requestPermission();
 
         if (permission === 'granted') {
-            console.log('Notification permission granted.');
-            // Get the FCM token
             const token = await getToken(messaging);
-            console.log('FCM Token:', token);
-
-            // Send token to the backend
             requestInstance.post(`${constants.BASE_URL}add-fcm-token`, { token })
                 .then(response => {
                     console.log('FCM Token sent to the backend:', response.data);
@@ -38,19 +35,16 @@ const setupNotifications = async (onMessageCallback) => {
                     console.error('Error sending FCM Token to the backend:', error);
                 });
 
+            onMessage(messaging, (payload) => {
+                console.log('Foreground Message:', payload);
+                onMessageCallback(payload);
+            });
         } else {
             console.log('Notification permission denied.');
         }
-
-        // Handle foreground notifications
-        onMessage(messaging, (payload) => {
-            console.log('Foreground Message:', payload);
-            // Handle the notification or update your UI
-            onMessageCallback(payload);
-        });
     } catch (error) {
         console.error('Error setting up notifications:', error);
     }
 };
 
-export { messaging, setupNotifications };
+export { messaging, setupNotifications, auth, db };

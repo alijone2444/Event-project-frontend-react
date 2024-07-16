@@ -27,23 +27,23 @@ const setupNotifications = async (onMessageCallback) => {
 
         if (permission === 'granted') {
             const token = await getToken(messaging);
-            requestInstance.post(`${constants.BASE_URL}add-fcm-token`, { token })
-                .then(response => {
-                    console.log('FCM Token sent to the backend:', response.data);
-                })
-                .catch(error => {
-                    console.error('Error sending FCM Token to the backend:', error);
-                });
+            requestInstance.post(`${constants.BASE_URL}add-fcm-token`, { token });
+
+            console.log('FCM Token sent to the backend:', token);
 
             onMessage(messaging, (payload) => {
                 console.log('Foreground Message:', payload);
                 onMessageCallback(payload);
             });
+
+            return token; // Return the token after the request is complete
         } else {
             console.log('Notification permission denied.');
+            return null;
         }
     } catch (error) {
         console.error('Error setting up notifications:', error);
+        return null;
     }
 };
 

@@ -19,23 +19,24 @@ import { register } from "../../../Components/Firebase/serviceWorker";
 import Greeting from "../../../Components/notificationsComponents/greeting";
 import { setGotTokenFcm } from "../../../ReduxStore/actions/firebaseActions";
 import { setProfileData } from "../../../ReduxStore/actions/profileDataAction";
+import { setFCMToken } from "../../../ReduxStore/actions/fcmTokenState";
 function Home() {
-  const requestInstance = createAuthenticatedRequest()
-  const dispatch = useDispatch()
+  const requestInstance = createAuthenticatedRequest();
+  const dispatch = useDispatch();
   const UpcommingEvent = useSelector((state) => state.userUpcomingEvents);
   const recentEvents = useSelector((state) => state.userRecentEvents);
-  const popularEvents = useSelector((state) => state.userpopularEvents)
+  const popularEvents = useSelector((state) => state.userpopularEvents);
   const [showGreeting, setShowGreeting] = useState(false);
   const isForeground = useVisibilityChange();
   const FCMTOKEN = useSelector(state => state.FCMToken.flag); // Assuming FCMToken is your root reducer name
+  const profileData = useSelector(state => state.profiledata);
 
-  const profileData = useSelector(state => state.profiledata)
   useEffect(() => {
     const handleNotification = (message) => {
       const { title, body } = message.notification;
-      const { date, location } = message.data
+      const { date, location } = message.data;
 
-      console.log(message.notification, message.data)
+      console.log(message.notification, message.data);
       if (isForeground) {
         toastNotification({
           title,
@@ -49,18 +50,17 @@ function Home() {
           body,
         });
       }
-
     };
+
     if (!FCMTOKEN) {
       setShowGreeting(true);
-      setupNotifications(handleNotification).then(() => {
-
-        // const handleNotification = (payload) => {
-        //   console.log(payload)
-        // }
+      setupNotifications(handleNotification).then((token) => {
+        if (token) {
+          console.log('tokennnnnnnnn', token)
+          dispatch(setFCMToken(token));
+          dispatch(setGotTokenFcm(true));
+        }
       });
-      dispatch(setGotTokenFcm(true));
-
     }
   }, [isForeground]);
 

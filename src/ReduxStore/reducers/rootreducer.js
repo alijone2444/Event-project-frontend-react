@@ -3,6 +3,7 @@ import requestsReducer from './RequestsreducerAdmin'; // Adjust the import path 
 import AdminEventsReducer from './EventsAdminReducer';
 import SocietiesReducer from './societiesDataReducer';
 import ProfileDataReducer from './profileDataReducer';
+import fcmTokenReducer from './FcmTokenStateReducer';
 import {
   userUpcomingEventsReducer,
   userHotEventsReducer,
@@ -30,7 +31,8 @@ const appReducer = combineReducers({
   eventspagination: paginationReducer,
   profiledata: ProfileDataReducer,
   Adminsocieties: AdminSocietiesReducer,
-  CalanderEvents: CalanderDataReducer
+  CalanderEvents: CalanderDataReducer,
+  fcmTokenState: fcmTokenReducer
 });
 
 const rootReducer = (state, action) => {

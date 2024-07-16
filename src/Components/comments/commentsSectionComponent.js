@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Grid, Typography, TextField, Button, Divider, Avatar } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import moment from 'moment'; // Import moment.js for date formatting
@@ -9,6 +9,7 @@ import { db } from '../Firebase/firebase';
 import { addDoc, collection, serverTimestamp, onSnapshot, query, orderBy, limit, where } from "firebase/firestore";
 import createAuthenticatedRequest from '../../RequestwithHeader';
 import constants from '../../Constants/constants';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const CommentSection = ({ eventName }) => {
     const classes = useStyles();
@@ -17,7 +18,7 @@ const CommentSection = ({ eventName }) => {
     const [showLottie, setshowLottie] = useState(false);
     const [username, setUserName] = useState(null);
     const [profileImage, setProfileImage] = useState('');
-
+    const commentsEndRef = useRef(null); // Ref for end of comments
     useEffect(() => {
         const fetchUserData = async () => {
             try {
@@ -63,6 +64,11 @@ const CommentSection = ({ eventName }) => {
         }
     }, [eventName]);
 
+    const scrollToBottom = () => {
+        if (commentsEndRef.current) {
+            commentsEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    };
     const handleCommentSubmit = async () => {
         try {
             setshowLottie(true);
@@ -83,10 +89,13 @@ const CommentSection = ({ eventName }) => {
 
     return (
         <Grid container className={classes.commentContainer}>
-            <Grid item xs={12}>
-                <Typography variant="h6" gutterBottom style={{ color: 'white' }}>
+            <Grid item xs={12} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', }}>
+                <Typography variant="h6" gutterBottom style={{ color: 'white', }}>
                     Comments
                 </Typography>
+                <Button onClick={scrollToBottom} style={{ color: 'white', fontSize: 10 }}>
+                    Move to Bottom <KeyboardArrowDownIcon />
+                </Button>
             </Grid>
 
             <Divider style={{ backgroundColor: 'white', width: '100%' }} />
@@ -100,7 +109,7 @@ const CommentSection = ({ eventName }) => {
                                     <strong>{comment.name}</strong>
                                 </Typography>
                                 <Typography variant="body2" className={classes.commentTime}>
-                                    {comment.createdAt ? moment(comment.createdAt.toDate()).format('DD MMMM YYYY [at] HH:mm') : ''}
+                                    {comment.createdAt ? new Date(comment.createdAt.seconds * 1000).toLocaleDateString("en-US") : ''}
                                 </Typography>
 
                             </div>
@@ -116,7 +125,8 @@ const CommentSection = ({ eventName }) => {
                 </Typography>
             )}
             {/* Comment Form */}
-            <Grid item xs={12} className={classes.commentForm}>
+            <Grid item xs={12} className={classes.commentForm}
+                ref={commentsEndRef}>
                 <TextField
                     label="Add a comment"
                     multiline

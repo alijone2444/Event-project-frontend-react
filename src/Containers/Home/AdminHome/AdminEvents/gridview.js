@@ -8,11 +8,13 @@ import createAuthenticatedRequest from '../../../../RequestwithHeader';
 import constants from '../../../../Constants/constants';
 import { setEventsDataAll } from '../../../../ReduxStore/actions/eventsDataActionUser';
 import { useDispatch, useSelector } from 'react-redux';
+import { setEventsDataAdmin } from '../../../../ReduxStore/actions/eventsDataAction';
 
 const EventCard = (props) => {
   const requestInstance = createAuthenticatedRequest();
   const dispatch = useDispatch();
   const events = useSelector((state) => state.userAllEvents); // Adjust according to your state structure
+  const AdminEvents = useSelector((state) => state.adminEvents); // Adjust according to your state structure
   console.log(props)
   const toggleLike = async (eventId, isLIKE) => {
     try {
@@ -25,6 +27,13 @@ const EventCard = (props) => {
           event._id === eventId ? { ...event, isLiked: result.events.isLiked, NoOfLikes: result.events.NoOfLikes } : event
         );
 
+        if (props.isAdmin) {
+          const updateEventForAdmin = AdminEvents.map((event) =>
+            event._id === eventId ? { ...event, isLiked: result.events.isLiked, NoOfLikes: result.events.NoOfLikes } : event
+          );
+          dispatch(setEventsDataAdmin(updateEventForAdmin));
+          console.log(AdminEvents, 'abc')
+        }
         dispatch(setEventsDataAll(updatedEvents));
         console.log(events)
       }
@@ -32,9 +41,6 @@ const EventCard = (props) => {
       console.error('Error:', error.response ? error.response.data : error.message);
     }
   };
-  useEffect(() => {
-    console.log(props, 'fa')
-  }, [props])
   return (
     <Grid container spacing={3} style={{ padding: '2%' }}>
       {props.eventData.map((event) => (

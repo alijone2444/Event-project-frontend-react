@@ -23,7 +23,7 @@ import { setEventsDataAdmin } from '../../../../ReduxStore/actions/eventsDataAct
 import { useDispatch, useSelector } from 'react-redux';
 import NoDataComponent from '../../../../Components/noData/noDataIcon';
 import OpenEvent from '../../../../Components/OpenEvent/openEvent';
-
+import { setTotalPages, setCurrentPage, setLastvisited } from '../../../../ReduxStore/actions/eventsPaginationActions';
 const { Option } = Select;
 
 const EventManagementInterface = () => {
@@ -40,10 +40,10 @@ const EventManagementInterface = () => {
   const [showLoading, setshowLoading] = useState(false)
   const [BackgroundImage, setBackgroundImage] = useState(null)
   const [edit, setEdit] = useState([])
-  const [currentPage, setCurrentPage] = useState(1); // Current page state
-  const [pageSize, setPageSize] = useState(6); // Items per page state
-  const [totalPages, setTotalPages] = useState(1); // Total pages state
-
+  const { currentPage, pageSize, totalPages, lastVisitedPage } = useSelector((state) => state.eventspagination);
+  useEffect(() => {
+    dispatch(setCurrentPage(1));
+  }, [])
   useEffect(() => {
     console.log('thh new value is', AgainRunUseEffect);
     if (eventsData.length === 0 || AgaingetReduxValues) {
@@ -59,9 +59,8 @@ const EventManagementInterface = () => {
         })
         .then(response => {
           dispatch(setEventsDataAdmin([...eventsData, ...response.data.events]));
-          console.log('respones:', response.data.events, response.data.currentPage, response.data.totalPages);
-          setCurrentPage(response.data.currentPage)
-          setTotalPages(response.data.totalPages);
+          dispatch(setCurrentPage(response.data.currentPage));
+          dispatch(setTotalPages(response.data.totalPages));
           setshowLoading(false); // Set loading to false when data fetching completes
         })
         .catch(err => {
@@ -78,8 +77,10 @@ const EventManagementInterface = () => {
       // Handle the response
       if (response.data.success === true) {
         setshowLoading(false)
-        setAgainRunUseEffect(!AgainRunUseEffect);
-        setAgaingetReduxValues(true)
+        const updateEvents = eventsData.filter(event => event._id !== id); // Filter out the deleted event
+        dispatch(setEventsDataAdmin(updateEvents)); // Update the Redux store
+        setshowLoading(false)
+
       };
     } catch (error) {
       setshowLoading(false)
@@ -123,9 +124,13 @@ const EventManagementInterface = () => {
     setshowOpenedEvent(true)
   }
   const handlePageChange = (page) => {
-    setCurrentPage(page); // Update current page state
-    setAgainRunUseEffect(true);
-    setAgaingetReduxValues(true)
+    dispatch(setCurrentPage(page)); // Update currentPage state
+    if (page > lastVisitedPage) {
+      setAgainRunUseEffect(true);
+      setAgaingetReduxValues(true)
+      dispatch(setLastvisited(page));
+    }
+
   };
 
 
@@ -182,6 +187,7 @@ const EventManagementInterface = () => {
                             editEvent={(id) => { handleEditEvent(id) }}
                             showLoading={showLoading}
                             handleDeleteEvent={(id) => { handleDeleteEvent(id) }}
+                            isAdmin={true}
                           />
                       )}
                     </div>
@@ -227,10 +233,19 @@ const EventManagementInterface = () => {
                 <CreateEvent
                   onclose={() => {
                     setshoweventsComponent(true);
+                    dispatch(setEventsDataAdmin([]));
+                    dispatch(setCurrentPage(1));
+                    dispatch(setLastvisited(1));
+                    dispatch(setTotalPages(1));
                     setAgainRunUseEffect(!AgainRunUseEffect);
                     setAgaingetReduxValues(true)
                     setEdit([])
                   }}
+                  oncloseSimple={() => {
+                    setshoweventsComponent(true);
+                    setEdit([])
+                  }
+                  }
                   edit={edit}
                 />
               </Grid>

@@ -32,6 +32,8 @@ const CreateEvent = (props) => {
     location: '',
     startDate: '',
     endDate: '',
+    startTime: '',
+    endTime: '',
     organizer: '',
     maxAttendees: 0,
     registrationOpen: true,
@@ -49,6 +51,8 @@ const CreateEvent = (props) => {
         location: props.edit.location || '',
         startDate: props.edit.startDate ? new Date(props.edit.startDate).toISOString().split('T')[0] : '',
         endDate: props.edit.endDate ? new Date(props.edit.endDate).toISOString().split('T')[0] : '',
+        startTime: '',
+        endTime: '',
         organizer: props.edit.organizer || '',
         maxAttendees: props.edit.maxAttendees || 0,
         registrationOpen: props.edit.registrationOpen || true,
@@ -145,7 +149,7 @@ const CreateEvent = (props) => {
       <form onSubmit={handleSave}>
         <AppBar position="sticky" style={{ zIndex: '2' }}>
           <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <IconButton edge="start" color="inherit" aria-label="close" onClick={props.onclose}>
+            <IconButton edge="start" color="inherit" aria-label="close" onClick={props.oncloseSimple}>
               <CloseIcon />
             </IconButton>
             <Typography variant="h6">Create Event</Typography>
@@ -186,6 +190,24 @@ const CreateEvent = (props) => {
             value={eventData.location}
             onChange={(e) => handleChange('location', e.target.value)}
             helperText="Enter the location of the event"
+          />
+          <TextField
+            className={classes.data_fields}
+            label="Start Time"
+            type="time"
+            required
+            value={eventData.startTime}
+            onChange={(e) => handleChange('startTime', e.target.value)}
+            helperText="Enter the start time of the event"
+          />
+          <TextField
+            className={classes.data_fields}
+            label="End Time"
+            type="time"
+            required
+            value={eventData.endTime}
+            onChange={(e) => handleChange('endTime', e.target.value)}
+            helperText="Enter the end time of the event"
           />
           <TextField
             className={classes.data_fields}

@@ -27,7 +27,7 @@ const setupNotifications = async (onMessageCallback) => {
 
         if (permission === 'granted') {
             const token = await getToken(messaging);
-            requestInstance.post(`${constants.BASE_URL}add-fcm-token`, { token });
+            await requestInstance.post(`${constants.BASE_URL}add-fcm-token`, { token });
 
             console.log('FCM Token sent to the backend:', token);
 

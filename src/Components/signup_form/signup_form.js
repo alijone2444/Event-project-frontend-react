@@ -6,11 +6,16 @@ import './signup_form.css';
 import TermsAndConditions from './termsAndConditions';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import constants from '../../Constants/constants';
+import { makeStyles, styled } from '@mui/styles';
+import { CircularProgress } from '@mui/material';
+
 
 const { Option } = Select;
 
 const SignUp = (props) => {
+  const [Email, setEmail] = useState('');
   const [Rollno, setRollno] = useState('');
+  const classes = useStyles();
   const [password, setPassword] = useState('');
   const [confirmpassword, setConfirmPassword] = useState('');
   const [error, setError] = useState({ hasError: false, errorMessage: '' });
@@ -19,17 +24,21 @@ const SignUp = (props) => {
   const [showTerms, setshowTerms] = useState(false);
   const [checked, setisChecked] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
+  const [loading, setloading] = useState(false);
+
 
   const onFinish = (values) => {
     console.log('Received values:', values);
   };
 
   const handleSubmit = async () => {
+    setloading(true)
     try {
       console.log(checked);
       if (
         checked &&
         Rollno &&
+        Email &&
         password &&
         confirmpassword &&
         password === confirmpassword &&
@@ -46,6 +55,7 @@ const SignUp = (props) => {
 
         // Assuming you have a backend endpoint for user registration
         const response = await axios.post(`${constants.BASE_URL}signup`, {
+          Email: Email,
           Rollno: rollnoInteger, // Use the parsed integer value
           password: password,
           department: selectedDepartment,
@@ -59,9 +69,11 @@ const SignUp = (props) => {
         } else {
           if (response.data.success === false) {
             setError({ hasError: true, errorMessage: 'User already exists' });
+            setloading(false)
           }
         }
       } else {
+        setloading(false)
         if (password !== confirmpassword) {
           setError({ hasError: true, errorMessage: "Passwords don't match" });
         } else if (!checked) {
@@ -73,6 +85,7 @@ const SignUp = (props) => {
         }
       }
     } catch (err) {
+      setloading(false)
       // Handle the error
       console.error('Error:', err);
     }
@@ -96,28 +109,46 @@ const SignUp = (props) => {
             <h2 className="signup-title">Sign Up</h2>
             <Form name="signupForm" initialValues={{ remember: true }} onFinish={onFinish}>
 
+              <Form.Item name="Email Address" rules={[{ required: true, message: 'Enter your email to link your account to it!' }]}>
+                <Input
+                  style={{ backgroundColor: 'transparent', color: 'white' }}
+                  className={classes.border}
+                  placeholder="Email address"
+                  type="email"
+
+                  required
+                  value={Email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+
+              </Form.Item>
+
               <Form.Item name="department" rules={[{ required: true, message: 'Please select your department!' }]}>
-                <Select
-                  placeholder="Select Department"
-                  style={{ width: '250PX', backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
-                  onChange={(value) => setSelectedDepartment(value)}
-                >
-                  {constants.departmentOptions.map((department, index) => (
-                    <Option key={index} value={department}>{department}</Option>
-                  ))}
-                </Select>
+                <selectWrapper>
+                  <Select
+                    className='selectfield'
+                    placeholder="Select Department"
+                    style={{ backgroundColor: 'transparent', color: 'white' }}
+                    onChange={(value) => setSelectedDepartment(value)}
+                  >
+                    {constants.departmentOptions.map((department, index) => (
+                      <Option key={index} value={department} style={{ backgroundColor: 'rgba(0,0,0,0.5)', color: 'white' }}>{department}</Option>
+                    ))}
+                  </Select>
+                </selectWrapper>
               </Form.Item>
 
               <Form.Item name="Rollno" rules={[{ required: true, message: 'Please input your Roll number!' }]}>
                 <Input
-                  style={{ width: '250PX', backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
-                  className="border"
+                  style={{ backgroundColor: 'transparent', color: 'white' }}
+                  className={classes.border}
                   placeholder="Roll number"
                   type="email"
                   required
                   value={Rollno}
                   onChange={(e) => setRollno(e.target.value)}
                 />
+
               </Form.Item>
 
               <Form.Item name="password" rules={[{ required: true, message: 'Please input your password!' }]}>
@@ -142,13 +173,14 @@ const SignUp = (props) => {
 
               <Form.Item>
                 <Button
-                  style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
+                  style={{ backgroundColor: 'transparent', color: 'white' }}
                   type="primary"
                   htmlType="button"
                   className="signup-form-button"
                   onClick={handleSubmit}
                 >
-                  Sign Up
+                  {loading ? <CircularProgress size={20} style={{ color: 'white' }} /> : `      Sign Up`}
+
                 </Button>
               </Form.Item>
               <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -158,21 +190,21 @@ const SignUp = (props) => {
           </>
         )}
       </div>
-    </div>
+    </div >
   );
 };
 
 const CustomPasswordInput = (props) => {
   return (
     <Input.Password
-      style={{ width: '250PX', backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
+      style={{ backgroundColor: 'transparent', color: 'white' }}
       placeholder="Password"
       className="border"
       required
       type="password"
       value={props.password}
       onChange={(e) => props.sendbackvalue(e.target.value)}
-      iconRender={(visible) => (visible ? <EyeOutlined style={{ color: props.issmall ? 'white' : 'black' }} /> : <EyeInvisibleOutlined style={{ color: props.issmall ? 'white' : 'grey' }} />)}
+      iconRender={(visible) => (visible ? <EyeOutlined style={{ color: 'white' }} /> : <EyeInvisibleOutlined style={{ color: props.issmall ? 'white' : 'grey' }} />)}
     />
   );
 };
@@ -180,7 +212,7 @@ const CustomPasswordInput = (props) => {
 const CustomConfirmPasswordInput = (props) => {
   return (
     <Input.Password
-      style={{ width: '250PX', backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black' }}
+      style={{ backgroundColor: 'transparent', color: 'white' }}
       placeholder="Confirm Password"
       className="border"
       required
@@ -190,5 +222,15 @@ const CustomConfirmPasswordInput = (props) => {
     />
   );
 };
+
+
+const useStyles = makeStyles({
+
+  border: {
+    '&::placeholder': {
+      color: 'white'
+    },
+  },
+});
 
 export default SignUp;

@@ -1,5 +1,6 @@
 {
   "name": "event-management-system",
+  "homepage": "https://ist-ems.live/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -27,6 +28,7 @@
     "lottie-react-web": "^2.2.2",
     "npm": "^9.7.2",
     "react": "^18.2.0",
+    "react-animate-on-scroll": "^2.1.9",
     "react-animated-cursor": "^2.7.0",
     "react-animated-numbers": "^0.18.0",
     "react-animated-text": "^0.1.4",

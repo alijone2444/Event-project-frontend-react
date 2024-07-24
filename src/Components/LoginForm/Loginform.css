@@ -46,6 +46,16 @@
 
 .border {}
 
+.ant-input-affix-wrapper>input.ant-input {
+  background-color: transparent !important;
+  color: white;
+}
+
+.ant-input-affix-wrapper>input.ant-input::placeholder {
+  color: white;
+  /* Placeholder text color */
+}
+
 .border:hover {
   border: 2px solid white;
 }

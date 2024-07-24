@@ -53,7 +53,6 @@ function Home() {
     };
 
     if (!FCMTOKEN) {
-      setShowGreeting(true);
       setupNotifications(handleNotification).then((token) => {
         if (token) {
           console.log('tokennnnnnnnn', token)
@@ -63,7 +62,11 @@ function Home() {
       });
     }
   }, [isForeground]);
-
+  useEffect(() => {
+    if (!FCMTOKEN) {
+      setShowGreeting(true);
+    }
+  }, [FCMTOKEN])
   useEffect(() => {
     const fetchProfileData = async () => {
       try {

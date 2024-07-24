@@ -4,7 +4,7 @@ import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
 import createAuthenticatedRequest from '../../RequestwithHeader';
 import constants from '../../Constants/constants';
-
+import axios from 'axios';
 const firebaseConfig = {
     apiKey: "AIzaSyBZC4X_NNkjDv82ZtZWskZtFASGtMW0mCc",
     authDomain: "event-notifications-105e1.firebaseapp.com",
@@ -20,15 +20,35 @@ const messaging = getMessaging(firebaseApp);
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 const requestInstance = createAuthenticatedRequest();
-
+const getAuthToken = () => {
+    return new Promise((resolve, reject) => {
+        const token = localStorage.getItem('authToken');
+        if (token) {
+            resolve(token);
+        } else {
+            reject(new Error('No authToken found in localStorage.'));
+        }
+    });
+};
 const setupNotifications = async (onMessageCallback) => {
     try {
         const permission = await Notification.requestPermission();
-
+        const authToken = await getAuthToken();
         if (permission === 'granted') {
             const token = await getToken(messaging);
-            await requestInstance.post(`${constants.BASE_URL}add-fcm-token`, { token });
-
+            if (authToken) {
+                console.log('this is the toke yet', authToken)
+                await axios.post(
+                    `${constants.BASE_URL}add-fcm-token`,
+                    { token },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${authToken}`,
+                            'Content-Type': 'application/json',
+                        },
+                    }
+                );
+            }
             console.log('FCM Token sent to the backend:', token);
 
             onMessage(messaging, (payload) => {

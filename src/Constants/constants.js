@@ -22,11 +22,9 @@ const constants = {
         // },
 
     ],
-    // BASE_URL: 'http://192.168.1.15:3002/',
-    // BASE_URL_2: 'http://192.168.1.15:5000/',
-
-    BASE_URL: 'http://192.168.1.9:3002/',
-    // BASE_URL: 'https://b00c-182-180-46-244.ngrok-free.app/',
+    // /ist-ems-backend/
+    BASE_URL: 'http://192.168.1.18:3002/ist-ems-backend/',
+    // BASE_URL: 'https://ist-ems.live/ist-ems-backend/',
 
     BASE_URL_2: 'http://192.168.60.129:5000/',
     departmentOptions: [

@@ -7,23 +7,29 @@ import { useNavigate } from 'react-router-dom';
 import { makeStyles } from '@mui/styles';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import constants from '../../Constants/constants';
+import { CircularProgress } from '@mui/material';
 
 const Login = (props) => {
   const [Rollno, setRollno] = useState('');
   const [password, setPassword] = useState('');
+  const [Email, setEmail] = useState('');
   const [error, setError] = useState(false);
   const navigate = useNavigate();
   const classes = useStyles();
   const [showBorder, setshowBorder] = useState(false);
+  const [loading, setloading] = useState(false);
   const onFinish = (values) => {
     console.log('Received values:', values);
   };
 
   const handleSubmit = async () => {
+    setloading(true)
+    console.log('here')
     try {
       let dataToSend = {
         Rollno: Rollno,
         password: password,
+        Email: Email
       };
 
       if (!props.type) {
@@ -41,7 +47,7 @@ const Login = (props) => {
       if (response.data.success === true && response.data.token) {
         localStorage.setItem('authToken', response.data.token);
         localStorage.setItem('userType', response.data.userType);
-
+        setloading(false)
         if (props.type) {
           navigate('/Home');
         } else {
@@ -52,8 +58,10 @@ const Login = (props) => {
         // For example, display an error message to the user
         console.error('Login failed:', response.data.message);
         setError(true);
+        setloading(false)
       }
     } catch (err) {
+      setloading(false)
       // Handle the error
       // For example, redirect to a login page or display an error message
       console.error('Error:', err);
@@ -78,26 +86,61 @@ const Login = (props) => {
           initialValues={{ remember: true }}
           onFinish={onFinish}
         >
+
+          <Form.Item
+            style={{ zIndex: 2 }}
+            name="Email Address"
+
+            rules={[{ required: true, message: 'Enter your email to link your account!' }]}
+          >
+
+            <Input
+              className={classes.border}
+              style={{ backgroundColor: 'transparent', color: 'white', zIndex: 5 }}
+              placeholder="Email Address"
+              required
+              value={Email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Item>
           <Form.Item
             style={{ zIndex: 2 }}
             name="Rollno"
             rules={[{ required: true, message: 'Please input your Roll number!' }]}
           >
             <Input
-              className='border'
-              style={{ width: '250PX', backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black', zIndex: 5 }}
+              className={classes.border}
+              style={{ backgroundColor: 'transparent', color: 'white', zIndex: 5 }}
               placeholder="Roll number"
               required
               value={Rollno}
               onChange={(e) => setRollno(e.target.value)}
+
             />
           </Form.Item>
 
+
           <Form.Item
             name="password"
-            rules={[{ required: true, message: 'Please input your password!' }]}
+            rules={[{ required: true, message: 'Please input your EMS password!' }]}
           >
-            <CustomPasswordInput issmall={props.issmall} sendbackvalue={(value) => setPassword(value)} password={password} />
+
+            <Input.Password
+              className={classes.password}
+              style={{ backgroundColor: 'transparent', color: 'white', zIndex: 5 }}
+              required
+              value={password}
+              onChange={(e) => setPassword(e.target.value)} // Corrected here
+              placeholder="Password"
+              iconRender={(visible) =>
+                visible ? (
+                  <EyeOutlined style={{ color: props.issmall ? 'white' : 'black' }} />
+                ) : (
+                  <EyeInvisibleOutlined style={{ color: props.issmall ? 'white' : 'grey' }} />
+                )
+              }
+            />
+
           </Form.Item>
 
           <Form.Item>
@@ -111,8 +154,8 @@ const Login = (props) => {
           </Form.Item>
           {error && <p className={classes.errorText}>Incorrect password or Roll number</p>}
           <Form.Item>
-            <Button type="primary" htmlType="button" className="login-form-button" style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black', zIndex: 1 }} onClick={handleSubmit}>
-              Log in
+            <Button type="primary" htmlType="button" className="login-form-button" style={{ backgroundColor: 'transparent', color: 'white', zIndex: 1 }} onClick={handleSubmit}>
+              {loading ? <CircularProgress size={20} style={{ color: 'white' }} /> : `Log in`}
             </Button>
             <div style={{ display: 'flex', flexDirection: 'row', paddingTop: '5%' }}>
               <p style={{ color: 'white', margin: 0 }}>Already have an account?&nbsp;&nbsp;</p>
@@ -138,6 +181,11 @@ const useStyles = makeStyles({
     marginBottom: '0',
     animation: '$blink 1s infinite',
   },
+  border: {
+    '&::placeholder': {
+      color: 'white'
+    },
+  },
   '@keyframes blink': {
     '0%': {
       opacity: 1,
@@ -151,24 +199,4 @@ const useStyles = makeStyles({
   },
 });
 
-const CustomPasswordInput = (props) => {
-
-  return (
-    <Input.Password
-      className='border'
-      style={{ backgroundColor: props.issmall ? 'transparent' : 'white', color: props.issmall ? 'white' : 'black', zIndex: 5 }}
-      required
-      value={props.password}
-      onChange={(e) => props.sendbackvalue(e.target.value)}
-      placeholder="Password"
-      iconRender={(visible) =>
-        visible ? (
-          <EyeOutlined style={{ color: props.issmall ? 'white' : 'black' }} />
-        ) : (
-          <EyeInvisibleOutlined style={{ color: props.issmall ? 'white' : 'grey' }} />
-        )
-      }
-    />
-  );
-};
 export default Login;

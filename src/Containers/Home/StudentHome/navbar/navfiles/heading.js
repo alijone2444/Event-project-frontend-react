@@ -48,11 +48,11 @@ function Heading(props) {
         <div className='parent'>
             {isSmallScreen ? (
                 <a>
-                    <img src={Image} alt="Logo" style={{ height: '60px' }} />
+                    <img src={Image} alt="Logo" style={{ height: '60px', }} />
                 </a>
             ) : (
-                <div style={{ position: 'relative', display: 'inline-block', borderRadius: '50%', border: '1px solid lightgrey' }}>
-                    <img src={profileData.profileImageUrl || Profile} alt="Profile" style={{ height: '40px', width: '40px', borderRadius: '50%', cursor: 'pointer', objectFit: 'cover' }} onClick={() => { navigate('/user-profile', { state: profileData }) }} />
+                <div style={{ position: 'relative', display: 'inline-block' }}>
+                    <img src={profileData.profileImageUrl || Profile} alt="Profile" style={{ height: '50px', width: '50px', borderRadius: '50%', cursor: 'pointer', objectFit: 'cover', border: '2px solid dodgerblue' }} onClick={() => { navigate('/user-profile', { state: profileData }) }} />
 
                     <IconButton
                         style={{

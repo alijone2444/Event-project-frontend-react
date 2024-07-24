@@ -1,105 +1,125 @@
 /* RightDiv.css */
 
 .signup-container {
-    
-    display: flex;
-    flex: 1;
-    padding: 10%;
-    box-sizing: border-box;
-    background-color: transparent;
-    font-family: orbitron;
-    font-size: large;
-    color: white;   
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .signup-form-container {
-    background: transparent;
-    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.7);
-    padding: 5%;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .signup-title {
-    color: white;
-    text-align: center;
-    margin-bottom: 10%;
-  }
-  
-  .login-form-forgot {
-    float: right;
-    color: white;
-  }
-  
-  .signup-form-button {
-    width: 100%;
-    background: white;
-    border: 1px solid white;
-    color: #001529;
-  }
-  
-  .signup-form-button:hover {
-    background: #001529;
-    color: white;
-    border: 1px solid white;
-  }
-.border{
-  border: 2px solid rgb(255, 255, 255);
+
+  display: flex;
+  flex: 1;
+  padding: 10%;
+  box-sizing: border-box;
+  background-color: transparent;
+  font-family: orbitron;
+  font-size: large;
+  color: white;
+  justify-content: center;
+  align-items: center;
 }
 
-.border:hover{
+.signup-form-container {
+  background: transparent;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.7);
+  padding: 5%;
+  position: relative;
+  overflow: hidden;
+}
+
+.signup-title {
+  color: white;
+  text-align: center;
+  margin-bottom: 10%;
+}
+
+.login-form-forgot {
+  float: right;
+  color: white;
+}
+
+.signup-form-button {
+  width: 100%;
+  background: white;
+  border: 1px solid white;
+  color: #001529;
+}
+
+.signup-form-button:hover {
+  background: #001529;
+  color: white;
+  border: 1px solid white;
+}
+
+
+:where(.css-dev-only-do-not-override-txh9fw).ant-select:not(.ant-select-disabled):not(.ant-select-customize-input) .ant-select-selector {
+  color: white !important;
+}
+
+selectWrapper .ant-select-selector {
+  background: transparent !important;
+  color: white;
+}
+
+.ant-select-selection-placeholder {
+  color: white !important;
+}
+
+.ant-select-dropdown {
+  padding: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 1px solid white;
+}
+
+.border {}
+
+.border:hover {
   border: 2px solid white;
 }
 
-.border::selection{
+.border::selection {
   border: 2px solid white;
 }
 
 .top {
-    position: absolute;
-    border-radius: 100vmax;
-    top: 0;
-    left: 0;
-    width: 0;
-    height: 5px;
-    background: linear-gradient(
-      90deg,
+  position: absolute;
+  border-radius: 100vmax;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 5px;
+  background: linear-gradient(90deg,
       transparent 50%,
       rgba(255, 255, 255, 0.5),
-      rgb(255, 255, 255)
-    );
-    animation: animateTop 2s ease-in-out infinite;
+      rgb(255, 255, 255));
+  animation: animateTop 2s ease-in-out infinite;
+}
+
+@keyframes animateTop {
+  25% {
+    width: 100%;
+    opacity: 1;
   }
-  
-  @keyframes animateTop {
-    25% {
-      width: 100%;
-      opacity: 1;
-    }
-  
-    30%, 100% {
-      opacity: 0;
-    }
+
+  30%,
+  100% {
+    opacity: 0;
   }
-  .errorText {
-    color: red;
-    text-align: center;
-    margin-top: 0;
-    margin-bottom: 0;
-    animation: blink 1s infinite;
+}
+
+.errorText {
+  color: red;
+  text-align: center;
+  margin-top: 0;
+  margin-bottom: 0;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
   }
-  
-  @keyframes blink {
-    0% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
+
+  50% {
+    opacity: 0;
   }
-  
+
+  100% {
+    opacity: 1;
+  }
+}

@@ -17,9 +17,9 @@ const constants = {
         { name: "Logout", description: 'A logout option allows users to securely end their current session and sign out of their account.', Icon: <LogoutIcon style={{ color: 'red' }} /> },
 
     ],
-    // /ist-ems-backend/
-    BASE_URL: 'http://192.168.1.18:3002/ist-ems-backend/',
-    // BASE_URL: 'https://ist-ems.live/ist-ems-backend/',
+    // // /ist-ems-backend/
+    // BASE_URL: 'http://192.168.1.18:3002/ist-ems-backend/',
+    BASE_URL: 'https://ist-ems.live/ist-ems-backend/',
 
     BASE_URL_2: 'http://192.168.60.129:5000/',
     departmentOptions: [

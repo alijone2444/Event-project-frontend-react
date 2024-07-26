@@ -151,11 +151,13 @@ function Home() {
         console.log(err.message)
       }
     };
-
-    if (Object.keys(SavedConstants).length === 0) {
+    const areAllPropertiesEmpty = Object.values(SavedConstants).every(
+      (val) => typeof val === 'object' && Object.keys(val).length === 0
+    );
+    if (areAllPropertiesEmpty) {
       fetchThreeSocietiesAndConstants();
     }
-  }, [])
+  }, [dispatch])
   const [showstyle, setshowstyle] = useState(false)
   const isSmallScreen = useMediaQuery('(max-width:768px)');
 

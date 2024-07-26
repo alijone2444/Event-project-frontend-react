@@ -13,7 +13,7 @@ import { Divider, Button } from 'antd';
 import CircularProgress from '@mui/material/CircularProgress';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Import the CSS
-
+import recordSocietyVisit from '../../../../Components/functions/recortSocietyVisits';
 function SocietiesPage() {
     const Societies = useSelector((state) => state.Societies);
     const requestInstance = createAuthenticatedRequest();
@@ -124,8 +124,20 @@ function SocietiesPage() {
                                     <CardContent>
                                         <Typography variant="h5" component="div">
                                             {society.name}
-                                        </Typography>
-                                        <Typography variant="body2" color="text.secondary">
+                                        </Typography><Typography
+                                            variant="body2"
+                                            color="text.secondary"
+                                            style={{
+                                                color: 'black',
+                                                lineHeight: '1.5em',
+                                                maxHeight: '3em', /* line-height * number of lines (1.5em * 2 lines) */
+                                                overflow: 'hidden',
+                                                textOverflow: 'ellipsis',
+                                                display: '-webkit-box',
+                                                WebkitBoxOrient: 'vertical',
+                                                WebkitLineClamp: 2
+                                            }}
+                                        >
                                             {society.description}
                                         </Typography>
                                         <ButtonGroup
@@ -137,7 +149,7 @@ function SocietiesPage() {
                                             <Button style={{ backgroundColor: 'purple', color: 'white', width: '100%', marginTop: '2%' }} onClick={() => { followSociety(society._id, society.name, society.ismember ? 'Unfollow' : 'Follow') }}>
                                                 {followUnfollowLoaders[society._id] ? <CircularProgress style={{ color: 'white' }} size={24} /> : (society.ismember ? 'Unfollow' : 'Follow')}
                                             </Button>
-                                            <Button style={{ backgroundColor: 'purple', color: 'white', width: '100%', marginTop: '2%' }} onClick={() => { navigate('society-page', { state: society }) }}>Visit</Button>
+                                            <Button style={{ backgroundColor: 'purple', color: 'white', width: '100%', marginTop: '2%' }} onClick={() => { navigate('society-page', { state: society }); recordSocietyVisit(society.name) }}>Visit</Button>
                                         </ButtonGroup>
                                     </CardContent>
                                 </Card>

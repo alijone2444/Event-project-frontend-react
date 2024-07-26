@@ -20,12 +20,18 @@ import Greeting from "../../../Components/notificationsComponents/greeting";
 import { setGotTokenFcm } from "../../../ReduxStore/actions/firebaseActions";
 import { setProfileData } from "../../../ReduxStore/actions/profileDataAction";
 import { setFCMToken } from "../../../ReduxStore/actions/fcmTokenState";
+import SocietyCards from "../../../Components/SocietyCards/SocietyCards";
+import { setThreeSocieties } from "../../../ReduxStore/actions/threeSocietiesAction";
+import { setConstants } from "../../../ReduxStore/actions/setConstantsAction";
 function Home() {
   const requestInstance = createAuthenticatedRequest();
   const dispatch = useDispatch();
   const UpcommingEvent = useSelector((state) => state.userUpcomingEvents);
   const recentEvents = useSelector((state) => state.userRecentEvents);
   const popularEvents = useSelector((state) => state.userpopularEvents);
+  const threeSocieties = useSelector(state => state.threeSocieties);
+  const SavedConstants = useSelector(state => state.SavedConstants);
+
   const [showGreeting, setShowGreeting] = useState(false);
   const isForeground = useVisibilityChange();
   const FCMTOKEN = useSelector(state => state.FCMToken.flag); // Assuming FCMToken is your root reducer name
@@ -133,7 +139,23 @@ function Home() {
         });
     }
   }, [dispatch])
+  useEffect(() => {
+    const fetchThreeSocietiesAndConstants = async () => {
+      try {
+        const response = await requestInstance.get(`${constants.BASE_URL}three-societies`); // or use fetch
+        dispatch(setThreeSocieties(response.data))
+        const response2 = await requestInstance.get(`${constants.BASE_URL}get-constants`); // or use fetch
+        console.log('response 2', response2.data)
+        dispatch(setConstants(response2.data))
+      } catch (err) {
+        console.log(err.message)
+      }
+    };
 
+    if (Object.keys(SavedConstants).length === 0) {
+      fetchThreeSocietiesAndConstants();
+    }
+  }, [])
   const [showstyle, setshowstyle] = useState(false)
   const isSmallScreen = useMediaQuery('(max-width:768px)');
 
@@ -147,6 +169,10 @@ function Home() {
           <ScrollingHorizontally data={recentEvents} title={'Recent'} subheader={'Check Latest Happenings'} />
           <ScrollingHorizontally data={UpcommingEvent} title={'Upcomming'} subheader={'Future Gatherings'} />
           <ScrollingHorizontally data={popularEvents} title={'Hot'} subheader={'Find Trending Occasions'} />
+        </div>
+        <div>
+
+          <SocietyCards threeSocieties={threeSocieties.societies} />
         </div>
         <HomeBody />
       </WrapperComponent>

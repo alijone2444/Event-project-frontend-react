@@ -16,6 +16,8 @@ import setGotTokenFcmReducer from './firebaseReducers';
 import AdminSocietiesReducer from './adminSocietydataReducer';
 import { userPopularEventsReducer } from './EventsUserReducer';
 import CalanderDataReducer from './calanderDatareducer';
+import threeSocietiesReducer from './ThreeSocietiesReducer';
+import constantsReducer from './constantsReducer';
 import { createStore } from 'redux'
 const appReducer = combineReducers({
   requests: requestsReducer,
@@ -32,7 +34,9 @@ const appReducer = combineReducers({
   profiledata: ProfileDataReducer,
   Adminsocieties: AdminSocietiesReducer,
   CalanderEvents: CalanderDataReducer,
-  fcmTokenState: fcmTokenReducer
+  fcmTokenState: fcmTokenReducer,
+  threeSocieties: threeSocietiesReducer,
+  SavedConstants: constantsReducer
 });
 
 const rootReducer = (state, action) => {

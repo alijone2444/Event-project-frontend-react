@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import { BarChart } from './charts/bargraph';
 import calculateTimeAgo from '../../../../Components/functions/timeElapsedFinder';
 import { UserOutlined, BellOutlined } from '@ant-design/icons';
-
+import SocietyAdminConstantsForm from '../../../../Components/societyAdminConstantForm/societyAdminConstantForm';
 const { Header, Content } = Layout;
 const Dashboard = (props) => {
   const currentDate = new Date().toLocaleDateString();
@@ -69,7 +69,11 @@ const Dashboard = (props) => {
         <Grid item xs={12} md={3} lg={3} style={{ display: "flex", justifyContent: "center" }}>
           <img src={welcomeImg} alt='.' className='welcomeimg' />
         </Grid>
-
+      </Grid>
+      <Grid container >
+        <Grid item xs={12} md={12} lg={12}>
+          <SocietyAdminConstantsForm />
+        </Grid>
       </Grid>
       <Grid container spacing={1} style={{ padding: "5%" }}>
         <Grid item xs={12} md={6} lg={6}>

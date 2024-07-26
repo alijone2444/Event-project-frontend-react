@@ -3,11 +3,13 @@ import AnimatedNumbers from "react-animated-numbers";
 import { makeStyles } from "@mui/styles";
 import { Typography, Grid } from "@mui/material";
 import VantaBackground from "../vantaJs/vanta";
-
+import { useSelector } from "react-redux";
 function AnimationNumbers() {
     const [num, setNum] = React.useState(50);
     const classes = useStyles();
+    const SavedConstants = useSelector(state => state.SavedConstants.constants);
 
+    console.log('here is hehe', SavedConstants)
     return (
         <div className={classes.container}>
             <Grid container justifyContent="center" alignItems="center" spacing={2}>
@@ -20,7 +22,7 @@ function AnimationNumbers() {
                                 type: "spring",
                                 duration: index + 4,
                             })}
-                            animateToNumber={num}
+                            animateToNumber={SavedConstants.SocietiesCount}
                         />
                         <div>+</div>
                     </div>
@@ -32,7 +34,7 @@ function AnimationNumbers() {
                 </Grid>
             </Grid>
             <Typography variant="h5" gutterBottom style={{ textAlign: 'center' }}>
-                Explore Our Vibrant Community of Societies
+                {SavedConstants.SocietyVantaSubheader}
             </Typography>
         </div>
     );

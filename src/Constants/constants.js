@@ -15,11 +15,6 @@ const constants = {
     settings: [
         { name: "Society Admin Portal", description: 'These are the some available options for a society leader to maintain his information of society', Icon: '' },
         { name: "Logout", description: 'A logout option allows users to securely end their current session and sign out of their account.', Icon: <LogoutIcon style={{ color: 'red' }} /> },
-        // {
-        //     name: 'Logout',
-        //     description: '',
-        //     Icon: <LogoutIcon style={{ paddingLeft: '3%' }} />
-        // },
 
     ],
     // /ist-ems-backend/
@@ -38,6 +33,8 @@ const constants = {
         "Humanities & Sciences"
     ]
     ,
+    societiesDescription: "At the Institute of Space and Technology University, our societies offer a vibrant and engaging community for students passionate about various fields. From cutting-edge space exploration to innovative technology and beyond, these societies provide a platform for students to collaborate, share ideas, and drive projects that push the boundaries of knowledge and creativity. Whether you're interested in astronomy, robotics, or engineering, our societies foster a collaborative environment where members can participate in events, workshops, and research activities, contributing to both personal growth and the advancement of scientific and technological frontiers."
+
 
 }
 export default constants;

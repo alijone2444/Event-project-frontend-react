@@ -6,7 +6,8 @@ import constants from '../../../../Constants/constants';
 import { useNavigate } from 'react-router-dom';
 import createAuthenticatedRequest from '../../../../RequestwithHeader';
 import LogOut from '../../../../Components/logout/logout';
-
+import { useSelector } from 'react-redux';
+import BackgroundDrawer from '../../../../images/navbackground.jpg'
 function Navbar(props) {
   const [showSideBar, setshowSideBar] = useState(true);
   const [open, setOpen] = useState(false);
@@ -15,7 +16,8 @@ function Navbar(props) {
   const navigate = useNavigate();
   const requestInstance = createAuthenticatedRequest();
   const [usertype, setUserType] = useState(null);
-
+  // Assuming FCMToken is your root reducer name
+  const profileData = useSelector(state => state.profiledata);
   const CheckUserType = async () => {
     try {
       const response = await requestInstance.get(`${constants.BASE_URL}check-drawer`);
@@ -67,6 +69,12 @@ function Navbar(props) {
         console.log('logout');
         setlogout(true);
       }
+      else if (option === 'About Us') {
+        navigate('/about-us')
+      }
+      else if (option === 'Profile') {
+        navigate('/user-profile', { state: profileData });
+      }
     } catch (error) {
       console.error('Error handling click:', error);
     }
@@ -76,7 +84,13 @@ function Navbar(props) {
     <div>
       <Header callbackToSidebar={handleSidebar} transparentNavbar={props.transparentNavbar} showDrawer={handleDrawer} />
       <SidebarComponent Openstatus={showSideBar} callbackClose={handleclose} usertype={usertype} />
-      <Drawer title="Basic Drawer" onClose={() => { setOpen(false) }} open={open}>
+      <Drawer title="Basic Drawer" onClose={() => { setOpen(false) }} open={open} style={{
+        backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${BackgroundDrawer})`,
+        backgroundSize: 'cover',       // Ensures the image covers the entire area
+        backgroundPosition: 'center',  // Centers the image within the element
+        width: '100%',
+      }}>
+
         {constants.settings.map((val, index) => {
           const isSocietyAdminPortal = val.name === 'Society Admin Portal';
           const isAdminOrSAdmin = usertype === 'admin' || usertype === 'S-Admin';
@@ -93,14 +107,17 @@ function Navbar(props) {
                   width: '100%',
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
                 }}
               >
                 <div
                   style={{
                     textAlign: 'center',
                     width: '100%',
-                    color: val.name === 'Logout' ? 'red' : 'grey'
+                    color: val.name === 'Logout' ? 'red' : 'black',
+                    '&:hover fieldset': {
+                      borderColor: 'lightgrey',
+                    }
                   }}
                 >
                   {val.name}

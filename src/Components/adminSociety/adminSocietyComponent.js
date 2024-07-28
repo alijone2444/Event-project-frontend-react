@@ -120,7 +120,7 @@ const SocietiesAdminComponent = (props) => {
                                         <div style={{ textAlign: 'center' }}>
                                             <div style={{ fontWeight: 'bold', fontSize: 17 }}>{society.name}</div>
                                             <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{society.description}</p>
-                                            <Button type="link" onClick={() => { navigate('society-page', { state: society }) }}>Visit</Button>
+                                            <Button type="link" onClick={() => { navigate('society-page', { state: { ...society } }) }}>Visit</Button>
                                             <Button type="link" onClick={() => handleEdit(society)}>Edit</Button>
                                             <Button type="link" danger onClick={() => handleDelete(society._id)}>Delete</Button>
                                         </div>

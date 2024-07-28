@@ -10,18 +10,18 @@ import constants from '../../../../Constants/constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { setCalanderData } from '../../../../ReduxStore/actions/CalanderAction';
 function CalanderComponent() {
-  const myEventsList = [
-    {
-      title: 'Event 1',
-      start: new Date(2023, 6, 17, 10, 0), // July 17, 2023, 10:00 AM
-      end: new Date(2023, 6, 17, 12, 0), // July 17, 2023, 12:00 PM
-    },
-    {
-      title: 'Event 2',
-      start: new Date(2023, 6, 18, 14, 0), // July 18, 2023, 2:00 PM
-      end: new Date(2023, 6, 18, 16, 0), // July 18, 2023, 4:00 PM
-    },
-  ];
+  // const myEventsList = [
+  //   {
+  //     title: 'Event 1',
+  //     start: new Date(2023, 6, 17, 10, 0), // July 17, 2023, 10:00 AM
+  //     end: new Date(2023, 6, 17, 12, 0), // July 17, 2023, 12:00 PM
+  //   },
+  //   {
+  //     title: 'Event 2',
+  //     start: new Date(2023, 6, 18, 14, 0), // July 18, 2023, 2:00 PM
+  //     end: new Date(2023, 6, 18, 16, 0), // July 18, 2023, 4:00 PM
+  //   },
+  // ];
   const dispatch = useDispatch()
   const events = useSelector(state => state.CalanderEvents)
   const requestInstance = createAuthenticatedRequest()
@@ -56,7 +56,7 @@ function CalanderComponent() {
 
   return (
     <WrapperComponent>
-      <div style={{ width: "100%" }}>
+      <div >
         <Grid container style={{ padding: "25px" }}>
           <Grid item xs={12} >
             <Calendar

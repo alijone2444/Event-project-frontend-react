@@ -34,7 +34,9 @@ const Footer = (props) => {
     navigate("/Home")
     console.log("Home")
   }
-  console.log('props are 2', props)
+  const handleEvents = () => {
+    navigate('/events')
+  }
   return (
     <footer className={classes.footer} style={{ backgroundColor: props.EditedFooter ? 'rgba(157, 148, 181, 1)' : 'rgba(30, 144, 255, 0.7)' }}>
       <Container maxWidth="lg">
@@ -105,7 +107,8 @@ const Footer = (props) => {
                 menuItem.name === 'Home' ? handleHome :
                   menuItem.name === 'Societies' ? handleSocieties :
                     menuItem.name === 'Calander' ? handleCalander :
-                      null // Add more cases if needed
+                      menuItem.name === 'Events' ? handleEvents :
+                        null // Add more cases if needed
               }>
                 <IconButton className={classes.arrowIcone}>
                   <ArrowForwardIcon style={{ color: "white" }} />

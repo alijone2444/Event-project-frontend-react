@@ -26,9 +26,9 @@ const CustomCard = ({ IconComponent, title, name, content, gradient, allData }) 
                 <h2>{title}</h2>
                 <h3 style={{ color: 'white' }}>{name}</h3>
                 <p>{content}</p>
-                <a className="effect effect-1" title="Visit" onClick={() => { navigate('society-page', { state: allData }); recordSocietyVisit(name) }}>See more</a>
+                <a className="effect effect-1" title="Visit" onClick={() => { navigate('society-page', { state: { ...allData, Simple: true } }); recordSocietyVisit(name) }}>See more</a>
             </div>
-        </Card>
+        </Card >
     );
 };
 
@@ -41,7 +41,9 @@ const SocietyCards = (props) => {
             display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg, rgba(30, 144, 255, 0.7) 0%, rgba(70, 130, 180, 0.5) 30%, rgba(148, 201, 255, 0.5) 70%, rgba(218, 237, 255, 0.5) 100%)',
             paddingTop: '3%'
         }}>
-            <div className='recent-container'>
+            <div className='recent-container' style={{
+                paddingTop: '5%',
+            }}>
                 <ArrowForward style={{ fontSize: 40, color: 'white' }} />
                 <Typography className='recent' style={{ color: "white" }} variant='h4'>
                     Highlights

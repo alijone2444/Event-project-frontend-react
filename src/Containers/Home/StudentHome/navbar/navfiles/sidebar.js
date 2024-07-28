@@ -8,6 +8,7 @@ import StarBorderOutlined from '@mui/icons-material/StarBorderOutlined';
 import societyicon from '../../../../../images/societyicon.png'
 import SettingsOutlined from '@mui/icons-material/SettingsOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AboutIcon from '@mui/icons-material/InfoOutlined';
 import CalendarTodayOutlined from '@mui/icons-material/CalendarTodayOutlined';
 import ist_logo2 from '../../../../../images/editedlogo_2.png'
 import { useMediaQuery, IconButton } from '@mui/material';
@@ -20,6 +21,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useDispatch } from 'react-redux';
 import { setProfileData } from '../../../../../ReduxStore/actions/profileDataAction';
 import createAuthenticatedRequest from '../../../../../RequestwithHeader';
+import UserIcon from '@mui/icons-material/AccountCircleOutlined'
 import EditProfileModal from '../../../../Profile/profileEditModal';
 function SidebarComponent(props) {
   const [openSlide, setopenSlide] = useState("");
@@ -119,6 +121,18 @@ function SidebarComponent(props) {
               <Typography variant="body1" style={{ zIndex: 999, textAlign: 'justify' }}>Welcome aboard, {profileData ? profileData.username : 'user'}!</Typography>
             </Box>
 
+            <MenuItem className={classes.menuitem} onClick={() => {
+              navigate('/user-profile', { state: profileData });
+            }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  Profie
+                </div>
+                <div>
+                  <UserIcon style={{ color: "black" }} />
+                </div>
+              </div>
+            </MenuItem>
             {constants.menuitems.map((menuItem, index) => (
               <MenuItem
                 key={index}
@@ -144,12 +158,32 @@ function SidebarComponent(props) {
 
             ))}
 
-            <SubMenu label="Settings" className={classes.menuitem} >
-              {(props.usertype !== 'student' && props.usertype !== 'undefined') && constants.settings.map((val, index) => {
-                return <MenuItem style={{ background: 'rgba(255,255,255,0.3)' }} onClick={() => { handleSettings(val.name) }}>{val.name}</MenuItem>
+            <SubMenu label="Settings" className={classes.menuitem}>
+              {props.usertype !== 'student' && props.usertype !== 'undefined' && constants.settings.map((val, index) => {
+                // Check if the name is not 'Profile', 'About Us', or 'Logout'
+                return (
+                  (val.name !== 'Profile' && val.name !== 'About Us' && val.name !== 'Logout') ? (
+                    <MenuItem
+                      key={index}
+                      style={{ background: 'rgba(255,255,255,0.3)' }}
+                      onClick={() => handleSettings(val.name)}
+                    >
+                      {val.name}
+                    </MenuItem>
+                  ) : null
+                );
               })}
-
             </SubMenu>
+            <MenuItem className={classes.menuitem} onClick={() => { navigate('/about-us') }}>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  About Us
+                </div>
+                <div>
+                  <AboutIcon style={{ color: "black" }} />
+                </div>
+              </div>
+            </MenuItem>
             <MenuItem className={classes.menuitem} onClick={() => { setlogout(true) }}>
               {logout && <LogOut pageToGo={'/'} />}
               <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -157,7 +191,7 @@ function SidebarComponent(props) {
                   logout
                 </div>
                 <div>
-                  <LogoutIcon style={{ color: "black" }} />
+                  <LogoutIcon style={{ color: "red" }} />
                 </div>
               </div>
             </MenuItem>

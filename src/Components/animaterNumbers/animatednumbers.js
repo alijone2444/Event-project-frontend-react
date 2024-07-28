@@ -2,18 +2,17 @@ import React from "react";
 import AnimatedNumbers from "react-animated-numbers";
 import { makeStyles } from "@mui/styles";
 import { Typography, Grid } from "@mui/material";
-import VantaBackground from "../vantaJs/vanta";
-import { useSelector } from "react-redux";
-function AnimationNumbers() {
+import useMediaQuery from '@mui/material/useMediaQuery';
+function AnimationNumbers({ SavedConstants }) {
     const [num, setNum] = React.useState(50);
     const classes = useStyles();
-    const SavedConstants = useSelector(state => state.SavedConstants.constants);
+    const isSmallScreen = useMediaQuery('(max-width:600px)');
 
     console.log('here is hehe', SavedConstants)
     return (
         <div className={classes.container}>
             <Grid container justifyContent="center" alignItems="center" spacing={2}>
-                <Grid item>
+                {SavedConstants.SocietiesCount && <Grid item>
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                         <AnimatedNumbers
                             includeComma
@@ -22,13 +21,13 @@ function AnimationNumbers() {
                                 type: "spring",
                                 duration: index + 4,
                             })}
-                            animateToNumber={SavedConstants.SocietiesCount}
+                            animateToNumber={SavedConstants.SocietiesCount ? SavedConstants.SocietiesCount : 0}
                         />
                         <div>+</div>
                     </div>
-                </Grid>
-                <Grid item>
-                    <Typography variant="h2" margin={0} mt={1} style={{ display: 'flex', alignItems: 'center' }} paddingLeft={1}>
+                </Grid>}
+                <Grid item style={{ paddingTop: isSmallScreen && 0 }}>
+                    <Typography variant="h2" margin={0} mt={1} style={{ display: 'flex', alignItems: 'center' }} >
                         Societies
                     </Typography>
                 </Grid>
@@ -36,7 +35,8 @@ function AnimationNumbers() {
             <Typography variant="h5" gutterBottom style={{ textAlign: 'center' }}>
                 {SavedConstants.SocietyVantaSubheader}
             </Typography>
-        </div>
+
+        </div >
     );
 }
 

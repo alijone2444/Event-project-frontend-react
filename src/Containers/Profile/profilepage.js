@@ -8,18 +8,20 @@ import WrapperComponent from '../../FooterAndHeaderwrapper';
 import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 const ProfilePage = () => {
     const [loading, setLoading] = useState(true); // Loading state
     const location = useLocation()
+    const profileData = useSelector(state => state.profiledata);
+
     const isSmallScreen = useMediaQuery('(max-width:600px)');
-    const [profileData, setprofileData] = useState(null)
+    const dispatch = useDispatch()
     useEffect(() => {
         if (location.state) {
-            setprofileData(location.state)
             console.log(location.state)
             setLoading(false)
         }
-    }, [location.state])
+    }, [location.state, dispatch])
     return (
         <WrapperComponent>
             <div style={{ position: 'relative' }}>

@@ -1,21 +1,23 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import createAuthenticatedRequest from "../../RequestwithHeader";
 import constants from "../../Constants/constants";
 import { logoutUser } from "../../ReduxStore/actions/userlogout";
 import { useDispatch, useSelector } from "react-redux";
 import { setFCMToken } from "../../ReduxStore/actions/fcmTokenState";
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 
 function LogOut(props) {
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const [checkDeletedToken, setCheckDeletedToken] = useState(false);
   const requestInstance = createAuthenticatedRequest();
   const dispatch = useDispatch();
   const fcmTokenState = useSelector((state) => state.fcmTokenState);
 
   const DeleteFcmTokenFromBackend = async () => {
     try {
-      console.log('DeleteFcmTokenFromBackend token:', fcmTokenState); // Ensure token is logged correctly
+      console.log('DeleteFcmTokenFromBackend token:', fcmTokenState);
       if (fcmTokenState.token) {
         const response = await requestInstance.delete(`${constants.BASE_URL}delete-fcm-token/${fcmTokenState.token}`);
         console.log('FCM Token deleted from backend:', response.data);
@@ -35,37 +37,51 @@ function LogOut(props) {
       try {
         await DeleteFcmTokenFromBackend();
 
-        // Clear the token from local storage
         localStorage.removeItem("authToken");
         localStorage.removeItem("userType");
         dispatch(logoutUser());
 
-        // Update state to trigger a re-render
-        setCheckDeletedToken((prev) => !prev);
+        setLoading(false);
 
-        // Handle logout failure, if necessary
         console.error("Logout failed");
       } catch (error) {
-        // Handle any errors that occur during logout
         console.error("Error during logout:", error);
       }
     };
 
-    // Call the logout function when the component mounts
     logout();
-  }, [dispatch]); // Only dispatch is a dependency, since checkDeletedToken is handled internally
+  }, [dispatch]);
 
   useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (!token) {
-      navigate(props.pageToGo);
+    if (!loading) {
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        navigate(props.pageToGo);
+      }
     }
-  }, [navigate, checkDeletedToken]);
+  }, [navigate, loading, props.pageToGo]);
 
   return (
-    <div>
-      {/* Your component content */}
-    </div>
+    <>
+      {loading && (
+        <Box
+          sx={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999
+          }}
+        >
+          <CircularProgress style={{ color: 'white' }} />
+        </Box>
+      )}
+    </>
   );
 }
 

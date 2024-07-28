@@ -5,6 +5,7 @@ import constants from '../../Constants/constants';
 import createAuthenticatedRequest from '../../RequestwithHeader';
 import { setProfileData } from '../../ReduxStore/actions/profileDataAction';
 import { useDispatch } from 'react-redux';
+import { CircularProgress } from '@mui/material';
 const EditProfileModal = ({ open, onClose }) => {
     const [profileImage, setProfileImage] = useState(null);
     const [previewImage, setPreviewImage] = useState('');
@@ -16,7 +17,7 @@ const EditProfileModal = ({ open, onClose }) => {
     const requestInstance = createAuthenticatedRequest();
     const isMobile = useMediaQuery('(max-width:600px)');
     const dispatch = useDispatch()
-
+    const [loading, setLoading] = useState(false)
     const handleClose = () => {
         fetchProfileData()
         onClose();
@@ -40,6 +41,7 @@ const EditProfileModal = ({ open, onClose }) => {
     };
 
     const handleSubmit = async () => {
+        setLoading(true)
         try {
             let formData = {
                 description,
@@ -63,10 +65,12 @@ const EditProfileModal = ({ open, onClose }) => {
             }
         } catch (error) {
             console.error('Error during profile update:', error);
+            setLoading(false)
         }
 
         // Close the modal
         handleClose();
+        setLoading(false)
     };
 
     const convertImageToBase64 = (imageFile) => {
@@ -163,7 +167,7 @@ const EditProfileModal = ({ open, onClose }) => {
                 />
                 <Grid container justifyContent="center">
                     <Button onClick={handleSubmit} variant="contained" color="primary">
-                        Save Changes
+                        {loading ? <CircularProgress style={{ color: 'white' }} /> : `Save Changes`}
                     </Button>
                 </Grid>
             </Box>

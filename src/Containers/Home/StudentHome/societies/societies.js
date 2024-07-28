@@ -14,6 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Import the CSS
 import recordSocietyVisit from '../../../../Components/functions/recortSocietyVisits';
+import { setConstants } from '../../../../ReduxStore/actions/setConstantsAction';
 function SocietiesPage() {
     const Societies = useSelector((state) => state.Societies);
     const requestInstance = createAuthenticatedRequest();
@@ -24,6 +25,7 @@ function SocietiesPage() {
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [fetchDocsAgain, setFetchDocsAgain] = useState(false);
+    const SavedConstants = useSelector(state => state.SavedConstants.constants);
     const navigate = useNavigate();
 
     const followSociety = async (societyId, name, action) => {
@@ -52,6 +54,24 @@ function SocietiesPage() {
         }
     }, [page, dispatch, fetchDocsAgain]);
 
+    useEffect(() => {
+        const fetchThreeSocietiesAndConstants = async () => {
+            try {
+                const response2 = await requestInstance.get(`${constants.BASE_URL}get-constants`); // or use fetch
+                console.log('response 2', response2.data)
+                dispatch(setConstants(response2.data))
+            } catch (err) {
+                console.log(err.message)
+            }
+        };
+        const areAllPropertiesEmpty = Object.values(SavedConstants).every(
+            (val) => typeof val === 'object' && Object.keys(val).length === 0
+        );
+        if (areAllPropertiesEmpty) {
+            fetchThreeSocietiesAndConstants();
+        }
+    }, [dispatch])
+
     const fetchData = async (page, limit) => {
         try {
             setLoading(true);
@@ -72,7 +92,7 @@ function SocietiesPage() {
     return (
         <WrapperComponent transparentNavbar={true}>
             <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', zIndex: 2 }}>
-                <AnimationNumbers />
+                <AnimationNumbers SavedConstants={SavedConstants} />
             </div>
             <VantaBackground />
             <div style={{ margin: '5%' }}>
@@ -149,7 +169,7 @@ function SocietiesPage() {
                                             <Button style={{ backgroundColor: 'purple', color: 'white', width: '100%', marginTop: '2%' }} onClick={() => { followSociety(society._id, society.name, society.ismember ? 'Unfollow' : 'Follow') }}>
                                                 {followUnfollowLoaders[society._id] ? <CircularProgress style={{ color: 'white' }} size={24} /> : (society.ismember ? 'Unfollow' : 'Follow')}
                                             </Button>
-                                            <Button style={{ backgroundColor: 'purple', color: 'white', width: '100%', marginTop: '2%' }} onClick={() => { navigate('society-page', { state: society }); recordSocietyVisit(society.name) }}>Visit</Button>
+                                            <Button style={{ backgroundColor: 'purple', color: 'white', width: '100%', marginTop: '2%' }} onClick={() => { navigate('society-page', { state: { ...society, Simple: true } }); recordSocietyVisit(society.name) }}>Visit</Button>
                                         </ButtonGroup>
                                     </CardContent>
                                 </Card>

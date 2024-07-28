@@ -120,10 +120,10 @@ const AboutSocietyPage = () => {
     // Once data is loaded, render actual society information
     return (
         <WrapperComponent transparentNavbar={true}>
-            {(UserType === 'admin' || UserType === 'S-Admin') && <AppBar position="static" style={{ backgroundColor: 'purple', boxShadow: 'none', borderBottom: '1px solid #e0e0e0' }}>
+            {((UserType === 'admin' || UserType === 'S-Admin') && !society.Simple) && <AppBar position="static" style={{ backgroundColor: 'purple', boxShadow: 'none', borderBottom: '1px solid #e0e0e0' }}>
                 <Toolbar >
                     <MuiTypography variant="h6" style={{ flexGrow: 1, color: 'white', margin: 0 }}>
-                        Add Event user : {society.created_by}
+                        Add Event : {society.created_by}
                     </MuiTypography>
                     <IconButton style={{ backgroundColor: 'white' }} onClick={openEventModal}>
                         <Add style={{ color: 'purple' }} />
@@ -149,7 +149,7 @@ const AboutSocietyPage = () => {
                 ))}
                 <Divider />
                 {societyEvents.length !== 0 ? (
-                    <ScrollingHorizontally data={societyEvents} title={'Events'} subheader={'Check This Society Events'} subheaderColor={"purple"} showdel={true} deletesucess={() => {
+                    <ScrollingHorizontally data={societyEvents} title={'Events'} subheader={'Check This Society Events'} subheaderColor={"purple"} showdel={!society.Simple} deletesucess={() => {
                         setrunuseeffectagain(!runuseeffectagain)
                         setrerun(true)
                     }} />

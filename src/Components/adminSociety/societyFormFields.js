@@ -140,8 +140,14 @@ const SocietyForm = (props) => {
                     });
                 }
             });
+            const url = props.Previousvalues.name ? `${constants.BASE_URL}update-society/${props.Previousvalues._id}` : `${constants.BASE_URL}create-society`;
+            const method = props.Previousvalues.name ? 'put' : 'post';
 
-            const response = await requestInstance.post(`${constants.BASE_URL}create-society`, formDataToSend);
+            const response = await requestInstance({
+                method,
+                url,
+                data: formDataToSend
+            });
             console.log('Society created successfully:', response.data.society);
             if (response.data.success) {
                 props.onclose();

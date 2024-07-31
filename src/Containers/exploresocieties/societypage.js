@@ -11,8 +11,12 @@ import datanotfound from '../../lottie/noDatayet.json';
 import Lottie from 'react-lottie';
 import Add from '@mui/icons-material/Add';
 import { IconButton } from '@mui/material';
-import { Toolbar, AppBar, Typography as MuiTypography, Box, Modal, Button } from '@mui/material'; // Importing Toolbar, AppBar, Button, Box, Typography, and Modal from @mui/material
+import { Toolbar, AppBar, Typography as MuiTypography, Box, Modal, Button, useMediaQuery } from '@mui/material'; // Importing Toolbar, AppBar, Button, Box, Typography, and Modal from @mui/material
 import CreateEvent from '../../Components/EventCreation/eventcreationComponent';
+import { Carousel } from "antd";
+import './societyPage.css'
+import notFoundImage from '../../images/societyBackgroundNotfound.jpg'; // Import static image
+
 const { Title, Text } = Typography;
 
 const AboutSocietyPage = () => {
@@ -24,6 +28,9 @@ const AboutSocietyPage = () => {
     const [showEventModal, setShowEventModal] = useState(false); // State to control modal visibility
     const [runuseeffectagain, setrunuseeffectagain] = useState(false)
     const [rerun, setrerun] = useState(false)
+    const [crouseimages, setCrouselimage] = useState([])
+
+    const isSmallScreen = useMediaQuery('(max-width:600px)');
     useEffect(() => {
         const CheckUserType = async () => {
             try {
@@ -56,6 +63,11 @@ const AboutSocietyPage = () => {
                     },
                 });
                 setsocietyEvents(response.data);
+                let filteredData = response.data
+                    .filter((event) => Array.isArray(event.imageFileNames))
+                    .flatMap((event) => event.imageFileNames || []);
+
+                setCrouselimage(filteredData);
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
@@ -85,7 +97,9 @@ const AboutSocietyPage = () => {
         setrunuseeffectagain(!runuseeffectagain)
         setrerun(true)
     };
-
+    useEffect(() => {
+        console.log(crouseimages.length)
+    }, [crouseimages])
     if (loading || !society) {
         // Show skeleton loading while data is being fetched or loading
         return (
@@ -130,18 +144,60 @@ const AboutSocietyPage = () => {
                     </IconButton>
                 </Toolbar>
             </AppBar>}
-            <Card bordered={false} style={{ margin: '20px' }}>
-                {society.cover_photo && (
-                    <div style={{ textAlign: 'center', marginTop: '20px' }}>
+            <div style={{ display: 'flex', height: '70vh', position: 'relative' }}>
+                <div style={{ width: '100%', position: 'relative' }}>
+                    {crouseimages.length > 0 ? (
+                        <Carousel autoplay className='custom-carousel'>
+                            {crouseimages.map((image, index) => (
+                                <div key={index} style={{ height: '50vh' }}>
+                                    <img
+                                        style={{ width: '100%', height: '50vh', objectFit: 'cover' }}
+                                        src={`${constants.BASE_URL}images/${image}`}
+                                        alt={`Slide ${index}`}
+                                    />
+                                </div>
+                            ))}
+                        </Carousel>
+                    ) : (
+                        <Carousel autoplay className='custom-carousel'>
+                            <div style={{ height: '50vh' }}>
+                                <img
+                                    style={{ width: '100%', height: '50vh', objectFit: 'cover' }}
+                                    src={notFoundImage}
+                                    alt="Not Found"
+                                />
+                            </div>
+                        </Carousel>
+                    )}
+
+                </div>
+                <div style={{
+                    position: 'absolute',
+                    bottom: '0%',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderRadius: '10px', // Optional: to round the corners of the cover photo container
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                }}>
+                    {society.cover_photo && (
                         <img
                             src={society.cover_photo}
                             alt="Cover Photo"
-                            style={{ maxWidth: '100%', height: 'auto', height: '40vh' }}
+                            style={{ objectFit: 'cover', height: '25vh', borderRadius: '50%' }}
                         />
-                    </div>
-                )}
-                <Title level={2}>{society.name}</Title>
-                <Text>{society.description}</Text>
+                    )}
+                    <Title style={{ marginTop: '1%' }} level={2}>{society.name}</Title>
+
+                </div>
+            </div>
+            <div bordered={false} style={{ margin: isSmallScreen ? '10%' : '5%', marginTop: 0, textAlign: isSmallScreen ? 'center' : 'left' }}>
+                <Text >{society.description}</Text>
                 {society.tags[0].split(',').map((item, index) => (
                     <Text key={index} style={{ fontWeight: 'bold', color: 'purple' }}>
                         #{item}
@@ -209,7 +265,7 @@ const AboutSocietyPage = () => {
                         </a>
                     </Descriptions.Item>
                 </Descriptions>
-            </Card>
+            </div>
 
             {/* Modal for creating event */}
             <Modal open={showEventModal} onClose={closeEventModal}>

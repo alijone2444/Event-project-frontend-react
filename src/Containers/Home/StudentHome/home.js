@@ -21,8 +21,7 @@ import { setGotTokenFcm } from "../../../ReduxStore/actions/firebaseActions";
 import { setProfileData } from "../../../ReduxStore/actions/profileDataAction";
 import { setFCMToken } from "../../../ReduxStore/actions/fcmTokenState";
 import SocietyCards from "../../../Components/SocietyCards/SocietyCards";
-import { setThreeSocieties } from "../../../ReduxStore/actions/threeSocietiesAction";
-import { setConstants } from "../../../ReduxStore/actions/setConstantsAction";
+import EventDataProvider from "../../../Components/dataFetchingComponent/dataFetchingComponent";
 function Home() {
   const requestInstance = createAuthenticatedRequest();
   const dispatch = useDispatch();
@@ -30,7 +29,6 @@ function Home() {
   const recentEvents = useSelector((state) => state.userRecentEvents);
   const popularEvents = useSelector((state) => state.userpopularEvents);
   const threeSocieties = useSelector(state => state.threeSocieties);
-  const SavedConstants = useSelector(state => state.SavedConstants);
 
   const [showGreeting, setShowGreeting] = useState(false);
   const isForeground = useVisibilityChange();
@@ -139,30 +137,12 @@ function Home() {
         });
     }
   }, [dispatch])
-  useEffect(() => {
-    const fetchThreeSocietiesAndConstants = async () => {
-      try {
-        const response = await requestInstance.get(`${constants.BASE_URL}three-societies`); // or use fetch
-        dispatch(setThreeSocieties(response.data))
-        const response2 = await requestInstance.get(`${constants.BASE_URL}get-constants`); // or use fetch
-        console.log('response 2', response2.data)
-        dispatch(setConstants(response2.data))
-      } catch (err) {
-        console.log(err.message)
-      }
-    };
-    const areAllPropertiesEmpty = Object.values(SavedConstants).every(
-      (val) => typeof val === 'object' && Object.keys(val).length === 0
-    );
-    if (areAllPropertiesEmpty) {
-      fetchThreeSocietiesAndConstants();
-    }
-  }, [dispatch])
   const [showstyle, setshowstyle] = useState(false)
   const isSmallScreen = useMediaQuery('(max-width:768px)');
 
   return (
     <div className={showstyle ? 'overlayhome' : ''}>
+      <EventDataProvider />
       <WrapperComponent showstyle={() => setshowstyle(true)} notshowstyle={() => setshowstyle(false)}>
         {showGreeting && <Greeting message={`Hello ! Welcome to Event Management System Of IST.`} />}
         <CarouselComponent />

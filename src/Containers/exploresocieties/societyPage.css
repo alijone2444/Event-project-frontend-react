@@ -1,0 +1,8 @@
+.custom-carousel .slick-dots {
+    position: absolute;
+    top: 10px;
+    /* Adjust this value to move the dots to the top */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}

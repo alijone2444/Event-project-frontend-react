@@ -39,6 +39,7 @@ function App() {
             <Route path="/SocietyAdminPortal" element={<RequireAuth><SocietyAdminPortal /></RequireAuth>} />
             <Route path="/user-profile" element={<RequireAuth><ProfilePage /></RequireAuth>} />
             <Route path=":type/society-page" element={<RequireAuth><AboutSocietyPage /></RequireAuth>} />
+            <Route path=":type/:subtype/society-page" element={<RequireAuth><AboutSocietyPage /></RequireAuth>} />
             <Route path="/about-us" element={<RequireAuth><AboutPage /></RequireAuth>} />
 
           </Routes>

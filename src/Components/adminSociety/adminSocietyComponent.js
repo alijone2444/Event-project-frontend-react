@@ -114,19 +114,27 @@ const SocietiesAdminComponent = (props) => {
                             societies.map(society => (
                                 <Grid key={society._id} item xs={12} sm={6} md={4} lg={4}>
                                     <Card
-                                        style={{ marginBottom: '16px', display: 'flex' }}
-                                        cover={<img alt="society" src={society.cover_photo} style={{ height: '25vh', width: '100%', objectFit: 'cover' }} />}
+                                        style={{ marginBottom: '16px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+                                        cover={
+                                            <div style={{ width: '100%', height: '25vh', overflow: 'hidden' }}>
+                                                <img
+                                                    alt="society"
+                                                    src={society.cover_photo}
+                                                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                                />
+                                            </div>
+                                        }
                                     >
                                         <div style={{ textAlign: 'center' }}>
                                             <div style={{ fontWeight: 'bold', fontSize: 17 }}>{society.name}</div>
                                             <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{society.description}</p>
-                                            <Button type="link" onClick={() => { navigate('society-page', { state: { ...society } }) }}>Visit</Button>
+                                            <Button type="link" onClick={() => navigate('society-page', { state: { ...society, Simple: false } })}>Visit</Button>
                                             <Button type="link" onClick={() => handleEdit(society)}>Edit</Button>
                                             <Button type="link" danger onClick={() => handleDelete(society._id)}>Delete</Button>
                                         </div>
                                     </Card>
-
                                 </Grid>
+
                             ))
                         ) : (
                             <Spin />

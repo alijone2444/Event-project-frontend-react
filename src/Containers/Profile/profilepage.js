@@ -9,19 +9,37 @@ import { useSelector } from 'react-redux';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { setProfileData } from '../../ReduxStore/actions/profileDataAction';
+import constants from '../../Constants/constants';
+import createAuthenticatedRequest from '../../RequestwithHeader';
 const ProfilePage = () => {
-    const [loading, setLoading] = useState(true); // Loading state
-    const location = useLocation()
+    const [loading, setLoading] = useState(true);
     const profileData = useSelector(state => state.profiledata);
-
+    const requestInstance = createAuthenticatedRequest()
     const isSmallScreen = useMediaQuery('(max-width:600px)');
     const dispatch = useDispatch()
+
     useEffect(() => {
-        if (location.state) {
-            console.log(location.state)
+        const fetchProfileData = async () => {
+            try {
+                const response = await requestInstance.get(`${constants.BASE_URL}get-profile-data`);
+                if (response.data) {
+                    dispatch(setProfileData(response.data.profile));
+                    setLoading(false); // Ensure loading is set to false after data is fetched
+                }
+            } catch (error) {
+                console.error('Error fetching profile data:', error);
+            }
+        };
+        if (Object.keys(profileData).length === 0) {
+            fetchProfileData();
+        }
+        else {
             setLoading(false)
         }
-    }, [location.state, dispatch])
+    }, [dispatch, profileData]);
+
+
     return (
         <WrapperComponent>
             <div style={{ position: 'relative' }}>
@@ -56,19 +74,19 @@ const ProfilePage = () => {
                             />
                         )}
                         <Typography variant="h5" sx={{ fontWeight: 'bold', marginTop: 1 }}>
-                            {loading ? <Skeleton width={120} /> : profileData?.username} {/* Show skeleton or username */}
+                            {loading ? <Skeleton width={120} /> : profileData.username} {/* Show skeleton or username */}
                         </Typography>
                         <Typography variant="subtitle1" sx={{ color: 'lightgray' }}>
-                            {loading ? <Skeleton width={100} /> : profileData?.subHeader} {/* Show skeleton or subheader */}
+                            {loading ? <Skeleton width={100} /> : profileData.subHeader} {/* Show skeleton or subheader */}
                         </Typography>
                     </Box>
 
                     {/* Additional content */}
                     <Grid container spacing={3} justifyContent="center" sx={{ marginTop: 2 }}>
                         {[
-                            { label: 'Comments', value: profileData?.comments },
-                            { label: 'Events Hosted', value: profileData?.eventsHosted },
-                            { label: 'Age', value: profileData?.age },
+                            { label: 'Subscriptions', value: profileData.subscriptions },
+                            { label: 'Age', value: profileData.age },
+                            { label: 'Events liked', value: profileData.eventsLiked },
                         ].map((item, index) => (
                             <Grid item key={index}>
                                 <Box textAlign="center" sx={{ color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -76,14 +94,16 @@ const ProfilePage = () => {
                                         <Skeleton width={100} height={50} />
                                     ) : (
                                         <AnimatedNumbers
-                                            animateToNumber={item.value}
+                                            animateToNumber={item.value || 0}
                                             fontStyle={{ fontSize: 32, fontWeight: 'bold' }}
                                             configs={[
                                                 { mass: 1, tension: 220, friction: 100 },
                                                 { mass: 1, tension: 180, friction: 130 },
                                             ]}
                                         />
-                                    )}
+                                    )
+
+                                    }
                                     <Typography variant="subtitle1" sx={{ marginTop: 0.5 }}>
                                         {loading ? <Skeleton width={80} /> : item.label}
                                     </Typography>

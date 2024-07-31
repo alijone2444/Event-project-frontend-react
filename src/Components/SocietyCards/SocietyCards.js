@@ -11,8 +11,15 @@ import { useMediaQuery } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import recordSocietyVisit from '../functions/recortSocietyVisits';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { setThreeSocieties } from '../../ReduxStore/actions/threeSocietiesAction';
+import { setConstants } from '../../ReduxStore/actions/setConstantsAction';
+import { useEffect } from 'react';
+import constants from '../../Constants/constants';
+import createAuthenticatedRequest from '../../RequestwithHeader';
 const CustomCard = ({ IconComponent, title, name, content, gradient, allData }) => {
     const navigate = useNavigate()
+
     return (
         <Card
             className="custom-card"
@@ -33,9 +40,32 @@ const CustomCard = ({ IconComponent, title, name, content, gradient, allData }) 
 };
 
 const SocietyCards = (props) => {
+    const SavedConstants = useSelector(state => state.SavedConstants);
+    const requestInstance = createAuthenticatedRequest
+    const dispatch = useDispatch()
     const isMobile = useMediaQuery('(max-width: 768px)');
     const { threeSocieties } = props;
     console.log('eeha', threeSocieties)
+    useEffect(() => {
+        const fetchThreeSocietiesAndConstants = async () => {
+            try {
+                const response = await requestInstance.get(`${constants.BASE_URL}three-societies`); // or use fetch
+                dispatch(setThreeSocieties(response.data))
+                const response2 = await requestInstance.get(`${constants.BASE_URL}get-constants`); // or use fetch
+                console.log('response 2', response2.data)
+                dispatch(setConstants(response2.data))
+            } catch (err) {
+                console.log(err.message)
+            }
+        };
+        const areAllPropertiesEmpty = Object.values(SavedConstants).every(
+            (val) => typeof val === 'object' && Object.keys(val).length === 0
+        );
+        if (areAllPropertiesEmpty) {
+            fetchThreeSocietiesAndConstants();
+        }
+    }, [dispatch])
+
     return (
         <div style={{
             display: 'flex', flexDirection: 'column', background: 'linear-gradient(135deg, rgba(30, 144, 255, 0.7) 0%, rgba(70, 130, 180, 0.5) 30%, rgba(148, 201, 255, 0.5) 70%, rgba(218, 237, 255, 0.5) 100%)',

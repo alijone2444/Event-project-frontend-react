@@ -84,7 +84,7 @@ function Navbar(props) {
     <div>
       <Header callbackToSidebar={handleSidebar} transparentNavbar={props.transparentNavbar} showDrawer={handleDrawer} />
       <SidebarComponent Openstatus={showSideBar} callbackClose={handleclose} usertype={usertype} />
-      <Drawer title="Basic Drawer" onClose={() => { setOpen(false) }} open={open} style={{
+      <Drawer title="More options" onClose={() => { setOpen(false) }} open={open} style={{
         backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url(${BackgroundDrawer})`,
         backgroundSize: 'cover',       // Ensures the image covers the entire area
         backgroundPosition: 'center',  // Centers the image within the element

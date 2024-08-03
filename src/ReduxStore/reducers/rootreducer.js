@@ -4,6 +4,7 @@ import AdminEventsReducer from './EventsAdminReducer';
 import SocietiesReducer from './societiesDataReducer';
 import ProfileDataReducer from './profileDataReducer';
 import fcmTokenReducer from './FcmTokenStateReducer';
+import marqueeReducer from './marqueeReducer';
 import {
   userUpcomingEventsReducer,
   userHotEventsReducer,
@@ -36,7 +37,8 @@ const appReducer = combineReducers({
   CalanderEvents: CalanderDataReducer,
   fcmTokenState: fcmTokenReducer,
   threeSocieties: threeSocietiesReducer,
-  SavedConstants: constantsReducer
+  SavedConstants: constantsReducer,
+  marqueeData: marqueeReducer
 });
 
 const rootReducer = (state, action) => {

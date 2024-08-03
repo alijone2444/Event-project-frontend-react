@@ -104,7 +104,7 @@ function SidebarComponent(props) {
           <Menu closeOnClick={true} >
 
             <Box sx={{ background: 'rgba(255,255,255,0.5)', position: 'relative', display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '20px' }}>
-              <Avatar sx={{ width: 64, height: 64, mb: 1, border: '2px solid dodgerblue' }}
+              <Avatar sx={{ width: 64, height: 64, mb: 1, border: '2px solid lightgrey' }}
                 src={profileData?.profileImageUrl || "/path/to/profile/image.jpg"} // Use profile image URL or fallback
 
                 onClick={() => {

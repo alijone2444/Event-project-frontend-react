@@ -1,0 +1,59 @@
+.marquee-container {
+    width: 100%;
+    /* Ensure the container spans the full width of its parent */
+    overflow: hidden;
+    /* Hide anything that overflows the container */
+    background-color: #f5f5f5;
+    /* Light background color for contrast */
+    padding: 10px 0;
+    /* Add some padding to the top and bottom */
+    position: relative;
+    /* Relative positioning for gradient overlay */
+}
+
+.marquee-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 20%;
+    /* Width of the gradient fade effect */
+    height: 100%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 100%);
+    pointer-events: none;
+    /* Ensure the gradient overlay doesn't interfere with mouse events */
+    z-index: 2;
+}
+
+.marquee-item {
+    display: inline-block;
+    /* Display items inline */
+    margin: 0 20px;
+    /* Add margin to space out the items */
+}
+
+.marquee-image {
+    height: 10vh;
+    /* Height relative to viewport height */
+    width: 10vh;
+    /* Width relative to viewport height */
+    object-fit: cover;
+    /* Ensure the image covers the circle */
+    z-index: 1;
+}
+
+.name-marquee {
+    background-color: #333;
+    /* Dark background for name marquee */
+    color: #fff;
+    /* White text color */
+    padding: 5px 0;
+    /* Padding for the name marquee */
+}
+
+.marquee-name {
+    font-size: 1.2rem;
+    /* Adjust font size as needed */
+    margin: 0 20px;
+    /* Margin between names */
+}

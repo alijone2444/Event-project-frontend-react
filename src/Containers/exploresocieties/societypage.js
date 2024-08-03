@@ -21,6 +21,7 @@ const { Title, Text } = Typography;
 
 const AboutSocietyPage = () => {
     const [loading, setLoading] = useState(true); // State to manage loading state
+    const [loading2, setloading2] = useState(true)
     const [society, setSociety] = useState(null); // State to store society data
     const location = useLocation(); // Use useLocation hook to get location object
     const [societyEvents, setsocietyEvents] = useState([]);
@@ -66,7 +67,6 @@ const AboutSocietyPage = () => {
                 let filteredData = response.data
                     .filter((event) => Array.isArray(event.imageFileNames))
                     .flatMap((event) => event.imageFileNames || []);
-
                 setCrouselimage(filteredData);
             } catch (error) {
                 console.error('Error fetching events:', error);
@@ -80,11 +80,9 @@ const AboutSocietyPage = () => {
     }, [society, runuseeffectagain]);
 
     useEffect(() => {
-        // Check if data exists in location state (from navigation)
-        console.log('dasda', location.state);
         if (location.state) {
-            setSociety(location.state); // Set society data from location state
-            setLoading(false); // Set loading to false after setting data
+            setSociety(location.state);
+            setLoading(false);
         }
     }, [location.state]); // Listen to changes in location.state
 
@@ -98,7 +96,10 @@ const AboutSocietyPage = () => {
         setrerun(true)
     };
     useEffect(() => {
-        console.log(crouseimages.length)
+        const timer = setTimeout(() => {
+            setloading2(false);
+        }, 500);
+        return () => clearTimeout(timer);
     }, [crouseimages])
     if (loading || !society) {
         // Show skeleton loading while data is being fetched or loading
@@ -146,30 +147,33 @@ const AboutSocietyPage = () => {
             </AppBar>}
             <div style={{ display: 'flex', height: '70vh', position: 'relative' }}>
                 <div style={{ width: '100%', position: 'relative' }}>
-                    {crouseimages.length > 0 ? (
-                        <Carousel autoplay className='custom-carousel'>
-                            {crouseimages.map((image, index) => (
-                                <div key={index} style={{ height: '50vh' }}>
-                                    <img
-                                        style={{ width: '100%', height: '50vh', objectFit: 'cover' }}
-                                        src={`${constants.BASE_URL}images/${image}`}
-                                        alt={`Slide ${index}`}
-                                    />
-                                </div>
-                            ))}
-                        </Carousel>
+                    {loading2 ? (
+                        <div style={{ height: '50vh', width: '100%' }}>
+                            <Skeleton height="100%" width="100%" />
+                        </div>
                     ) : (
                         <Carousel autoplay className='custom-carousel'>
-                            <div style={{ height: '50vh' }}>
-                                <img
-                                    style={{ width: '100%', height: '50vh', objectFit: 'cover' }}
-                                    src={notFoundImage}
-                                    alt="Not Found"
-                                />
-                            </div>
+                            {crouseimages.length > 0 ? (
+                                crouseimages.map((image, index) => (
+                                    <div key={index} style={{ height: '50vh' }}>
+                                        <img
+                                            style={{ width: '100%', height: '50vh', objectFit: 'cover' }}
+                                            src={`${constants.BASE_URL}images/${image}`}
+                                            alt={`Slide ${index}`}
+                                        />
+                                    </div>
+                                ))
+                            ) : (
+                                <div style={{ height: '50vh', width: '100%' }}>
+                                    <img
+                                        style={{ width: '100%', height: '50vh', objectFit: 'cover' }}
+                                        src={notFoundImage}
+                                        alt="Not Found"
+                                    />
+                                </div>
+                            )}
                         </Carousel>
                     )}
-
                 </div>
                 <div style={{
                     position: 'absolute',
@@ -181,21 +185,22 @@ const AboutSocietyPage = () => {
                     alignItems: 'center',
                     justifyContent: 'center',
                     borderRadius: '10px', // Optional: to round the corners of the cover photo container
-                    display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center'
                 }}>
-                    {society.cover_photo && (
+                    {society.cover_photo ? (
                         <img
                             src={society.cover_photo}
                             alt="Cover Photo"
-                            style={{ objectFit: 'cover', height: '25vh', borderRadius: '50%' }}
+                            style={{ objectFit: 'cover', height: '25vh', width: '25vh', borderRadius: '50%' }}
                         />
+                    ) : (
+                        <Skeleton circle={true} height={150} width={150} />
                     )}
                     <Title style={{ marginTop: '1%' }} level={2}>{society.name}</Title>
-
                 </div>
             </div>
+
             <div bordered={false} style={{ margin: isSmallScreen ? '10%' : '5%', marginTop: 0, textAlign: isSmallScreen ? 'center' : 'left' }}>
                 <Text >{society.description}</Text>
                 {society.tags[0].split(',').map((item, index) => (

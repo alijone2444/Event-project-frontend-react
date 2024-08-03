@@ -9,12 +9,16 @@ import { useEffect } from "react";
 import { setEventsDataAll } from "../../ReduxStore/actions/eventsDataActionUser";
 import { setCurrentPage } from "../../ReduxStore/actions/eventsPaginationActions";
 import { setTotalPages } from "../../ReduxStore/actions/eventsPaginationActions";
+import { setSocietiesData } from "../../ReduxStore/actions/societyDataAction";
+import { setMarqueeItems } from "../../ReduxStore/actions/marqueeAction";
 const EventDataProvider = () => {
 
     const calanderevents = useSelector(state => state.CalanderEvents)
     const SavedConstants = useSelector(state => state.SavedConstants);
     const { currentPage, pageSize, totalPages, lastVisitedPage } = useSelector((state) => state.eventspagination);
+    const Societies = useSelector((state) => state.Societies);
     const Allevents = useSelector((state) => state.userAllEvents);
+    const coverPhotosMarquee = useSelector(state => state.marqueeData.items);
     const requestInstance = createAuthenticatedRequest()
     const dispatch = useDispatch()
     useEffect(() => {
@@ -81,6 +85,30 @@ const EventDataProvider = () => {
             fetchAllEvents(currentPage, pageSize);
         }
     }, [dispatch]);
+    useEffect(() => {
+        const fetchData = async (page, limit) => {
+            try {
+                const response = await requestInstance.get(`${constants.BASE_URL}get-societies?page=${page}&limit=${limit}&amount=${'All'}`);
+                dispatch(setSocietiesData([...Societies, ...response.data.societies]));
+            } catch (error) {
+                console.error('Error fetching societies data:', error);
+            }
+        };
+
+        if (Societies.length === 0) {
+            fetchData(1, 10);
+        }
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (coverPhotosMarquee.length === 0) {
+            requestInstance.get(`${constants.BASE_URL}get-photos-for-marquee`)
+                .then(response => {
+                    console.log('marquee data', response.data)
+                    dispatch(setMarqueeItems(response.data))
+                })
+        }
+    }, [dispatch])
 
 
     return null

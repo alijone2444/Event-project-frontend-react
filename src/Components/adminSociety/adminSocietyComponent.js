@@ -12,6 +12,7 @@ import { setAdminSocietiesData } from '../../ReduxStore/actions/AdminSocietyActi
 import { useSelector } from "react-redux";
 import { Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import AssignSocietyForm from './assignSoicetyForm';
 const SocietiesAdminComponent = (props) => {
     const dispatch = useDispatch();
     const requestInstance = createAuthenticatedRequest()
@@ -20,6 +21,9 @@ const SocietiesAdminComponent = (props) => {
     const [rerun, setrerun] = useState(false)
     const [Previousvalues, setPreviousvalues] = useState(null)
     const [edit, setedit] = useState(false)
+    const [AssignSociety, setAssignSociety] = useState(false)
+    const [tempSocietyNameStorage, settempSocietyNameStorage] = useState('')
+
     const navigate = useNavigate()
     useEffect(() => {
         const fetchData = async () => {
@@ -128,6 +132,7 @@ const SocietiesAdminComponent = (props) => {
                                         <div style={{ textAlign: 'center' }}>
                                             <div style={{ fontWeight: 'bold', fontSize: 17 }}>{society.name}</div>
                                             <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>{society.description}</p>
+                                            {society.isAdmin && <Button type="link" style={{ color: 'green' }} onClick={() => { setAssignSociety(true); settempSocietyNameStorage(society.name) }}>Assign Society To</Button>}
                                             <Button type="link" onClick={() => navigate('society-page', { state: { ...society, Simple: false } })}>Visit</Button>
                                             <Button type="link" onClick={() => handleEdit(society)}>Edit</Button>
                                             <Button type="link" danger onClick={() => handleDelete(society._id)}>Delete</Button>
@@ -146,6 +151,14 @@ const SocietiesAdminComponent = (props) => {
                                 footer={null}
                             >
                                 <SocietyForm onclose={handleUpdate} Previousvalues={edit ? Previousvalues : {}} />
+                            </Modal>
+                            <Modal
+                                title="Assign society to a user"
+                                visible={AssignSociety}
+                                onCancel={() => { setAssignSociety(false); setedit(false) }}
+                                footer={null}
+                            >
+                                <AssignSocietyForm SocietyName={tempSocietyNameStorage} />
                             </Modal>
                         </Grid>
                     </div>

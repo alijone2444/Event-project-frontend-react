@@ -52,7 +52,7 @@ function Heading(props) {
                 </a>
             ) : (
                 <div style={{ position: 'relative', display: 'inline-block' }}>
-                    <img src={profileData.profileImageUrl || Profile} alt="Profile" style={{ height: '50px', width: '50px', borderRadius: '50%', cursor: 'pointer', objectFit: 'cover', border: '2px solid dodgerblue' }} onClick={() => { navigate('/user-profile', { state: profileData }) }} />
+                    <img src={profileData.profileImageUrl || Profile} alt="Profile" style={{ height: '50px', width: '50px', borderRadius: '50%', cursor: 'pointer', objectFit: 'cover', border: '2px solid rgba(255,255,255,0.5)' }} onClick={() => { navigate('/user-profile', { state: profileData }) }} />
 
                     <IconButton
                         style={{

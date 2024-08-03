@@ -22,6 +22,7 @@ import { setProfileData } from "../../../ReduxStore/actions/profileDataAction";
 import { setFCMToken } from "../../../ReduxStore/actions/fcmTokenState";
 import SocietyCards from "../../../Components/SocietyCards/SocietyCards";
 import EventDataProvider from "../../../Components/dataFetchingComponent/dataFetchingComponent";
+import MarqueeComponent from "../../../Components/marqueeComponent/marquee";
 function Home() {
   const requestInstance = createAuthenticatedRequest();
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ function Home() {
   const recentEvents = useSelector((state) => state.userRecentEvents);
   const popularEvents = useSelector((state) => state.userpopularEvents);
   const threeSocieties = useSelector(state => state.threeSocieties);
+
 
   const [showGreeting, setShowGreeting] = useState(false);
   const isForeground = useVisibilityChange();
@@ -157,6 +159,7 @@ function Home() {
           <SocietyCards threeSocieties={threeSocieties.societies} />
         </div>
         <HomeBody />
+        <MarqueeComponent />
       </WrapperComponent>
     </div>
   )

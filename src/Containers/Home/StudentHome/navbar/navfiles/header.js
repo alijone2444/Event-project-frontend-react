@@ -19,6 +19,7 @@ import HideOnScroll from './hideonScroll';
 import { useMediaQuery } from '@mui/material';
 import { SearchOutlined } from '@ant-design/icons';
 import SearchModal from '../../../../../Components/SearchModal/searchModal';
+import navbarBackground from '../../../../../images/headerBackground.png'
 const Header = (props) => {
   const classes = useStyles();
   const [expandedButton, setExpandedButton] = React.useState(null);
@@ -81,7 +82,18 @@ const Header = (props) => {
   return (
 
     <HideOnScroll {...props}>
-      <AppBar style={{ top: 0, left: 0, zIndex: "3", backgroundColor: !props.transparentNavbar ? "white" : "white" }}>
+      <AppBar
+        style={{
+          top: 0,
+          left: 0,
+          zIndex: 3,
+          backgroundColor: 'white',
+          backgroundImage: `url(${navbarBackground})`,
+          backgroundSize: '100% 100%',  // Stretch the background image
+          backgroundRepeat: 'no-repeat',  // Prevent repetition
+          backgroundPosition: 'center',  // Center the image
+        }}
+      >
         <Toolbar className={classes.toolbar}>
           <Heading heading={isSmallScreen ? 'heading1' : 'heading2'} />
 
@@ -166,6 +178,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)', // Semi-transparent overlay
+
   },
   logoContainer: {
     position: 'absolute',

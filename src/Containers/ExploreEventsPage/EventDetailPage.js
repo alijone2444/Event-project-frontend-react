@@ -14,7 +14,6 @@ function EventDetailPage() {
   const { state } = useLocation();
   const eventData = state?.data;
   const navigate = useNavigate()
-  console.log('i the dettail page', eventData)
   const ismobile = useMediaQuery('(max-width:600px)')
   useEffect(() => {
     window.scrollTo(0, 0);

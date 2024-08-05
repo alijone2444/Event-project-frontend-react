@@ -9,6 +9,7 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import constants from '../../Constants/constants';
 import { CircularProgress } from '@mui/material';
 
+
 const Login = (props) => {
   const [Rollno, setRollno] = useState('');
   const [password, setPassword] = useState('');
@@ -42,7 +43,6 @@ const Login = (props) => {
       const response = await axios.post(`${constants.BASE_URL}login`, dataToSend);
 
       // Handle the response on successful login
-      console.log(response.data);
 
       if (response.data.success === true && response.data.token) {
         localStorage.setItem('authToken', response.data.token);
@@ -148,7 +148,7 @@ const Login = (props) => {
               <Checkbox style={{ color: 'white' }}>Remember me</Checkbox>
             </Form.Item>
 
-            <a style={{ float: 'right', color: 'dodgerblue' }} >
+            <a style={{ float: 'right', color: 'dodgerblue' }} onClick={() => props.forgetPassCallback()}>
               Forgot password?
             </a>
           </Form.Item>

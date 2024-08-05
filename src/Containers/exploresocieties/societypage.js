@@ -54,7 +54,6 @@ const AboutSocietyPage = () => {
 
     // Simulate data fetch (replace with actual data fetching logic)
     useEffect(() => {
-        console.log('runninguse');
         const fetchEvents = async () => {
             try {
                 const requestInstance = createAuthenticatedRequest();
@@ -73,7 +72,6 @@ const AboutSocietyPage = () => {
             }
         };
         if (society || rerun) {
-            console.log('rerunned')
             fetchEvents();
             setrerun(false)
         }

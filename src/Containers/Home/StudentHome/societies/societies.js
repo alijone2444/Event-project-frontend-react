@@ -15,6 +15,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'; // Import the CSS
 import recordSocietyVisit from '../../../../Components/functions/recortSocietyVisits';
 import { setConstants } from '../../../../ReduxStore/actions/setConstantsAction';
+import { setSocietyViewMoreOption } from '../../../../ReduxStore/actions/societyDataAction';
 function SocietiesPage() {
     const Societies = useSelector((state) => state.Societies);
     const requestInstance = createAuthenticatedRequest();
@@ -26,6 +27,7 @@ function SocietiesPage() {
     const [limit, setLimit] = useState(10);
     const [fetchDocsAgain, setFetchDocsAgain] = useState(false);
     const SavedConstants = useSelector(state => state.SavedConstants.constants);
+    const hasMoreSocieties = useSelector((state) => state.ViewMore);
     const navigate = useNavigate();
 
     const followSociety = async (societyId, name, action) => {
@@ -42,6 +44,7 @@ function SocietiesPage() {
                 dispatch(setSocietiesData(updatedSocieties));
                 setFollowUnfollowLoaders(prev => ({ ...prev, [societyId]: false }));
             }
+
         } catch (error) {
             console.error('Error following/unfollowing society:', error);
             setFollowUnfollowLoaders(prev => ({ ...prev, [societyId]: false }));
@@ -51,6 +54,7 @@ function SocietiesPage() {
     useEffect(() => {
         if (Societies.length === 0 || fetchDocsAgain) {
             fetchData(page, limit);
+
         }
     }, [page, dispatch, fetchDocsAgain]);
 
@@ -58,7 +62,6 @@ function SocietiesPage() {
         const fetchThreeSocietiesAndConstants = async () => {
             try {
                 const response2 = await requestInstance.get(`${constants.BASE_URL}get-constants`); // or use fetch
-                console.log('response 2', response2.data)
                 dispatch(setConstants(response2.data))
             } catch (err) {
                 console.log(err.message)
@@ -79,6 +82,10 @@ function SocietiesPage() {
             dispatch(setSocietiesData([...Societies, ...response.data.societies]));
             setLoading(false);
             setFetchDocsAgain(false);
+            if (response.data.societies.length < limit) {
+                dispatch(setSocietyViewMoreOption(false))
+                // No more societies to load
+            }
         } catch (error) {
             console.error('Error fetching societies data:', error);
         }
@@ -180,11 +187,11 @@ function SocietiesPage() {
                 <Divider />
                 <Grid container >
                     <Grid item xs={12} sm={12} >
-                        <Button variant="contained" style={{ backgroundColor: 'purple', color: "white", width: '100%' }} onClick={handleViewMore}>View More</Button>
+                        <Button variant="contained" style={{ backgroundColor: !hasMoreSocieties ? 'lightgrey' : 'purple', color: "white", width: '100%' }} disabled={!hasMoreSocieties} onClick={handleViewMore}>View More</Button>
                     </Grid>
                 </Grid>
             </div>
-        </WrapperComponent>
+        </WrapperComponent >
     );
 };
 

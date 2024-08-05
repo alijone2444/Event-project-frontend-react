@@ -24,15 +24,12 @@ const Footer = (props) => {
   const isSmallScreen = useMediaQuery('(max-width: 768px)'); // Adjust the max-width value as needed
   const handleSocieties = () => {
     navigate("/societies")
-    console.log("societies")
   }
   const handleCalander = () => {
     navigate("/calander")
-    console.log("calander")
   }
   const handleHome = () => {
     navigate("/Home")
-    console.log("Home")
   }
   const handleEvents = () => {
     navigate('/events')
@@ -42,19 +39,20 @@ const Footer = (props) => {
       <Container maxWidth="lg">
         <Grid container spacing={4}>
           <Grid item xs={12} sm={3}>
-            <Typography variant="h6" className={classes.text} >
-              IST Hub
+            <Typography variant="h6" className={[classes.text]} >
+              IST EMS
             </Typography>
-
-            <Typography variant="body2" style={{ padding: "1%" }} className={classes.text}>
-              Address: 123 Street, City, Country
-            </Typography>
-            <Typography variant="body2" style={{ padding: "1%" }} className={classes.text}>
-              Email: info@isthub.com
-            </Typography>
-            <Typography variant="body2" style={{ padding: "1%" }} className={classes.text}>
-              Phone: +1234567890
-            </Typography>
+            <div style={{ marginTop: '5%' }}>
+              <Typography variant="body2" style={{ padding: "1%" }} className={classes.text}>
+                Address: 1, Islamabad Expressway, Islamabad
+              </Typography>
+              <Typography variant="body2" style={{ padding: "1%" }} className={classes.text}>
+                Email: info@ist.edu.pk
+              </Typography>
+              <Typography variant="body2" style={{ padding: "1%" }} className={classes.text}>
+                Phone: +923345082594
+              </Typography>
+            </div>
           </Grid>
           <Grid item xs={12} sm={3}>
             <Typography variant="h6" className={classes.text}>
@@ -102,21 +100,24 @@ const Footer = (props) => {
                 Links
               </Typography>
             </div>
-            {constants.menuitems.map((menuItem, index) => (
-              <div key={index} className={classes.menuButton} style={{ paddingRight: isSmallScreen ? "10%" : "0%" }} onClick={
-                menuItem.name === 'Home' ? handleHome :
-                  menuItem.name === 'Societies' ? handleSocieties :
-                    menuItem.name === 'Calander' ? handleCalander :
-                      menuItem.name === 'Events' ? handleEvents :
-                        null // Add more cases if needed
-              }>
-                <IconButton className={classes.arrowIcone}>
-                  <ArrowForwardIcon style={{ color: "white" }} />
-                </IconButton>
-                <Typography variant="body1">{menuItem.name}</Typography>
-              </div>
-            ))}
-
+            <div style={{
+              marginTop: '5%', paddingRight: isSmallScreen ? "5%" : "0%"
+            }}>
+              {constants.menuitems.map((menuItem, index) => (
+                <div key={index} className={classes.menuButton} onClick={
+                  menuItem.name === 'Home' ? handleHome :
+                    menuItem.name === 'Societies' ? handleSocieties :
+                      menuItem.name === 'Calander' ? handleCalander :
+                        menuItem.name === 'Events' ? handleEvents :
+                          null // Add more cases if needed
+                }>
+                  <IconButton className={classes.arrowIcone}>
+                    <ArrowForwardIcon style={{ color: "white" }} />
+                  </IconButton>
+                  <Typography variant="body1">{menuItem.name}</Typography>
+                </div>
+              ))}
+            </div>
           </Grid>
 
         </Grid>
@@ -125,7 +126,7 @@ const Footer = (props) => {
         An Event Management Platform
       </Typography>
       <Typography variant="body2" className={classes.text} >
-        © {new Date().getFullYear()} IST Hub. All rights reserved.
+        © {new Date().getFullYear()} IST EMS. All rights reserved.
       </Typography>
     </footer>
   );

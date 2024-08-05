@@ -47,7 +47,6 @@ const ScrollingHorizontally = (props) => {
       const response = await requestInstance.delete(`${constants.BASE_URL}delete-event/${eventId}`);
       if (response.data.success) {
         props.deletesucess();
-        console.log('Event deleted successfully');
       } else {
         console.error('Failed to delete event:', response.data.message);
       }

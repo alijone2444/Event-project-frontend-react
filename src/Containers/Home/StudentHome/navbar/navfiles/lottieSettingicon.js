@@ -5,7 +5,6 @@ import { useEffect } from 'react';
 
 const MySettingIcon = (props) => {
   const [isAnimationStopped, setIsAnimationStopped] = useState(false);
-  console.log("these", props)
   useEffect(() => {
     setIsAnimationStopped(!isAnimationStopped);
   }, [props.start]);

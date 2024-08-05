@@ -23,7 +23,6 @@ function Navbar(props) {
       const response = await requestInstance.get(`${constants.BASE_URL}check-drawer`);
       if (response.data) {
         const data = response.data;
-        console.log(data);
         setUserType(data);
         setLoading(false);
         return data;
@@ -45,7 +44,6 @@ function Navbar(props) {
     if (props.showstyle) {
       props.showstyle();
     }
-    console.log('button');
   };
 
   const handleclose = () => {
@@ -53,7 +51,6 @@ function Navbar(props) {
     if (props.notshowstyle) {
       props.notshowstyle();
     }
-    console.log('calback');
   };
 
   const handleDrawer = () => {
@@ -63,10 +60,8 @@ function Navbar(props) {
   const handleClick = async (option) => {
     try {
       if (option === 'Society Admin Portal' && (usertype === 'admin' || usertype === 'S-Admin')) {
-        console.log('nfeuia');
         navigate('/SocietyAdminPortal');
       } else if (option === 'Logout') {
-        console.log('logout');
         setlogout(true);
       }
       else if (option === 'About Us') {

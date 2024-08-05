@@ -74,7 +74,6 @@ function SidebarComponent(props) {
   // }, [profileData])
   function handleClickOutside(event) {
     if (sideNavRef.current && !sideNavRef.current.contains(event.target)) {
-      console.log("bello");
       props.callbackClose();
       setshowsidebar(false)
     }

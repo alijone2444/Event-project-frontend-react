@@ -11,7 +11,7 @@ function HomeBody() {
 
       <Grid item xs={12} sm={12}>
         <Typography variant="h4" gutterBottom>
-          IST UNIVERSITY & IST HUB
+          IST UNIVERSITY & IST EMS
         </Typography>
 
       </Grid>

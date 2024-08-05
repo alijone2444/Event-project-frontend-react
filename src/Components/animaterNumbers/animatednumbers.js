@@ -8,7 +8,6 @@ function AnimationNumbers({ SavedConstants }) {
     const classes = useStyles();
     const isSmallScreen = useMediaQuery('(max-width:600px)');
 
-    console.log('here is hehe', SavedConstants)
     return (
         <div className={classes.container}>
             <Grid container justifyContent="center" alignItems="center" spacing={2}>

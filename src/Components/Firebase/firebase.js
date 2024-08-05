@@ -37,7 +37,6 @@ const setupNotifications = async (onMessageCallback) => {
         if (permission === 'granted') {
             const token = await getToken(messaging);
             if (authToken) {
-                console.log('this is the toke yet', authToken)
                 await axios.post(
                     `${constants.BASE_URL}add-fcm-token`,
                     { token },
@@ -49,10 +48,8 @@ const setupNotifications = async (onMessageCallback) => {
                     }
                 );
             }
-            console.log('FCM Token sent to the backend:', token);
 
             onMessage(messaging, (payload) => {
-                console.log('Foreground Message:', payload);
                 onMessageCallback(payload);
             });
 
@@ -67,4 +64,4 @@ const setupNotifications = async (onMessageCallback) => {
     }
 };
 
-export { messaging, setupNotifications, auth, db };
+export { messaging, setupNotifications, auth, db, firebaseConfig };

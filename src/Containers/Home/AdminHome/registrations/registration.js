@@ -26,7 +26,6 @@ const AttendeesTable = (props) => {
 
   useEffect(() => {
     if (requestsData.length === 0 || runuseffect === true || props.showOnlyActiveUsers) {
-      console.log("inside useefect");
       requestInstance
         .get(`${constants.BASE_URL}get-all-requests`, {
           params: {
@@ -45,7 +44,6 @@ const AttendeesTable = (props) => {
   }, [dispatch, isupdatedAfterAction, props.showOnlyActiveUsers]);
 
   const handleAction = (id, action) => {
-    console.log(id, action)
     let updatedFields;
     if (action === 'accept') {
       updatedFields = { status: 'active' };
@@ -61,7 +59,6 @@ const AttendeesTable = (props) => {
     }
     requestInstance.patch(`${constants.BASE_URL}request-action/${id}`, updatedFields)
       .then(response => {
-        console.log('Component updated successfully:', response.data);
         if (response.data.success === true) {
           setisupdatedAfterAction(!isupdatedAfterAction)
           setrunuseffect(true)

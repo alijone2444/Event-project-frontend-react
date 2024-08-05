@@ -25,6 +25,7 @@
     "jquery.marquee": "^1.6.0",
     "js-cookie": "^3.0.5",
     "jss": "^10.10.0",
+    "libphonenumber-js": "^1.11.5",
     "lottie-react-web": "^2.2.2",
     "npm": "^9.7.2",
     "react": "^18.2.0",

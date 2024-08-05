@@ -1,12 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { TextField, Button, Grid, Container } from '@mui/material';
+import { TextField, Button, Grid, Container, CircularProgress } from '@mui/material';
 import constants from '../../Constants/constants';
 import createAuthenticatedRequest from '../../RequestwithHeader';
 
 const SocietyForm = (props) => {
     axios.defaults.maxContentLength = 5000000; // Set maximum content length allowed in bytes
     const requestInstance = createAuthenticatedRequest();
+    const [enableSettingCoverphoto, setenableSettingCoverphoto] = useState(false)
+    const [loadinginButton, setloadinginButton] = useState(false)
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -94,6 +96,7 @@ const SocietyForm = (props) => {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
+        setenableSettingCoverphoto(true)
         if (file) {
             setCoverPhoto(file);
             setFormData(prevFormData => ({
@@ -105,16 +108,17 @@ const SocietyForm = (props) => {
 
     const handleSelectFile = () => {
         fileInputRef.current.click();
+        setenableSettingCoverphoto(true)
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        setloadinginButton(true)
         try {
             const formDataToSend = new FormData();
 
             // Convert cover photo to base64 string
-            if (formData.cover_photo) {
+            if (formData.cover_photo && enableSettingCoverphoto) {
                 const reader = new FileReader();
                 reader.readAsDataURL(formData.cover_photo);
 
@@ -148,11 +152,13 @@ const SocietyForm = (props) => {
                 url,
                 data: formDataToSend
             });
-            console.log('Society created successfully:', response.data.society);
             if (response.data.success) {
+                setenableSettingCoverphoto(false)
                 props.onclose();
+                setloadinginButton(false)
             }
         } catch (error) {
+            setloadinginButton(false)
             console.error('Error creating society:', error);
         }
     };
@@ -353,7 +359,8 @@ const SocietyForm = (props) => {
                     </Grid>
                 </Grid>
                 <Button type="submit" variant="contained" color="primary">
-                    Submit
+                    {
+                        loadinginButton ? <CircularProgress style={{ color: 'white' }} /> : 'Submit'}
                 </Button>
             </form>
         </Container>

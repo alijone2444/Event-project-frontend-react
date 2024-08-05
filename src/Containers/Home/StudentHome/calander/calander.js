@@ -21,7 +21,6 @@ function CalanderComponent() {
   const handleItemClick = async (item) => {
     try {
       setshowloading(true)
-      console.log(item)
       const response = await requestInstance.get(`${constants.BASE_URL}get-events`, {
         params: {
           amount: 'One',
@@ -30,7 +29,6 @@ function CalanderComponent() {
 
       })
       if (response && response.data) {
-        console.log(response)
         setshowloading(false)
         navigate(`/eventdetail/${response.data.events[0].eventName}`, { state: { data: response.data.events[0], toNavigate: '/calander' } });
 
@@ -53,7 +51,6 @@ function CalanderComponent() {
       const response = await requestInstance.get(`${constants.BASE_URL}calander-upcoming-events`);
       if (response.data && Array.isArray(response.data)) {
         const calendarEvents = convertEvents(response.data);
-        console.log(calendarEvents); // Check the converted events in console
         dispatch(setCalanderData(calendarEvents))
       } else {
         console.error('Error fetching events: Invalid data format');

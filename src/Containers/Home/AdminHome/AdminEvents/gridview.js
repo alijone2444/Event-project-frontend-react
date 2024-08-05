@@ -15,13 +15,11 @@ const EventCard = (props) => {
   const dispatch = useDispatch();
   const events = useSelector((state) => state.userAllEvents); // Adjust according to your state structure
   const AdminEvents = useSelector((state) => state.adminEvents); // Adjust according to your state structure
-  console.log(props)
   const toggleLike = async (eventId, isLIKE) => {
     try {
       const response = await requestInstance.post(`${constants.BASE_URL}like-event`, { eventId, isLIKE });
       if (response.data) {
         const result = response.data;
-        console.log('res', result)
         // Update the specific event in the Redux state
         const updatedEvents = events.map((event) =>
           event._id === eventId ? { ...event, isLiked: result.events.isLiked, NoOfLikes: result.events.NoOfLikes } : event
@@ -32,10 +30,8 @@ const EventCard = (props) => {
             event._id === eventId ? { ...event, isLiked: result.events.isLiked, NoOfLikes: result.events.NoOfLikes } : event
           );
           dispatch(setEventsDataAdmin(updateEventForAdmin));
-          console.log(AdminEvents, 'abc')
         }
         dispatch(setEventsDataAll(updatedEvents));
-        console.log(events)
       }
     } catch (error) {
       console.error('Error:', error.response ? error.response.data : error.message);
@@ -56,7 +52,7 @@ const EventCard = (props) => {
             </div>
             <div style={{ padding: '5%', paddingTop: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Typography variant="h5" component="h2" style={{ marginBottom: '2%' }} className='hover-3 truncate-title'>
+                <Typography variant="h6" component="h2" style={{ marginBottom: '2%' }} className='hover-3 truncate-title'>
                   {event.eventName}
                 </Typography>
                 <IconButton onClick={() => toggleLike(event._id, event.isLiked)} style={{ marginLeft: '8px' }}>

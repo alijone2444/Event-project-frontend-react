@@ -17,10 +17,8 @@ function LogOut(props) {
 
   const DeleteFcmTokenFromBackend = async () => {
     try {
-      console.log('DeleteFcmTokenFromBackend token:', fcmTokenState);
       if (fcmTokenState.token) {
         const response = await requestInstance.delete(`${constants.BASE_URL}delete-fcm-token/${fcmTokenState.token}`);
-        console.log('FCM Token deleted from backend:', response.data);
         if (response.data) {
           dispatch(setFCMToken(null));
         }

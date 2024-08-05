@@ -45,9 +45,7 @@ const EventManagementInterface = () => {
     dispatch(setCurrentPage(1));
   }, [])
   useEffect(() => {
-    console.log('thh new value is', AgainRunUseEffect);
     if (eventsData.length === 0 || AgaingetReduxValues) {
-      console.log('running again')
       setshowLoading(true); // Set loading to true when data fetching starts
       requestInstance
         .get(`${constants.BASE_URL}get-events`, {
@@ -92,7 +90,6 @@ const EventManagementInterface = () => {
   const handleEditEvent = (id) => {
     const foundEvent = eventsData.find((event) => event._id === id);
     if (foundEvent) {
-      console.log('Found event:', foundEvent);
       setshoweventsComponent(false);
       setEdit(foundEvent)
     } else {
@@ -115,7 +112,6 @@ const EventManagementInterface = () => {
   const handleopenEvent = (id) => {
     const foundEvent = eventsData.find((event) => event._id === id);
     if (foundEvent) {
-      console.log('Found event:', foundEvent);
       seteventToSendToOpenEvent(foundEvent)
     } else {
       console.log('Event not found with id:', id);
@@ -236,7 +232,6 @@ const EventManagementInterface = () => {
                     dispatch(setEventsDataAdmin([]));
                     dispatch(setCurrentPage(1));
                     dispatch(setLastvisited(1));
-                    dispatch(setTotalPages(1));
                     setAgainRunUseEffect(!AgainRunUseEffect);
                     setAgaingetReduxValues(true)
                     setEdit([])

@@ -15,7 +15,7 @@ const SetCarouselImages = () => {
     useEffect(() => {
         setLoading(true);
         requestInstance.get(`${constants.BASE_URL}get-all-events-images`)
-            .then((response) => { setImages(response.data); console.log(response.data); setLoading(false); })
+            .then((response) => { setImages(response.data); setLoading(false); })
             .catch((error) => { console.log('error occurred', error); setLoading(false); });
     }, []);
 

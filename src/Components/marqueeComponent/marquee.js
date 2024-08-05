@@ -18,7 +18,6 @@ const MarqueeComponent = () => {
         if (coverPhotosMarquee.length === 0) {
             requestInstance.get(`${constants.BASE_URL}get-photos-for-marquee`)
                 .then(response => {
-                    console.log('marquee data', response.data);
                     dispatch(setMarqueeItems(response.data));
                     setLoading(false);
                 })

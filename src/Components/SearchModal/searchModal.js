@@ -42,7 +42,6 @@ const SearchModal = (props) => {
     const handleItemClick = async (item) => {
         try {
             setshowloading(true)
-            console.log(item)
             const response = await requestInstance.get(`${constants.BASE_URL}get-events`, {
                 params: {
                     amount: 'One',
@@ -51,7 +50,6 @@ const SearchModal = (props) => {
 
             })
             if (response && response.data) {
-                console.log(response)
                 setshowloading(false)
                 props.onclose();
                 navigate(`/eventdetail/${response.data.events[0].eventName}`, { state: { data: response.data.events[0], toNavigate: '/Home' } });

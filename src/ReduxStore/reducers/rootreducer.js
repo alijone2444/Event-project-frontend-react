@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import requestsReducer from './RequestsreducerAdmin'; // Adjust the import path based on your actual file structure
 import AdminEventsReducer from './EventsAdminReducer';
-import SocietiesReducer from './societiesDataReducer';
+import { SocietiesReducer, ViewMoreSocietiesReducer } from './societiesDataReducer';
 import ProfileDataReducer from './profileDataReducer';
 import fcmTokenReducer from './FcmTokenStateReducer';
 import marqueeReducer from './marqueeReducer';
@@ -38,7 +38,8 @@ const appReducer = combineReducers({
   fcmTokenState: fcmTokenReducer,
   threeSocieties: threeSocietiesReducer,
   SavedConstants: constantsReducer,
-  marqueeData: marqueeReducer
+  marqueeData: marqueeReducer,
+  ViewMore: ViewMoreSocietiesReducer
 });
 
 const rootReducer = (state, action) => {

@@ -4,7 +4,6 @@ import './loginCrousel.css';
 
 function LoginCarousel(props) {
 
-  console.log(props.mainImage.concat(props.images))
   const settings = {
     showThumbs: false,
     infiniteLoop: true,
@@ -22,7 +21,7 @@ function LoginCarousel(props) {
       <Carousel {...settings}>
         {props.mainImage.concat(props.images).map((image, index) => (
           <div key={index} >
-            <img src={image.src} alt={'no image to show'} className="crousel-image"/>
+            <img src={image.src} alt={'no image to show'} className="crousel-image" />
           </div>
         ))}
       </Carousel>

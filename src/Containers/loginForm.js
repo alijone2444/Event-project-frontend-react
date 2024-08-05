@@ -9,13 +9,14 @@ import { Tag } from "antd";
 import { VolumeUp, VolumeOff } from "@mui/icons-material/";
 import SignUp from "../Components/signup_form/signup_form";
 import { useNavigate, useLocation } from "react-router-dom";
-
+import ForgotPassword from "../Components/ForgetPasswordForm/ForgetPasswordForm";
 function Login(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const [flag, setFlag] = useState(true);
-  const [login, setlogin] = useState(true);
+  const [login, setLogin] = useState(true);
   const audioRef = useRef(new Audio(backgroundMusic));
+  const [forget, setForget] = useState(false)
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -39,7 +40,10 @@ function Login(props) {
 
     setFlag((prevFlag) => !prevFlag);
   };
-
+  const handleForgotPassword = () => {
+    setForget(true);
+    setLogin(false); // Optionally hide the login form when showing forgot password
+  };
   const handlestopingaudio = () => {
     audioRef.current.pause();
     audioRef.current.currentTime = 0;
@@ -52,18 +56,23 @@ function Login(props) {
       </div>
       <div className="login-screen">
         {!isMobile && <TypewriterEffect />}
-        {login ? (
-          <LoginForm
-            showAdmin={() => { navigate(location.pathname + '/success') }}
-            issmall={isMobile}
-            type={props.type}
-            showSignup={() => { setlogin(false) }}
-          />
+        {forget ? (
+          <ForgotPassword showLoginComeback={() => { setForget(false); setLogin(true); }} />
         ) : (
-          <SignUp
-            issmall={isMobile}
-            showSignIn={() => { setlogin(true) }}
-          />
+          login ? (
+            <LoginForm
+              forgetPassCallback={handleForgotPassword}
+              showAdmin={() => { navigate(location.pathname + '/success') }}
+              issmall={isMobile}
+              type={props.type}
+              showSignup={() => { setLogin(false) }}
+            />
+          ) : (
+            <SignUp
+              issmall={isMobile}
+              showSignIn={() => { setLogin(true) }}
+            />
+          )
         )}
         <div style={{ position: "absolute", bottom: 0, left: 0, display: 'flex', flexDirection: 'row', zIndex: 2 }}>
           <div

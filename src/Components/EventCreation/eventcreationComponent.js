@@ -77,7 +77,6 @@ const CreateEvent = (props) => {
   const handleSave = async (event) => {
     event.preventDefault();
 
-    console.log(eventData.imageFiles)
     // Create a FormData object to send files
     const formData = new FormData();
 
@@ -142,7 +141,6 @@ const CreateEvent = (props) => {
       ...prevData,
       imageFiles: [...prevData.imageFiles, ...files],
     }));
-    console.log(eventData.imageFiles)
   };
   return (
     <div>

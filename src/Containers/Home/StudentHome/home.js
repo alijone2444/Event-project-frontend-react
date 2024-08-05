@@ -42,7 +42,6 @@ function Home() {
       const { title, body } = message.notification;
       const { date, location } = message.data;
 
-      console.log(message.notification, message.data);
       if (isForeground) {
         toastNotification({
           title,
@@ -61,7 +60,6 @@ function Home() {
     if (!FCMTOKEN) {
       setupNotifications(handleNotification).then((token) => {
         if (token) {
-          console.log('tokennnnnnnnn', token)
           dispatch(setFCMToken(token));
           dispatch(setGotTokenFcm(true));
         }
@@ -78,7 +76,6 @@ function Home() {
       try {
         const response = await requestInstance.get(`${constants.BASE_URL}get-profile-data`); // Replace with your endpoint
         if (response.data) {
-          console.log('data,', response.data.profile)
           dispatch(setProfileData(response.data.profile)) // Set profile data upon successful fetch
         }
       } catch (error) {
@@ -132,7 +129,6 @@ function Home() {
         })
         .then(response => {
           dispatch(setEventsDataUserRecent(response.data.events));
-          console.log('respones:', response.data.events)
         })
         .catch(err => {
           console.error('Error:', err);

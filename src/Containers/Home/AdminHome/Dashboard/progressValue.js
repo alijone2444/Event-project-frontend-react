@@ -7,7 +7,6 @@ const ProgressTrackerCard = (props) => {
   let percentage;
   percentage = (props.stats?.totalSize / 512000000) * 100
   const rounded = percentage.toFixed(2)
-  console.log(2)
   const users = (props.usersData.activeUsers / props.usersData.NoOfUsers) * 100
   const roundedusers = users.toFixed(2)
   return (

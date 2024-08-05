@@ -270,7 +270,6 @@ function ThreeScene(props) {
         // If component is unmounted, exit the loop
         return;
       }
-      console.log(props.propchange)
       // Rotate spheres
       orbitGroup.rotation.y += 0.002;
       neptune.rotation.x += 0.00001;

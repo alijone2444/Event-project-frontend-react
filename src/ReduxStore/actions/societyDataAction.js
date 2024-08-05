@@ -3,3 +3,7 @@ export const setSocietiesData = (data) => ({
     payload: data,
 }
 );
+export const setSocietyViewMoreOption = (data) => ({
+    type: 'SET_SOCIETY_VIEW_MORE_OPTION',
+    payload: data
+})

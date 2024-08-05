@@ -45,14 +45,12 @@ const SocietyCards = (props) => {
     const dispatch = useDispatch()
     const isMobile = useMediaQuery('(max-width: 768px)');
     const { threeSocieties } = props;
-    console.log('eeha', threeSocieties)
     useEffect(() => {
         const fetchThreeSocietiesAndConstants = async () => {
             try {
                 const response = await requestInstance.get(`${constants.BASE_URL}three-societies`); // or use fetch
                 dispatch(setThreeSocieties(response.data))
                 const response2 = await requestInstance.get(`${constants.BASE_URL}get-constants`); // or use fetch
-                console.log('response 2', response2.data)
                 dispatch(setConstants(response2.data))
             } catch (err) {
                 console.log(err.message)

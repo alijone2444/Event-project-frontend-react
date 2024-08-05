@@ -44,7 +44,6 @@ function AdminHomePage() {
         const response = await requestInstance.get(`${constants.BASE_URL}database-stats`); // Replace with your API endpoint
         if (response.data) {
           setStats(response.data);
-          console.log('rse', response.data)
         }
       } catch (err) {
         console.log(err.message);

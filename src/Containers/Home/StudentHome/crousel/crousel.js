@@ -35,16 +35,12 @@ function CarouselComponent(props) {
         .get(`${constants.BASE_URL}get-carousel-images`)
         .then(response => {
           dispatch(setcrouselImagesData(response.data));
-          console.log('respones:', response.data)
         })
         .catch(err => {
           console.error('Error:', err);
         });
     }
   }, [dispatch])
-  useEffect(() => {
-    console.log('ths is test again', CrouselDataFetched)
-  }, [dispatch, CrouselDataFetched])
 
   return (
     <div style={{ position: 'relative' }}>

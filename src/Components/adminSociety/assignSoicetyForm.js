@@ -39,7 +39,6 @@ const AssignSocietyForm = ({ SocietyName }) => {
                     username: selectedUser
                 });
                 setLoading(false)
-                console.log('Society assigned successfully');
             } catch (err) {
                 setLoading(false)
                 setError('Failed to assign society');

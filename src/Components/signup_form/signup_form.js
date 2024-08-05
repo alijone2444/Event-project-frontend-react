@@ -28,13 +28,11 @@ const SignUp = (props) => {
 
 
   const onFinish = (values) => {
-    console.log('Received values:', values);
   };
 
   const handleSubmit = async () => {
     setloading(true)
     try {
-      console.log(checked);
       if (
         checked &&
         Rollno &&
@@ -61,8 +59,6 @@ const SignUp = (props) => {
           department: selectedDepartment,
         });
 
-        // Handle the response on successful registration
-        console.log(response.data);
 
         if (response.data.success === true) {
           navigate('/request'); // Redirect to the login page after successful registration

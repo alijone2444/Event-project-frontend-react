@@ -141,8 +141,8 @@ function Item(props) {
         position: "absolute", top: isSmallScreen ? "35%" : "40%", left: "50%", transform: "translate(-50%,-50%)", width: "70%",
         display: "flex", justifyContent: "center", flexDirection: "column"
       }}>
-        <h1 style={{ textAlign: "center", color: "white", marginBottom: '2%' }}>{props.item.title}</h1>
-        <p style={{ textAlign: "Center", color: "white", marginTop: 0 }}>{props.item.subheader}</p>
+        <h1 style={{ textAlign: "center", color: "rgba(255,255,255,0.9)", marginBottom: '2%' }}>{props.item.eventName}</h1>
+        <p style={{ textAlign: "Center", color: "rgba(255,255,255,0.9)", marginTop: 0 }}>{props.item.subheader}</p>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Button className="CheckButton" style={{ backgroundColor: "#f4373a", color: "white", maxWidth: "150px" }}
             onClick={() => {

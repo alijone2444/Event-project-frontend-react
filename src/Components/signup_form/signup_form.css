@@ -66,6 +66,10 @@ selectWrapper .ant-select-selector {
   border: 1px solid white;
 }
 
+.ant-select-single .ant-select-selector {
+  color: white;
+}
+
 .border {}
 
 .border:hover {

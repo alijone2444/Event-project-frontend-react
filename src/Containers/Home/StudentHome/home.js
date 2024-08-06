@@ -36,11 +36,13 @@ function Home() {
   const isForeground = useVisibilityChange();
   const FCMTOKEN = useSelector(state => state.FCMToken.flag); // Assuming FCMToken is your root reducer name
   const profileData = useSelector(state => state.profiledata);
-
   useEffect(() => {
     const handleNotification = (message) => {
       const { title, body } = message.notification;
-      const { date, location } = message.data;
+      const data = message.data || {};
+
+      const date = data.date || undefined;
+      const location = data.location || undefined;
 
       if (isForeground) {
         toastNotification({
@@ -56,6 +58,7 @@ function Home() {
         });
       }
     };
+
 
     if (!FCMTOKEN) {
       setupNotifications(handleNotification).then((token) => {
@@ -146,9 +149,9 @@ function Home() {
         <CarouselComponent />
         <ScrollToTopButton />
         <div style={{ marginBottom: "5%", marginTop: isSmallScreen ? "10%" : "5%" }}>
-          <ScrollingHorizontally data={recentEvents} title={'Recent'} subheader={'Check Latest Happenings'} />
-          <ScrollingHorizontally data={UpcommingEvent} title={'Upcomming'} subheader={'Future Gatherings'} />
-          <ScrollingHorizontally data={popularEvents} title={'Hot'} subheader={'Find Trending Occasions'} />
+          <ScrollingHorizontally data={recentEvents} title={'Recent'} subheader={'Check Latest Happenings'} toNavigate='/Home' />
+          <ScrollingHorizontally data={UpcommingEvent} title={'Upcomming'} subheader={'Future Gatherings'} toNavigate='/Home' />
+          <ScrollingHorizontally data={popularEvents} title={'Hot'} subheader={'Find Trending Occasions'} toNavigate='/Home' />
         </div>
         <div>
 

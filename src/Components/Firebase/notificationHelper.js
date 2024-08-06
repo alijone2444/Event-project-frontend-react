@@ -8,8 +8,8 @@ export const toastNotification = ({ title, body, date, location }) => {
         message: `${title}`,
         description: (
             <div>
-                <p><strong><CalendarOutlined /> Date:</strong> {date}</p>
-                <p><strong><EnvironmentOutlined /> Location:</strong> {location}</p>
+                {date && <p><strong><CalendarOutlined /> Date:</strong> {date}</p>}
+                {location && <p><strong><EnvironmentOutlined /> Location:</strong> {location}</p>}
                 <div style={{ backgroundColor: "rgba(173, 216, 230, 0.5)", padding: '5%', borderRadius: '5%' }}>
                     <Paragraph ellipsis={{ rows: 2, expandable: true }}>{body}</Paragraph>
                 </div>

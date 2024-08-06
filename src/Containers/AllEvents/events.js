@@ -48,8 +48,7 @@ function AllEvents() {
     }, [dispatch]); // Fetch data only once when the component mounts
 
     const handleOpenEvent = (id) => {
-        const foundEvent = Events.find((event) => event._id === id);
-        navigate(`/eventdetail/${foundEvent.eventName}`, { state: { data: foundEvent, toNavigate: '/events' } });
+        navigate(`/eventdetail/${id}`, { state: { data: id, toNavigate: '/events' } });
     };
 
 

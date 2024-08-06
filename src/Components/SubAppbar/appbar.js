@@ -3,12 +3,12 @@ import { AppBar, Toolbar, IconButton, Typography } from '@mui/material';
 import ArrowBack from '@mui/icons-material/ArrowBack';
 import { useMediaQuery } from '@mui/material';
 
-const AppBarComponent = ({ title, onBackButtonClick }) => {
+const AppBarComponent = ({ title, onBackButtonClick, backgroundColor }) => {
     const isSmallScreen = useMediaQuery('(max-width:600px)');
 
     return (
-        <AppBar position="static" style={{ backgroundColor: ' rgba(30, 144, 255, 0.5)' }}>
-            <Toolbar variant="dense" style={{ minHeight: '0px', marginTop: isSmallScreen ? '-5px' : '7px' }}>
+        <AppBar position="static" style={{ backgroundColor: backgroundColor }}>
+            <Toolbar variant="dense" style={{ minHeight: '0px', marginTop: '1%' }}>
                 {onBackButtonClick && (
                     <IconButton edge="start" color="inherit" onClick={onBackButtonClick}>
                         <ArrowBack style={{ fontSize: '20px' }} />

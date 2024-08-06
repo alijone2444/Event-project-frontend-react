@@ -19,6 +19,7 @@ const Login = (props) => {
   const classes = useStyles();
   const [showBorder, setshowBorder] = useState(false);
   const [loading, setloading] = useState(false);
+  const [checked, setChecked] = useState(true);
   const onFinish = (values) => {
     console.log('Received values:', values);
   };
@@ -30,7 +31,8 @@ const Login = (props) => {
       let dataToSend = {
         Rollno: Rollno,
         password: password,
-        Email: Email
+        Email: Email,
+        checked, checked
       };
 
       if (!props.type) {
@@ -67,6 +69,10 @@ const Login = (props) => {
       console.error('Error:', err);
       setError(true);
     }
+  };
+
+  const handleCheckboxChange = (e) => {
+    setChecked(e.target.checked);
   };
   const handleShowSignup = () => {
     setshowBorder(true)
@@ -145,7 +151,8 @@ const Login = (props) => {
 
           <Form.Item>
             <Form.Item name="remember" valuePropName="checked" noStyle>
-              <Checkbox style={{ color: 'white' }}>Remember me</Checkbox>
+              <Checkbox style={{ color: 'white' }} onChange={handleCheckboxChange}
+              >Remember me</Checkbox>
             </Form.Item>
 
             <a style={{ float: 'right', color: 'dodgerblue' }} onClick={() => props.forgetPassCallback()}>

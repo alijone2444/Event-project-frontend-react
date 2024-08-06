@@ -74,7 +74,7 @@ function Login(props) {
             />
           )
         )}
-        <div style={{ position: "absolute", bottom: 0, left: 0, display: 'flex', flexDirection: 'row', zIndex: 2 }}>
+        {/*<div style={{ position: "absolute", bottom: 0, left: 0, display: 'flex', flexDirection: 'row', zIndex: 2 }}>
           <div
             onClick={start}
             style={{ background: "transparent", color: "white", cursor: 'pointer', zIndex: 2 }}
@@ -84,7 +84,7 @@ function Login(props) {
           <Tag color={flag ? "success" : "error"} style={{ background: 'transparent' }}>
             {flag ? "Enable" : "Disable"} Sound Effect
           </Tag>
-        </div>
+        </div>*/}
       </div>
     </div>
   );

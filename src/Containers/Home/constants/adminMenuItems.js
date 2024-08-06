@@ -7,9 +7,11 @@ import {
   QuestionCircleOutlined,
   LogoutOutlined,
   UserAddOutlined,
-  PictureOutlined
+  PictureOutlined,
+  Broadcast
 } from '@ant-design/icons';
 
+import { VolumeUp } from "@mui/icons-material/";
 import societyicon from '../../../images/societyicon.png'
 
 export const menuItems = [
@@ -49,6 +51,11 @@ export const menuItems = [
     key: 'schedules',
     icon: <ScheduleOutlined />,
     name: 'Schedules',
+  },
+  {
+    key: 'BroadCast',
+    icon: <VolumeUp />,
+    name: 'BroadCast Message',
   },
   {
     key: 'sub1',

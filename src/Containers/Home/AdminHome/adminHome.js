@@ -12,6 +12,7 @@ import CreateSocietyAdmin from "../../../Components/CreateSocietyAdmin/CreateSoc
 import SetCrouselImages from "../../../Components/Crousel-Images/setCrouselImages";
 import createAuthenticatedRequest from "../../../RequestwithHeader";
 import constants from "../../../Constants/constants";
+import BroadCastComponent from "../../../Components/BroadCast/BroadcastComponent";
 import { useEffect } from "react";
 function AdminHomePage() {
   const [selectedMenuItem, setSelectedMenuItem] = useState('dashboard');
@@ -89,6 +90,7 @@ function AdminHomePage() {
         {selectedMenuItem === 'Crousel-Images' && <SetCrouselImages />}
         {selectedMenuItem === 'logout' && <LogOut pageToGo={'/admin'} />}
         {selectedMenuItem === 'society-admin' && <CreateSocietyAdmin />}
+        {selectedMenuItem === 'BroadCast' && <BroadCastComponent />}
       </Grid>
     </Grid>
   )

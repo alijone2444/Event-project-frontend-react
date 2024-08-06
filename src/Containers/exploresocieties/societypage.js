@@ -16,7 +16,8 @@ import CreateEvent from '../../Components/EventCreation/eventcreationComponent';
 import { Carousel } from "antd";
 import './societyPage.css'
 import notFoundImage from '../../images/societyBackgroundNotfound.jpg'; // Import static image
-
+import AppBarComponent from '../../Components/SubAppbar/appbar';
+import { useNavigate } from 'react-router-dom';
 const { Title, Text } = Typography;
 
 const AboutSocietyPage = () => {
@@ -30,7 +31,7 @@ const AboutSocietyPage = () => {
     const [runuseeffectagain, setrunuseeffectagain] = useState(false)
     const [rerun, setrerun] = useState(false)
     const [crouseimages, setCrouselimage] = useState([])
-
+    const navigate = useNavigate()
     const isSmallScreen = useMediaQuery('(max-width:600px)');
     useEffect(() => {
         const CheckUserType = async () => {
@@ -103,6 +104,7 @@ const AboutSocietyPage = () => {
         // Show skeleton loading while data is being fetched or loading
         return (
             <WrapperComponent>
+                <AppBarComponent backgroundColor={'purple'} onBackButtonClick={() => { navigate('/societies') }} title='Back' />
                 <Card bordered={false} style={{ margin: '0px' }}>
                     <div style={{ textAlign: 'center', marginTop: '20px' }}>
                         <Skeleton height={300} />
@@ -133,6 +135,7 @@ const AboutSocietyPage = () => {
     // Once data is loaded, render actual society information
     return (
         <WrapperComponent transparentNavbar={true}>
+            <AppBarComponent backgroundColor={'purple'} onBackButtonClick={() => { navigate('/societies') }} title='Go Back' />
             {((UserType === 'admin' || UserType === 'S-Admin') && !society.Simple) && <AppBar position="static" style={{ backgroundColor: 'purple', boxShadow: 'none', borderBottom: '1px solid #e0e0e0' }}>
                 <Toolbar >
                     <MuiTypography variant="h6" style={{ flexGrow: 1, color: 'white', margin: 0 }}>
@@ -211,7 +214,7 @@ const AboutSocietyPage = () => {
                     <ScrollingHorizontally data={societyEvents} title={'Events'} subheader={'Check This Society Events'} subheaderColor={"purple"} showdel={!society.Simple} deletesucess={() => {
                         setrunuseeffectagain(!runuseeffectagain)
                         setrerun(true)
-                    }} />
+                    }} toNavigate='/societies' />
                 ) : (
                     <>
                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>

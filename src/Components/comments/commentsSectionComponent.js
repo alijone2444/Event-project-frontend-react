@@ -10,6 +10,7 @@ import { addDoc, collection, serverTimestamp, onSnapshot, query, orderBy, limit,
 import createAuthenticatedRequest from '../../RequestwithHeader';
 import constants from '../../Constants/constants';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { useMediaQuery } from '@mui/material';
 
 const CommentSection = ({ eventName }) => {
     const classes = useStyles();
@@ -18,6 +19,7 @@ const CommentSection = ({ eventName }) => {
     const [showLottie, setshowLottie] = useState(false);
     const [username, setUserName] = useState(null);
     const [profileImage, setProfileImage] = useState('');
+    const isSmallScreen = useMediaQuery('(max-width:600px)')
     const commentsEndRef = useRef(null); // Ref for end of comments
     useEffect(() => {
         const fetchUserData = async () => {
@@ -99,36 +101,48 @@ const CommentSection = ({ eventName }) => {
             </Grid>
 
             <Divider style={{ backgroundColor: 'white', width: '100%' }} />
-            {comments.length > 0 ? (
-                comments.map((comment) => (
-                    <Grid item xs={12} className={classes.comment}>
-                        <Avatar alt={comment.name} src={comment.avatar} className={classes.avatar} />
-                        <div className={classes.commentContent}>
-                            <div className={classes.commentHeader}>
-                                <Typography variant="body1" >
-                                    <strong>{comment.name}</strong>
-                                </Typography>
-                                <Typography variant="body2" className={classes.commentTime}>
-                                    {comment.createdAt ? new Date(comment.createdAt.seconds * 1000).toLocaleDateString("en-US") : ''}
-                                </Typography>
+            <Grid item xs={12} md={6} style={{ maxHeight: !isSmallScreen && '60vh', overflowY: !isSmallScreen && 'auto' }}>
 
+                {comments.length > 0 ? (
+                    comments.map((comment, index) => (
+                        <Grid item xs={12} className={classes.comment} style={{
+                            backgroundColor: index % 2 == 0 ? 'rgba(0,0,0,0.5)' : 'transparent', border: '1px solid white',
+                            borderColor: index % 2 == 0 ? 'transparent' : 'lightgrey', borderRadius: !isSmallScreen ? "0" : '2%'
+                        }}>
+                            <Avatar alt={comment.name} src={comment.avatar} className={classes.avatar} />
+                            <div className={classes.commentContent}>
+                                <div className={classes.commentHeader}>
+                                    <Typography variant="body1" >
+                                        <strong>{comment.name}</strong>
+                                    </Typography>
+                                    <Typography variant="body2" className={classes.commentTime}>
+                                        {comment.createdAt ? new Date(comment.createdAt.seconds * 1000).toLocaleDateString("en-US") : ''}
+                                    </Typography>
+
+                                </div>
+                                <Typography variant="body2" className={classes.commentText}>
+                                    {comment.text}
+                                </Typography>
                             </div>
-                            <Typography variant="body2" className={classes.commentText}>
-                                {comment.text}
-                            </Typography>
-                        </div>
-                    </Grid>
-                ))
-            ) : (
-                <Typography variant="body2" style={{ color: 'white', marginTop: '10px' }}>
-                    No comments available.
+                        </Grid>
+                    ))
+                ) : (
+                    <Typography variant="body2" style={{ color: 'white', marginTop: '10px' }}>
+                        No comments available.
+                    </Typography>
+                )}
+                {/* Comment Form */}
+            </Grid>
+            <Grid item xs={12} md={6} className={classes.commentForm}
+                ref={commentsEndRef}
+                style={{
+                    padding: isSmallScreen ? '2%' : '5%',
+                }}>
+                <Typography variant='h6' style={{ marginBottom: '5%' }}>
+                    Leave a Comment
                 </Typography>
-            )}
-            {/* Comment Form */}
-            <Grid item xs={12} className={classes.commentForm}
-                ref={commentsEndRef}>
                 <TextField
-                    label="Add a comment"
+                    label="Write a comment"
                     multiline
                     rows={3}
                     variant="outlined"
@@ -184,13 +198,13 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'row',
         color: 'white',
-        paddingTop: '3%'
+        padding: '3%',
+        borderRadius: '2%'
     },
     avatar: {
         marginRight: '2%'
     },
     commentForm: {
-        paddingTop: '5%',
         color: 'white'
     },
     textField: {

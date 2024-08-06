@@ -79,7 +79,7 @@ const ScrollingHorizontally = (props) => {
             props.data.map((index, i) => (
               <div key={index._id}
                 style={{ marginTop: isMobile ? "10px" : `${i % 2 === 0 ? 0 : 20}px`, position: 'relative' }}
-                onClick={() => navigate(`/eventdetail/${index.eventName}`, { state: { data: index, toNavigate: '/Home' } })}
+                onClick={() => navigate(`/eventdetail/${index.eventName}`, { state: { data: index, toNavigate: props.toNavigate } })}
               >
                 {props.showdel && <IconButton
                   aria-label="delete"

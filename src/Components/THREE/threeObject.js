@@ -350,11 +350,13 @@ function ThreeScene(props) {
             color: 'white',
             padding: '5px',
             borderRadius: '3px',
-            border: '1px solid white'
+            backgroundColor: 'transparent'
           }}
         >
-          <h3 style={{ margin: 0, padding: '2%' }}>{hoveredObject.name}</h3>
-          <p style={{ margin: 0, padding: '2%', paddingTop: 0, fontSize: 14 }}>{hoveredObject.description}</p>
+          <div style={{ border: '1px solid rgba(255,255,255,0.5)' }}>
+            <h3 style={{ margin: 0, padding: '2%' }}>{hoveredObject.name}</h3>
+            <p style={{ margin: 0, padding: '2%', paddingTop: 0, fontSize: 14 }}>{hoveredObject.description}</p>
+          </div>
         </div>
       )}
     </div>

@@ -29,7 +29,6 @@ const SocietyAdminConstantsForm = () => {
         <Box
             sx={{
                 width: '100%',
-                padding: 2,
                 borderRadius: 1,
                 boxShadow: 1,
                 backgroundColor: 'transparent',

@@ -46,6 +46,7 @@ const constants = {
 
     BASE_URL_2: 'http://192.168.60.129:5000/',
     departmentOptions: [
+        "Computer Science",
         "Aeronautics and Astronautics",
         "Electrical Engineering",
         "Materials Science and Engineering",

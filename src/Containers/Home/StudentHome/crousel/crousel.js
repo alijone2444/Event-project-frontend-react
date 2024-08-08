@@ -1,12 +1,8 @@
 import React from 'react';
 import Carousel from 'react-material-ui-carousel'
-import { Paper } from '@mui/material'
+import { CircularProgress, Paper } from '@mui/material'
 
 import { Button } from 'antd';
-import imagea from '../../../../images/qawali.jpg'
-import imageb from '../../../../images/sports.jpg'
-import imagec from '../../../../images/concert.jpg'
-import imaged from '../../../../images/conference.jpg'
 import '../../../../styles/navbar_home.css'
 import { makeStyles } from '@mui/styles';
 import { useMediaQuery, createTheme } from '@mui/material';
@@ -20,6 +16,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Spin } from 'antd';
 import ToolbarBelowNavbar from '../../../../Components/ChatbotBar/chatbotToolbar';
+import { setEventsDataAll } from '../../../../ReduxStore/actions/eventsDataActionUser';
 import { useState } from 'react';
 function CarouselComponent(props) {
   const classes = useStyles(); // Use the useStyles hook
@@ -82,9 +79,13 @@ function CarouselComponent(props) {
 
 function Item(props) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [loading, setloading] = useState(false)
+  const Events = useSelector((state) => state.userAllEvents);
   const getParticularEvent = async (eventname) => {
     const requestInstance = createAuthenticatedRequest()
     try {
+      setloading(true)
       props.setshowloading(true)
       const response = await requestInstance.get(`${constants.BASE_URL}get-events`, {
         params: {
@@ -94,15 +95,17 @@ function Item(props) {
 
       })
       if (response && response.data) {
-        console.log(response)
+        dispatch(setEventsDataAll([...Events, response.data.events[0]]))
         props.setshowloading(false)
-        navigate(`/eventdetail/${response.data.events[0].eventName}`, { state: { data: response.data.events[0], toNavigate: '/Home' } });
-
+        const { _id, eventName } = response.data.events[0]
+        navigate(`/eventdetail/${eventName}`, { state: { data: { _id, eventName }, toNavigate: '/Home' } });
+        setloading(false)
       }
     }
     catch (error) {
       console.error('Error fetching events:', error);
       props.setshowloading(false)
+      setloading(false)
     }
   }
   const Loader = () => (
@@ -138,17 +141,16 @@ function Item(props) {
         }}
       ></div>
       <div style={{
-        position: "absolute", top: isSmallScreen ? "35%" : "40%", left: "50%", transform: "translate(-50%,-50%)", width: "70%",
+        position: "absolute", top: isSmallScreen ? "35%" : "40%", left: "50%", transform: "translate(-50%,-40%)", width: "70%",
         display: "flex", justifyContent: "center", flexDirection: "column"
       }}>
-        <h1 style={{ textAlign: "center", color: "rgba(255,255,255,0.9)", marginBottom: '2%' }}>{props.item.eventName}</h1>
         <p style={{ textAlign: "Center", color: "rgba(255,255,255,0.9)", marginTop: 0 }}>{props.item.subheader}</p>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Button className="CheckButton" style={{ backgroundColor: "#f4373a", color: "white", maxWidth: "150px" }}
             onClick={() => {
               getParticularEvent(props.item.eventName)
             }}>
-            Check it out!
+            Check it out!  {loading && <CircularProgress style={{ color: 'white', marginLeft: 8 }} size={15} />}
           </Button></div>
       </div>
       {props.showloading && <Loader />}

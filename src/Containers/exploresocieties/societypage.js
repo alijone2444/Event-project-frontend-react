@@ -7,6 +7,7 @@ import ScrollingHorizontally from '../Home/StudentHome/HomePageScrolls/HrScroll'
 import createAuthenticatedRequest from '../../RequestwithHeader';
 import constants from '../../Constants/constants';
 import ArrowForward from '@mui/icons-material/ArrowForward';
+import ImageNotSupportedIcon from '@mui/icons-material/ImageNotSupported';
 import datanotfound from '../../lottie/noDatayet.json';
 import Lottie from 'react-lottie';
 import Add from '@mui/icons-material/Add';
@@ -18,6 +19,7 @@ import './societyPage.css'
 import notFoundImage from '../../images/societyBackgroundNotfound.jpg'; // Import static image
 import AppBarComponent from '../../Components/SubAppbar/appbar';
 import { useNavigate } from 'react-router-dom';
+import ImageGallery from '../../Components/ImagesGallery/imageGalery';
 const { Title, Text } = Typography;
 
 const AboutSocietyPage = () => {
@@ -100,8 +102,9 @@ const AboutSocietyPage = () => {
         }, 500);
         return () => clearTimeout(timer);
     }, [crouseimages])
+
     if (loading || !society) {
-        // Show skeleton loading while data is being fetched or loading
+
         return (
             <WrapperComponent>
                 <AppBarComponent backgroundColor={'purple'} onBackButtonClick={() => { navigate('/societies') }} title='Back' />
@@ -131,11 +134,11 @@ const AboutSocietyPage = () => {
             </WrapperComponent>
         );
     }
+    const galleryImages = society.imageFileNames.map((item) => `${constants.BASE_URL}societyImages/${item}`)
 
-    // Once data is loaded, render actual society information
     return (
         <WrapperComponent transparentNavbar={true}>
-            <AppBarComponent backgroundColor={'purple'} onBackButtonClick={() => { navigate('/societies') }} title='Go Back' />
+            <AppBarComponent backgroundColor={'purple'} onBackButtonClick={() => { society.Simple ? navigate('/societies') : navigate('/SocietyAdminPortal') }} title='Go Back' />
             {((UserType === 'admin' || UserType === 'S-Admin') && !society.Simple) && <AppBar position="static" style={{ backgroundColor: 'purple', boxShadow: 'none', borderBottom: '1px solid #e0e0e0' }}>
                 <Toolbar >
                     <MuiTypography variant="h6" style={{ flexGrow: 1, color: 'white', margin: 0 }}>
@@ -146,28 +149,28 @@ const AboutSocietyPage = () => {
                     </IconButton>
                 </Toolbar>
             </AppBar>}
-            <div style={{ display: 'flex', height: '70vh', position: 'relative' }}>
+            <div style={{ display: 'flex', height: isSmallScreen ? '50vh' : '70vh', position: 'relative' }}>
                 <div style={{ width: '100%', position: 'relative' }}>
                     {loading2 ? (
-                        <div style={{ height: '50vh', width: '100%' }}>
+                        <div style={{ height: isSmallScreen ? '30vh' : '50vh', width: '100%' }}>
                             <Skeleton height="100%" width="100%" />
                         </div>
                     ) : (
                         <Carousel autoplay className='custom-carousel'>
                             {crouseimages.length > 0 ? (
                                 crouseimages.map((image, index) => (
-                                    <div key={index} style={{ height: '50vh' }}>
+                                    <div key={index} style={{ height: isSmallScreen ? '30vh' : '50vh' }}>
                                         <img
-                                            style={{ width: '100%', height: '50vh', objectFit: 'cover' }}
+                                            style={{ width: '100%', height: isSmallScreen ? '30vh' : '50vh', objectFit: 'cover' }}
                                             src={`${constants.BASE_URL}images/${image}`}
                                             alt={`Slide ${index}`}
                                         />
                                     </div>
                                 ))
                             ) : (
-                                <div style={{ height: '50vh', width: '100%' }}>
+                                <div style={{ height: isSmallScreen ? '30vh' : '50vh', width: '100%' }}>
                                     <img
-                                        style={{ width: '100%', height: '50vh', objectFit: 'cover' }}
+                                        style={{ width: '100%', height: isSmallScreen ? '30vh' : '50vh', objectFit: 'cover' }}
                                         src={notFoundImage}
                                         alt="Not Found"
                                     />
@@ -189,35 +192,36 @@ const AboutSocietyPage = () => {
                     flexDirection: 'column',
                     alignItems: 'center'
                 }}>
-                    {society.cover_photo ? (
+                    {society.coverPhotoName ? (
                         <img
-                            src={society.cover_photo}
+                            src={`${constants.BASE_URL}societyImages/${society.coverPhotoName}`}
                             alt="Cover Photo"
-                            style={{ objectFit: 'cover', height: '25vh', width: '25vh', borderRadius: '50%' }}
+                            style={{ objectFit: 'cover', height: '25vh', width: '25vh', borderRadius: '50%', background: 'white' }}
                         />
                     ) : (
                         <Skeleton circle={true} height={150} width={150} />
                     )}
-                    <Title style={{ marginTop: '1%' }} level={2}>{society.name}</Title>
+                    <Title style={{ marginTop: '1%', fontWeight: 'bold' }} level={2}>{society.name}</Title>
                 </div>
             </div>
-
-            <div bordered={false} style={{ margin: isSmallScreen ? '10%' : '5%', marginTop: 0, textAlign: isSmallScreen ? 'center' : 'left' }}>
+            <div style={{ margin: '5%', marginTop: '2%', textAlign: isSmallScreen ? 'center' : 'left' }}>
                 <Text >{society.description}</Text>
                 {society.tags[0].split(',').map((item, index) => (
                     <Text key={index} style={{ fontWeight: 'bold', color: 'purple' }}>
                         #{item}
                     </Text>
                 ))}
-                <Divider />
+            </div>
+            <Divider />
+            <div>
                 {societyEvents.length !== 0 ? (
-                    <ScrollingHorizontally data={societyEvents} title={'Events'} subheader={'Check This Society Events'} subheaderColor={"purple"} showdel={!society.Simple} deletesucess={() => {
+                    <ScrollingHorizontally data={societyEvents} setSmallHeading={true} title={'Events'} subheader={'Check This Society Events'} subheaderColor={"purple"} showdel={!society.Simple} deletesucess={() => {
                         setrunuseeffectagain(!runuseeffectagain)
                         setrerun(true)
                     }} toNavigate='/societies' />
                 ) : (
                     <>
-                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: '5%' }}>
                             <ArrowForward style={{ fontSize: 30 }} />
                             <Title level={3} style={{ margin: 0 }}>
                                 Events
@@ -233,10 +237,37 @@ const AboutSocietyPage = () => {
                                 height={100}
                                 width={100}
                             />
-                            <Text>No Event Yet</Text>
+                            <Text style={{ color: 'grey' }}>No Event Yet</Text>
                         </div>
                     </>
                 )}
+            </div>
+            <Divider />
+            <div style={{ margin: '5%' }}>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                    <ArrowForward style={{ fontSize: 30 }} />
+                    <Title level={3} >Gallery</Title>
+                </div>
+                {galleryImages.length === 0 && <div style={{ paddingLeft: '5%' }}>
+                    <MuiTypography
+                        style={{ color: 'purple', background: "white", display: 'inline-block', }}
+                        variant='h6'
+                    >
+                        Showcase Society Moments and Memories
+                    </MuiTypography>
+                    <Divider style={{ background: 'purple', marginTop: '-15px', marginRight: "10%" }} />
+                </div>}
+                {galleryImages.length === 0 ?
+                    <div style={{ display: 'flex', justifyContent: 'center', width: '100%', marginTop: '3%' }}>
+                        <div style={{ display: 'flex', flexDirection: "column", justifyContent: 'center', alignItems: 'center' }}>
+                            <ImageNotSupportedIcon />
+                            <Text style={{ color: 'grey' }}>no images in gallery</Text>
+                        </div>
+                    </div>
+                    :
+                    <ImageGallery images={galleryImages} />}
+            </div>
+            <div bordered={false} style={{ margin: '5%', marginTop: 0 }}>
                 <Divider />
                 <Descriptions title="Society Contact Details" bordered>
                     <Descriptions.Item label="President Name">{society.president.name}</Descriptions.Item>
@@ -245,8 +276,8 @@ const AboutSocietyPage = () => {
                     <Descriptions.Item label="Vice President Name">{society.vice_president.name}</Descriptions.Item>
                     <Descriptions.Item label="Vice President Email">{society.vice_president.email}</Descriptions.Item>
                     <Descriptions.Item label="Vice President Phone">{society.vice_president.phone}</Descriptions.Item>
-                    <Descriptions.Item label="Society Contact Email">{society.contact_info.email}</Descriptions.Item>
-                    <Descriptions.Item label="Society Contact Phone">{society.contact_info.phone}</Descriptions.Item>
+                    {society.contact_info?.email && <Descriptions.Item label="Society Contact Email">{society.contact_info.email}</Descriptions.Item>}
+                    {society.contact_info?.phone && <Descriptions.Item label="Society Contact Phone">{society.contact_info.phone}</Descriptions.Item>}
                 </Descriptions>
                 <Divider />
                 <Descriptions title="Links" bordered>
@@ -255,21 +286,21 @@ const AboutSocietyPage = () => {
                             {society.social_media_links.facebook}
                         </a>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Twitter">
+                    {society.social_media_links?.twitter && <Descriptions.Item label="Twitter">
                         <a href={society.social_media_links.twitter} style={{ color: 'purple' }} target="_blank" rel="noopener noreferrer">
                             {society.social_media_links.twitter}
                         </a>
-                    </Descriptions.Item>
+                    </Descriptions.Item>}
                     <Descriptions.Item label="Instagram">
-                        <a href={society.social_media_links.instagram} style={{ color: 'purple' }} target="_blank" rel="noopener noreferrer">
+                        <a href={society.social_media_links?.instagram} style={{ color: 'purple' }} target="_blank" rel="noopener noreferrer">
                             {society.social_media_links.instagram}
                         </a>
                     </Descriptions.Item>
-                    <Descriptions.Item label="Website">
+                    {society?.website && <Descriptions.Item label="Website">
                         <a href={society.website} style={{ color: 'purple' }} target="_blank" rel="noopener noreferrer">
                             {society.website}
                         </a>
-                    </Descriptions.Item>
+                    </Descriptions.Item>}
                 </Descriptions>
             </div>
 

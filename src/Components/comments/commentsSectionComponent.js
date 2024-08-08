@@ -101,7 +101,7 @@ const CommentSection = ({ eventName }) => {
             </Grid>
 
             <Divider style={{ backgroundColor: 'white', width: '100%' }} />
-            <Grid item xs={12} md={6} style={{ maxHeight: !isSmallScreen && '60vh', overflowY: !isSmallScreen && 'auto' }}>
+            <Grid item xs={12} md={6} style={{ maxHeight: !isSmallScreen && '60vh', overflowY: !isSmallScreen && 'auto', borderRight: !isSmallScreen && '1px solid white', marginBottom: isSmallScreen && '5%' }}>
 
                 {comments.length > 0 ? (
                     comments.map((comment, index) => (

@@ -11,9 +11,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setCalanderData } from '../../../../ReduxStore/actions/CalanderAction';
 import { useNavigate } from 'react-router-dom';
 import convertEvents from '../../../../Components/functions/convertEventsForCalander';
+import { setEventsDataAll } from '../../../../ReduxStore/actions/eventsDataActionUser';
 function CalanderComponent() {
   const dispatch = useDispatch()
   const events = useSelector(state => state.CalanderEvents)
+  const Events = useSelector((state) => state.userAllEvents);
   const requestInstance = createAuthenticatedRequest()
   const [showloading, setshowloading] = useState(false)
   const navigate = useNavigate()
@@ -30,7 +32,9 @@ function CalanderComponent() {
       })
       if (response && response.data) {
         setshowloading(false)
-        navigate(`/eventdetail/${response.data.events[0].eventName}`, { state: { data: response.data.events[0], toNavigate: '/calander' } });
+        const { _id, eventName } = response.data.events[0]
+        dispatch(setEventsDataAll([...Events, response.data.events[0]]))
+        navigate(`/eventdetail/${eventName}`, { state: { data: { _id, eventName }, toNavigate: '/calander' } });
 
       }
     }

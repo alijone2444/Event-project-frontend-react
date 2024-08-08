@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: 'rgba(0,0,0,0.2)',
         borderRadius: '5px',
         width: '100%',
-        marginTop: '5%',
     },
     button: {
         color: 'white',

@@ -3,3 +3,8 @@ export const setAdminSocietiesData = (data) => ({
     payload: data,
 }
 );
+
+export const setSocietyAdminViewMoreOption = (data) => ({
+    type: 'SET_SOCIETY_VIEW_MORE_OPTION',
+    payload: data
+})

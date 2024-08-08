@@ -12,14 +12,15 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
-import axios from 'axios';
-import zIndex from '@mui/material/styles/zIndex';
 import createAuthenticatedRequest from '../../../../RequestwithHeader';
 import constants from '../../../../Constants/constants';
+import { useSelector, useDispatch } from 'react-redux';
+import { setEventsDataAll } from '../../../../ReduxStore/actions/eventsDataActionUser';
 const ScrollingHorizontally = (props) => {
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width: 768px)');
-
+  const dispatch = useDispatch()
+  const Events = useSelector((state) => state.userAllEvents);
   useEffect(() => {
     // Your useEffect logic here
   }, [props.data]);
@@ -59,7 +60,7 @@ const ScrollingHorizontally = (props) => {
     <div>
       <div className='recent-container'>
         <ArrowForward style={{ fontSize: 40, color: 'black' }} />
-        <Typography className='recent' style={{ color: "black" }} variant='h4'>
+        <Typography className='recent' style={{ color: "black" }} variant={props.setSmallHeading ? 'h5' : 'h4'}>
           {props.title}
         </Typography>
       </div>
@@ -79,7 +80,11 @@ const ScrollingHorizontally = (props) => {
             props.data.map((index, i) => (
               <div key={index._id}
                 style={{ marginTop: isMobile ? "10px" : `${i % 2 === 0 ? 0 : 20}px`, position: 'relative' }}
-                onClick={() => navigate(`/eventdetail/${index.eventName}`, { state: { data: index, toNavigate: props.toNavigate } })}
+                onClick={() => {
+                  const { _id, eventName } = index
+                  dispatch(setEventsDataAll([...Events, index]))
+                    ; navigate(`/eventdetail/${eventName}`, { state: { data: { _id, eventName }, toNavigate: props.toNavigate } })
+                }}
               >
                 {props.showdel && <IconButton
                   aria-label="delete"

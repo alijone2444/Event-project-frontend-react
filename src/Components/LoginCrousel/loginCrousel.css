@@ -1,29 +1,33 @@
 .container-root {
-    height: 80vh;
-  }
-  
-  .crousel-image {
-    height: 80vh;
-    object-fit: cover;
-  }
-  
-  /* Add a media query for screens with a width near 880 pixels */
-  @media (max-width: 900px) {
-    .container-root {
-      height: 60vh; /* Adjust the height for smaller screens */
-    }
-  
-    .crousel-image {
-      height: 60vh; /* Adjust the height for smaller screens */
-    }
+  height: 80vh;
 }
- 
+
+.crousel-image {
+  height: 80vh;
+  object-fit: cover;
+}
+
+/* Add a media query for screens with a width near 880 pixels */
+@media (max-width: 900px) {
+  .container-root {
+    height: 60vh;
+    /* Adjust the height for smaller screens */
+  }
+
+  .crousel-image {
+    height: 60vh;
+    /* Adjust the height for smaller screens */
+  }
+}
+
 @media (max-width: 590px) {
-    .container-root {
-      height: 50vh; /* Adjust the height for smaller screens */
-    }
-  
-    .crousel-image {
-      height: 45vh; /* Adjust the height for smaller screens */
-    }
+  .container-root {
+    height: 50vh;
+    /* Adjust the height for smaller screens */
+  }
+
+  .crousel-image {
+    height: 50vh;
+    /* Adjust the height for smaller screens */
+  }
 }

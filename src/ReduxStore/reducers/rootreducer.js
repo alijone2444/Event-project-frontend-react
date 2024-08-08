@@ -14,7 +14,7 @@ import {
 import paginationReducer from './eventspaginationReducers';
 import CrouselImagesDataReducer from './crouselImagesDatareducer';
 import setGotTokenFcmReducer from './firebaseReducers';
-import AdminSocietiesReducer from './adminSocietydataReducer';
+import { AdminSocietiesReducer, ViewMoreAdminSocietiesReducer } from './adminSocietydataReducer';
 import { userPopularEventsReducer } from './EventsUserReducer';
 import CalanderDataReducer from './calanderDatareducer';
 import threeSocietiesReducer from './ThreeSocietiesReducer';
@@ -39,7 +39,8 @@ const appReducer = combineReducers({
   threeSocieties: threeSocietiesReducer,
   SavedConstants: constantsReducer,
   marqueeData: marqueeReducer,
-  ViewMore: ViewMoreSocietiesReducer
+  ViewMore: ViewMoreSocietiesReducer,
+  adminViewmore: ViewMoreAdminSocietiesReducer
 });
 
 const rootReducer = (state, action) => {

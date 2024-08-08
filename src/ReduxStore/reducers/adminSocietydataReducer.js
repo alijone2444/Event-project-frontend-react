@@ -6,5 +6,12 @@ const AdminSocietiesReducer = (state = [], action) => {
             return state;
     }
 };
-
-export default AdminSocietiesReducer;
+const ViewMoreAdminSocietiesReducer = (state = true, action) => {
+    switch (action.type) {
+        case 'SET_SOCIETY_VIEW_MORE_OPTION':
+            return action.payload;
+        default:
+            return state;
+    }
+};
+export { AdminSocietiesReducer, ViewMoreAdminSocietiesReducer };

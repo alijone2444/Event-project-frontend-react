@@ -7,8 +7,8 @@ const AppBarComponent = ({ title, onBackButtonClick, backgroundColor }) => {
     const isSmallScreen = useMediaQuery('(max-width:600px)');
 
     return (
-        <AppBar position="static" style={{ backgroundColor: backgroundColor }}>
-            <Toolbar variant="dense" style={{ minHeight: '0px', marginTop: '1%' }}>
+        <AppBar position="static" style={{ backgroundColor: backgroundColor, marginTop: isSmallScreen && '-1%' }}>
+            <Toolbar variant="dense" style={{ minHeight: '0px', marginTop: isSmallScreen ? '0' : '0.5%' }}>
                 {onBackButtonClick && (
                     <IconButton edge="start" color="inherit" onClick={onBackButtonClick}>
                         <ArrowBack style={{ fontSize: '20px' }} />

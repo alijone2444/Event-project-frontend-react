@@ -1,22 +1,49 @@
 import OpenEvent from "../../Components/OpenEvent/openEvent";
-import React, { useEffect, } from 'react';
+import React, { useEffect, useState } from 'react';
 import WrapperComponent from '../../FooterAndHeaderwrapper';
 import { useLocation } from "react-router-dom";
 import AppBarComponent from "../../Components/SubAppbar/appbar";
 import { useNavigate } from "react-router-dom";
 import constants from "../../Constants/constants";
+import createAuthenticatedRequest from "../../RequestwithHeader";
 import { useMediaQuery } from "@mui/material";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import { setEventsDataAll } from "../../ReduxStore/actions/eventsDataActionUser";
+
 function EventDetailPage() {
   const { state } = useLocation();
-  const id = state?.data;
+  const { _id, eventName } = state?.data;
   const Events = useSelector((state) => state.userAllEvents);
-  const eventData = Events.find((event) => event._id === id);
+  const eventData = Events.find((event) => event._id === _id);
+  const [loading, setLoading] = useState(!eventData); // Initialize loading state based on eventData
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width:600px)');
+  const requestInstance = createAuthenticatedRequest();
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (!eventData) {
+      setLoading(true); // Set loading to true when starting fetch
+      requestInstance.get(`${constants.BASE_URL}get-events`, {
+        params: {
+          amount: 'One',
+          eventName: eventName
+        },
+      })
+        .then((response) => {
+          dispatch(setEventsDataAll([...Events, response.data.events[0]]));
+          setLoading(false); // Update loading state
+        })
+        .catch((error) => {
+          console.error("Error fetching event:", error);
+          setLoading(false); // Update loading state on error
+        });
+    } else {
+      setLoading(false); // No need to fetch, data is already available
+    }
+  }, [_id, eventData, eventName, Events, dispatch, requestInstance]);
 
   const backgroundImage = eventData ? {
     backgroundImage: `url(${constants.BASE_URL}images/${eventData.dpimageFileName})`,
@@ -39,7 +66,20 @@ function EventDetailPage() {
         padding: '5%',
         paddingTop: isMobile ? '5%' : '2%'
       }}>
-        {eventData ? (
+        {loading ? (
+          <Box
+            sx={{
+              width: '100%',
+              height: '100vh',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'rgba(0,0,0,0.5)',
+            }}
+          >
+            <CircularProgress />
+          </Box>
+        ) : eventData ? (
           <>
             <div style={backgroundImage} />
             <div style={{ position: 'relative', zIndex: 1 }}>
@@ -57,7 +97,7 @@ function EventDetailPage() {
               backgroundColor: 'rgba(0,0,0,0.5)',
             }}
           >
-            <CircularProgress />
+            <div>Event not found</div>
           </Box>
         )}
       </div>

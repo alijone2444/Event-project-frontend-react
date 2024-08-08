@@ -12,39 +12,54 @@ import { setAdminSocietiesData } from '../../ReduxStore/actions/AdminSocietyActi
 import { useSelector } from "react-redux";
 import { Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { setSocietyAdminViewMoreOption } from '../../ReduxStore/actions/AdminSocietyAction';
 import AssignSocietyForm from './assignSoicetyForm';
 const SocietiesAdminComponent = (props) => {
     const dispatch = useDispatch();
     const requestInstance = createAuthenticatedRequest()
     const societies = useSelector((state) => state.Adminsocieties);
+    const [page, setPage] = useState(1);
+    const [limit, setLimit] = useState(10);
     const [runAfterUpdate, setrunAfterUpdate] = useState(false)
     const [rerun, setrerun] = useState(false)
     const [Previousvalues, setPreviousvalues] = useState(null)
+    const hasMoreSocieties = useSelector((state) => state.adminViewmore);
     const [edit, setedit] = useState(false)
     const [AssignSociety, setAssignSociety] = useState(false)
     const [tempSocietyNameStorage, settempSocietyNameStorage] = useState('')
-
+    const [updateData, setupdateData] = useState(false)
     const navigate = useNavigate()
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchData = async (page, limit) => {
             try {
                 setLoading(true)
-                const response = await requestInstance.get(`${constants.BASE_URL}get-societies`);
+                const response = await requestInstance.get(`${constants.BASE_URL}get-societies?page=${page}&limit=${limit}&amount=${'All'}`);
                 // Assuming the response contains societies data
                 if (response.data.societies) {
-                    dispatch(setAdminSocietiesData(response.data.societies));
+                    if (updateData) {
+                        dispatch(setAdminSocietiesData(response.data.societies));
+                    }
+                    else {
+                        dispatch(setAdminSocietiesData([...societies, ...response.data.societies]));
+                    }
                     setLoading(false)
+                    if (response.data.societies.length < limit) {
+                        dispatch(setSocietyAdminViewMoreOption(false))
+                        // No more societies to load
+                    }
                 }
+                setupdateData(false)
                 // Handle the societies data as needed
                 // Return data or perform any other actions if needed
             } catch (error) {
+                setupdateData(false)
                 // Handle errors
                 console.error('Error fetching societies data:', error);
                 // You might want to handle errors here rather than throwing them
             }
         };
         if (societies.length === 0 || rerun) {
-            fetchData(); // Call the async function
+            fetchData(page, limit); // Call the async function
         }
     }, [runAfterUpdate]);
 
@@ -79,7 +94,15 @@ const SocietiesAdminComponent = (props) => {
         }
     };
 
+    const handleViewMore = () => {
+        setPage(page + 1);
+        setrerun(true)
+        setrunAfterUpdate(!runAfterUpdate)
+    };
+
+
     const handleUpdate = async (values) => {
+        setupdateData(true)
         setLoading(true);
         try {
             setrerun(true)
@@ -125,7 +148,8 @@ const SocietiesAdminComponent = (props) => {
                                             <div style={{ width: '100%', height: '25vh', overflow: 'hidden' }}>
                                                 <img
                                                     alt="society"
-                                                    src={society.cover_photo}
+
+                                                    src={`${constants.BASE_URL}societyImages/${society.coverPhotoName}`}
                                                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                                                 />
                                             </div>
@@ -166,6 +190,12 @@ const SocietiesAdminComponent = (props) => {
                     </div>
                 </div >
             }
+
+            <Grid container >
+                <Grid item xs={12} sm={12} >
+                    <Button variant="contained" style={{ backgroundColor: !hasMoreSocieties ? 'lightgrey' : 'purple', color: "white", width: '100%' }} disabled={!hasMoreSocieties} onClick={handleViewMore}>View More</Button>
+                </Grid>
+            </Grid>
         </>
     );
 };

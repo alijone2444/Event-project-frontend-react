@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { TextField, Button, Grid, Container, CircularProgress } from '@mui/material';
+import { TextField, Button, Grid, Container, CircularProgress, Typography } from '@mui/material';
 import constants from '../../Constants/constants';
 import createAuthenticatedRequest from '../../RequestwithHeader';
 
@@ -33,7 +33,8 @@ const SocietyForm = (props) => {
             email: '',
             phone: ''
         },
-        cover_photo: null
+        cover_photo: null,
+        imageFiles: [],
     });
     const [coverPhoto, setCoverPhoto] = useState(null);
     const fileInputRef = useRef(null);
@@ -66,7 +67,10 @@ const SocietyForm = (props) => {
                     email: props.Previousvalues.contact_info?.email || '',
                     phone: props.Previousvalues.contact_info?.phone || ''
                 },
-                cover_photo: props.Previousvalues.cover_photo
+                cover_photo: props.Previousvalues.cover_photo,
+                imageFiles: (props.Previousvalues?.imageFileNames || []).map(society => ({
+                    src: `${constants.BASE_URL}images/${society}`,
+                })),
             });
             if (props.Previousvalues.cover_photo) {
                 setCoverPhoto(props.Previousvalues.cover_photo);
@@ -110,19 +114,32 @@ const SocietyForm = (props) => {
         fileInputRef.current.click();
         setenableSettingCoverphoto(true)
     };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setloadinginButton(true)
+        setloadinginButton(true);
+
         try {
             const formDataToSend = new FormData();
 
-            // Convert cover photo to base64 string
+            // Append image files to formData
+            formData.imageFiles.forEach((file, index) => {
+                if (file instanceof File) {
+                    const fileName = `${formData.name}_${formData.president.name}_${index}`;
+                    formDataToSend.append('imageFiles', file, fileName);
+                } else {
+                    console.warn('Non-file item found in imageFiles array');
+                }
+            });
+
+            // Prepare image file names (should be an array of strings)
+            const imageFileNames = formData.imageFiles.map((file, index) => `${formData.name}_${formData.president.name}_${index}`);
+            formDataToSend.append('imageFileNames', JSON.stringify(imageFileNames)); // Use JSON.stringify to store array as string
+
+            // Convert cover photo to base64 string and append to formData
             if (formData.cover_photo && enableSettingCoverphoto) {
                 const reader = new FileReader();
                 reader.readAsDataURL(formData.cover_photo);
 
-                // Wait for FileReader to finish reading
                 await new Promise((resolve) => {
                     reader.onload = () => {
                         formDataToSend.append('cover_photo', reader.result);
@@ -131,8 +148,9 @@ const SocietyForm = (props) => {
                 });
             }
 
+            // Append other form fields to formData
             Object.entries(formData).forEach(([key, value]) => {
-                if (key !== 'cover_photo' && key !== 'social_media_links' && key !== 'contact_info' && key !== 'president' && key !== 'vice_president') {
+                if (key !== 'cover_photo' && key !== 'imageFiles' && key !== 'social_media_links' && key !== 'contact_info' && key !== 'president' && key !== 'vice_president') {
                     if (value !== '') {
                         formDataToSend.append(key, value);
                     }
@@ -144,23 +162,37 @@ const SocietyForm = (props) => {
                     });
                 }
             });
+
+            // Make the API request
             const url = props.Previousvalues.name ? `${constants.BASE_URL}update-society/${props.Previousvalues._id}` : `${constants.BASE_URL}create-society`;
             const method = props.Previousvalues.name ? 'put' : 'post';
-
             const response = await requestInstance({
                 method,
                 url,
-                data: formDataToSend
+                data: formDataToSend,
+                headers: {
+                    'Content-Type': 'multipart/form-data', // Set the content type for FormData
+                },
             });
+
             if (response.data.success) {
-                setenableSettingCoverphoto(false)
+                setenableSettingCoverphoto(false);
                 props.onclose();
-                setloadinginButton(false)
+                setloadinginButton(false);
             }
         } catch (error) {
-            setloadinginButton(false)
+            setloadinginButton(false);
             console.error('Error creating society:', error);
         }
+    };
+
+    const handleImagesChange = (e) => {
+        const files = Array.from(e.target.files);
+
+        setFormData((prevData) => ({
+            ...prevData,
+            imageFiles: [...prevData?.imageFiles, ...files],
+        }));
     };
 
     return (
@@ -287,7 +319,7 @@ const SocietyForm = (props) => {
                             value={formData.social_media_links.twitter}
                             variant="outlined"
                             onChange={handleInputChange}
-                            required
+
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -309,31 +341,30 @@ const SocietyForm = (props) => {
                             value={formData.website}
                             variant="outlined"
                             onChange={handleInputChange}
-                            required
+
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
                             fullWidth
-                            label="Email"
+                            label="Sepearte Email for society"
                             type="email"
                             name="contact_info.email"
                             value={formData.contact_info.email}
                             variant="outlined"
                             onChange={handleInputChange}
-                            required
+
                         />
                     </Grid>
                     <Grid item xs={12} sm={6}>
                         <TextField
                             fullWidth
-                            label="Phone"
+                            label="Seperate Phone# for society"
                             type="tel"
                             name="contact_info.phone"
                             value={formData.contact_info.phone}
                             variant="outlined"
                             onChange={handleInputChange}
-                            required
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -345,7 +376,7 @@ const SocietyForm = (props) => {
                             style={{ display: 'none' }}
                         />
                         <Button onClick={handleSelectFile} variant="contained">
-                            Select Cover Photo
+                            Select Cover Photo (use icons sizes e.g:256 x 256)
                         </Button>
                     </Grid>
                     <Grid item xs={12}>
@@ -357,6 +388,49 @@ const SocietyForm = (props) => {
                             />
                         )}
                     </Grid>
+
+                </Grid>
+                <Grid item xs={12}>
+                    <div style={{ border: '1px solid lightgrey', padding: '2%', zIndex: 1 }}>
+
+                        <div style={{ position: 'relative', display: 'inline-block', width: '100%', }}>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                multiple
+                                name="imageFiles"
+                                onChange={handleImagesChange}
+                                style={{ opacity: 0, position: 'absolute', top: 0, left: 0, zIndex: 1, width: '100%', height: '100%', cursor: 'pointer' }}
+                            />
+                            <label
+                                style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    width: '100%', // Adjust width as needed
+                                    padding: '5%',
+                                    backgroundColor: '#1976d2', // Adjust background color as needed
+                                    border: '1px solid #ccc', // Adjust border as needed
+                                    borderRadius: '4px', // Adjust border radius as needed
+                                    cursor: 'pointer',
+                                    position: 'relative',
+                                    zIndex: 0, // Ensure input is clickable above other elements
+                                }}
+                            >
+                                <span style={{ color: 'white', fontWeight: 'bold', fontSize: 17 }}>Select society gallery images (⚠️ max 10)</span>
+                            </label>
+                        </div>
+
+
+                        {formData.imageFiles?.map((file, index) => (
+                            <img
+                                key={index}
+                                src={file.src || URL.createObjectURL(file)}
+                                alt={`Selected Society Image ${index + 1}`}
+                                style={{ maxWidth: '100%', marginTop: '10px' }}
+                            />
+                        ))}
+                    </div>
                 </Grid>
                 <Button type="submit" variant="contained" color="primary">
                     {

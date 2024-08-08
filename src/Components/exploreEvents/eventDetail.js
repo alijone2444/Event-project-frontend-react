@@ -4,14 +4,16 @@ import { makeStyles } from '@mui/styles';
 import Lottie from 'react-lottie';
 import HeardBubbling from '../../lottie/heartBubbling.json';
 import LikeCommentShare from '../commentShareLike/commentShareLike';
+import { useMediaQuery } from '@mui/material';
 const EventDetail = (props) => {
   const classes = useStyles();
-
+  const ismobile = useMediaQuery('(max-width:600px)')
   return (
-    <Grid container spacing={2} style={{ height: '100%', }}>
+    <Grid container spacing={2} style={{ height: '100%', marginTop: ismobile && '5%' }}>
       {/* Title */}
+
       <Grid item xs={12} >
-        <Typography variant="h4" mb={0} className={classes.title} gutterBottom>
+        <Typography variant="h5" mb={0} className={classes.title} style={{ fontWeight: 'bold', color: 'white' }} gutterBottom>
           {props.eventData.eventName}
         </Typography>
       </Grid>
@@ -22,6 +24,7 @@ const EventDetail = (props) => {
           {props.eventData.subheader}
         </Typography>
       </Grid>
+
       <Grid item xs={12}>
         <Typography variant="body1" className={classes.field}>
           <strong>Organizer:</strong> {props.eventData.organizer}
@@ -74,8 +77,9 @@ const EventDetail = (props) => {
           <strong>Registration status:</strong> {props.eventData.registrationOpen ? 'opened' : 'Not opened yet'}
         </Typography>
       </Grid>
-
-      <LikeCommentShare isLiked={props.eventData.isLiked} id={props.eventData._id} commentsCalled={props.commentsCalled} showshare={props.showshare} />
+      <div style={{ marginTop: '5%', width: '100%' }}>
+        {!ismobile && <LikeCommentShare isLiked={props.eventData.isLiked} id={props.eventData._id} commentsCalled={props.commentsCalled} showshare={props.showshare} />}
+      </div>
       {/* Description */}
     </Grid>
   );
@@ -87,6 +91,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 400,
     filter: 'blur(0px)',
     color: 'white',
+    fontWeight: 'bold'
   },
   '@media (max-width:600px)': {
     title: {

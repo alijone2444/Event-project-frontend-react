@@ -1,38 +1,64 @@
 import React, { useState } from 'react';
-import { Modal, Button, Input, List } from 'antd';
+import { Modal, Input, List, Radio, Spin } from 'antd';
 import createAuthenticatedRequest from '../../RequestwithHeader';
 import constants from '../../Constants/constants';
-import { Spin } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import recordSocietyVisit from '../functions/recortSocietyVisits';
+
 const SearchModal = (props) => {
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [suggestions, setSuggestions] = useState([]);
-    const [showloading, setshowloading] = useState(false)
-    const requestInstance = createAuthenticatedRequest()
+    const [showloading, setShowLoading] = useState(false);
+    const [searchType, setSearchType] = useState('events'); // Default to 'events'
+    const requestInstance = createAuthenticatedRequest();
+
     const Loader = () => (
         <div style={{ textAlign: 'center', marginTop: 16 }}>
             <Spin size="large" />
         </div>
     );
 
+    // Fetch event suggestions
+    const fetchEventSuggestions = async (query) => {
+        try {
+            const response = await requestInstance.get(`${constants.BASE_URL}search`, {
+                params: { query }
+            });
+            if (response.data) {
+                const fetchedSuggestions = response.data.map(event => event.eventName);
+                setSuggestions(fetchedSuggestions);
+            }
+        } catch (error) {
+            console.error('Error fetching event suggestions:', error);
+            setSuggestions([]);
+        }
+    };
+
+    // Fetch society suggestions
+    const fetchSocietySuggestions = async (query) => {
+        try {
+            const response = await requestInstance.get(`${constants.BASE_URL}search-societies`, {
+                params: { query }
+            });
+            if (response.data) {
+                const fetchedSuggestions = response.data.map(society => society.name);
+                setSuggestions(fetchedSuggestions);
+            }
+        } catch (error) {
+            console.error('Error fetching society suggestions:', error);
+            setSuggestions([]);
+        }
+    };
+
     const handleSearchChange = async (e) => {
         const value = e.target.value;
         setSearchTerm(value);
         if (value) {
-            try {
-                const response = await requestInstance.get(`${constants.BASE_URL}search`, {
-                    params: {
-                        query: value
-                    }
-                });
-                if (response.data) {
-                    const fetchedSuggestions = response.data.map(event => event.eventName); // Assuming eventName is what you want to display
-                    setSuggestions(fetchedSuggestions);
-                }
-            } catch (error) {
-                console.error('Error fetching suggestions:', error);
-                setSuggestions([]);
+            if (searchType === 'events') {
+                await fetchEventSuggestions(value);
+            } else {
+                await fetchSocietySuggestions(value);
             }
         } else {
             setSuggestions([]);
@@ -41,41 +67,48 @@ const SearchModal = (props) => {
 
     const handleItemClick = async (item) => {
         try {
-            setshowloading(true)
-            const response = await requestInstance.get(`${constants.BASE_URL}get-events`, {
+            setShowLoading(true);
+            const endpoint = searchType === 'events' ? 'get-events' : 'get-societies';
+            const response = await requestInstance.get(`${constants.BASE_URL}${endpoint}`, {
                 params: {
                     amount: 'One',
                     eventName: item
-                },
-
-            })
+                }
+            });
             if (response && response.data) {
-                setshowloading(false)
+                setShowLoading(false);
                 props.onclose();
-                navigate(`/eventdetail/${response.data.events[0].eventName}`, { state: { data: response.data.events[0], toNavigate: '/Home' } });
-
+                console.log('item', item)
+                if (searchType === 'events') {
+                    navigate(`/eventdetail/${response.data.events[0].eventName}`, { state: { data: response.data.events[0], toNavigate: '/Home' } });
+                } else {
+                    navigate('society-page', { state: { ...response.data.society, Simple: true } }); recordSocietyVisit(response.data.society.name)
+                }
             }
-        }
-        catch (error) {
-            console.error('Error fetching events:', error);
+        } catch (error) {
+            console.error('Error fetching data:', error);
             props.onclose();
-            setshowloading(false)
+            setShowLoading(false);
         }
     };
 
     return (
-        <><Modal
-            title="Search Events"
+        <Modal
+            title="Search"
             visible={props.open}
             onCancel={props.onclose}
             footer={null} // Remove OK and Cancel buttons
         >
+            <Radio.Group value={searchType} onChange={e => setSearchType(e.target.value)} style={{ marginBottom: 16 }}>
+                <Radio.Button value="events">Events</Radio.Button>
+                <Radio.Button value="societies">Societies</Radio.Button>
+            </Radio.Group>
             <Input
-                placeholder="Type event name or some thing related"
+                placeholder={`Type ${searchType === 'events' ? 'event' : 'society'} name`}
                 value={searchTerm}
                 onChange={handleSearchChange}
-            /> {showloading && <Loader />}
-
+            />
+            {showloading && <Loader />}
             <List
                 dataSource={suggestions}
                 renderItem={item => (
@@ -88,7 +121,6 @@ const SearchModal = (props) => {
                 )}
             />
         </Modal>
-        </>
     );
 };
 

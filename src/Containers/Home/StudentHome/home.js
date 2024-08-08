@@ -159,6 +159,7 @@ function Home() {
         </div>
         <HomeBody />
         <MarqueeComponent />
+
       </WrapperComponent>
     </div>
   )

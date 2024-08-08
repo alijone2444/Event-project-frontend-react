@@ -9,6 +9,8 @@ import constants from '../../Constants/constants';
 import { makeStyles } from '@mui/styles';
 import CommentSection from '../comments/commentsSectionComponent';
 import ShareComponent from '../shareComponent/shareEvent';
+import LikeCommentShare from '../commentShareLike/commentShareLike';
+import MapComponent from '../MapComponent.js/googleMaps';
 const useStyles = makeStyles((theme) => ({
   container: {
     scrollbarWidth: 'thin',  // For Firefox
@@ -45,8 +47,11 @@ const OpenEvent = (props) => {
       <Grid container >
         <Grid item xs={12} md={6} style={{ height: !ismobile && '80vh' }}>
           <LoginCarousel mainImage={mainImage} images={images} />
+          {ismobile && <LikeCommentShare isLiked={props.eventData.isLiked} id={props.eventData._id} commentsCalled={() => commentsRef.current.scrollIntoView({ behavior: 'smooth' })} showshare={() => setShareOpen(true)} />}
+
         </Grid>
         <Grid item xs={12} md={6} style={{ padding: '5%', paddingBottom: 0, paddingTop: 0, height: !ismobile && '80vh', overflowY: !ismobile && 'auto' }} className={classes.container} >
+
           <EventDetail
             eventData={props.eventData}
             commentsCalled={() => {
@@ -66,6 +71,7 @@ const OpenEvent = (props) => {
 
       </Grid>
 
+      <MapComponent locationName={props.eventData.location} />
       <ShareComponent
         open={shareOpen}
         handleClose={handleCloseShare}

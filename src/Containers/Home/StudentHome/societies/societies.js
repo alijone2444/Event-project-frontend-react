@@ -147,7 +147,8 @@ function SocietiesPage() {
                         {Societies.map((society) => (
                             <Grid item xs={12} sm={6} md={4} key={society._id}>
                                 <Card style={{ border: '1px solid lightgrey' }}>
-                                    <img src={society.cover_photo} alt={society.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
+                                    <img
+                                        src={`${constants.BASE_URL}societyImages/${society.coverPhotoName}`} alt={society.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
                                     <CardContent>
                                         <Typography variant="h5" component="div">
                                             {society.name}

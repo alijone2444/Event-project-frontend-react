@@ -20,6 +20,7 @@ const MarqueeComponent = () => {
                 .then(response => {
                     dispatch(setMarqueeItems(response.data));
                     setLoading(false);
+                    console.log(response)
                 })
                 .catch(error => {
                     console.error('Error fetching marquee items:', error);
@@ -44,7 +45,7 @@ const MarqueeComponent = () => {
                     coverPhotosMarquee.map((item, index) => (
                         <div key={index} className="marquee-item">
                             <img
-                                src={item.cover_photo}
+                                src={`${constants.BASE_URL}societyImages/${item.cover_photo}`}
                                 alt={`Brand ${index + 1}`}
                                 className="marquee-image"
                             />

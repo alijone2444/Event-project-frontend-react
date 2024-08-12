@@ -13,5 +13,19 @@ const constantsReducer = (state = initialState, action) => {
             return state;
     }
 };
+const initialStateSocieties = {
+    societies: []
+};
 
-export default constantsReducer;
+const societiesFooterReducer = (state = initialStateSocieties, action) => {
+    switch (action.type) {
+        case 'SET_SOCIETIES_FOOTER':
+            return {
+                ...state,
+                societies: action.payload
+            };
+        default:
+            return state;
+    }
+};
+export { constantsReducer, societiesFooterReducer };

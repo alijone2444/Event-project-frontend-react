@@ -54,9 +54,7 @@ const EventDetail = (props) => {
         </Typography>
       </Grid>
       <Grid item xs={12} style={{ position: 'relative' }}>
-        <Typography variant="body1" className={classes.field}>
-          <strong>Likes:</strong> {props.eventData.NoOfLikes}
-        </Typography>
+
         {props.eventData.NoOfLikes > 0 && (
           <div style={{ position: 'absolute', top: -80, left: 10 }}>
             <Lottie
@@ -70,6 +68,13 @@ const EventDetail = (props) => {
             />
           </div>
         )}
+
+        <Typography variant="body1" className={classes.field}>
+          <div style={{ display: 'flex', flexDirection: 'row', width: ismobile ? '60%' : '40%', justifyContent: 'space-between' }}>
+            <span style={{ marginRight: '2%' }}><strong>Likes:</strong> {props.eventData.NoOfLikes}</span>
+            <span style={{ marginRight: '2%', }}><strong>Views:</strong> {props.eventData.userViews}</span>
+          </div>
+        </Typography>
       </Grid>
 
       <Grid item xs={12}>

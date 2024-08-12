@@ -1,0 +1,18 @@
+.numbers-container {
+    display: flex;
+    gap: 20px;
+    background-color: transparent;
+}
+
+.number {
+    font-size: 32px;
+    font-weight: bold;
+    color: white;
+}
+
+.label {
+    font-size: 1.1rem;
+    color: white;
+    margin-top: 8px;
+    /* Space between number and label */
+}

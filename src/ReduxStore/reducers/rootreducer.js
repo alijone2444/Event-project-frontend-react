@@ -18,7 +18,7 @@ import { AdminSocietiesReducer, ViewMoreAdminSocietiesReducer } from './adminSoc
 import { userPopularEventsReducer } from './EventsUserReducer';
 import CalanderDataReducer from './calanderDatareducer';
 import threeSocietiesReducer from './ThreeSocietiesReducer';
-import constantsReducer from './constantsReducer';
+import { constantsReducer, societiesFooterReducer } from './constantsReducer';
 import { createStore } from 'redux'
 const appReducer = combineReducers({
   requests: requestsReducer,
@@ -40,7 +40,8 @@ const appReducer = combineReducers({
   SavedConstants: constantsReducer,
   marqueeData: marqueeReducer,
   ViewMore: ViewMoreSocietiesReducer,
-  adminViewmore: ViewMoreAdminSocietiesReducer
+  adminViewmore: ViewMoreAdminSocietiesReducer,
+  Footersocieties: societiesFooterReducer
 });
 
 const rootReducer = (state, action) => {

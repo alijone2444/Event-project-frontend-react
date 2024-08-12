@@ -19,6 +19,7 @@ import AboutSocietyPage from './Containers/exploresocieties/societypage.js';
 import PageWrapper from './Components/functions/scrollZeroZerol.js';
 import AboutPage from './Containers/AboutUs/aboutUs.js';
 import NotFound from './Components/notfoundPage/notFound.js';
+import SearchedProfile from './Containers/searchedProfile/searchedprofile.js';
 function App() {
 
 
@@ -42,6 +43,7 @@ function App() {
             <Route path=":type/society-page" element={<RequireAuth><AboutSocietyPage /></RequireAuth>} />
             <Route path=":type/:subtype/society-page" element={<RequireAuth><AboutSocietyPage /></RequireAuth>} />
             <Route path="/about-us" element={<RequireAuth><AboutPage /></RequireAuth>} />
+            <Route path="/SearchedProfile" element={<RequireAuth><SearchedProfile /></RequireAuth>} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </PageWrapper>

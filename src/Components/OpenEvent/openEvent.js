@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Grid from '@mui/material/Grid';
 import LoginCarousel from '../../Components/LoginCrousel/loginCrousel';
 import EventDetail from '../../Components/exploreEvents/eventDetail';
@@ -10,6 +10,7 @@ import { makeStyles } from '@mui/styles';
 import CommentSection from '../comments/commentsSectionComponent';
 import ShareComponent from '../shareComponent/shareEvent';
 import LikeCommentShare from '../commentShareLike/commentShareLike';
+import createAuthenticatedRequest from '../../RequestwithHeader';
 import MapComponent from '../MapComponent.js/googleMaps';
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -29,7 +30,21 @@ const OpenEvent = (props) => {
     // legend: `Event ${props.eventData.tags}`, 
   }));
   const [shareOpen, setShareOpen] = useState(false);
+  useEffect(() => {
+    const addView = async (id) => {
+      try {
+        const requestInstance = createAuthenticatedRequest();
 
+        const response = await requestInstance.post(`${constants.BASE_URL}add-view-event`, {
+          id,
+        });
+        console.log('Response from server:', response.data);
+      } catch (error) {
+        console.error('Error adding view:', error);
+      }
+    };
+    addView(props.eventData._id)
+  }, [])
 
   const handleCloseShare = () => {
     setShareOpen(false);

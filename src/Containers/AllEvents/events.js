@@ -51,8 +51,6 @@ function AllEvents() {
         const { _id, eventName } = event
         navigate(`/eventdetail/${eventName}`, { state: { data: { _id, eventName }, toNavigate: '/events' } });
     };
-
-
     const handlePageChange = (page) => {
         dispatch(setCurrentPage(page)); // Update currentPage state
         if (page > lastVisitedPage) {

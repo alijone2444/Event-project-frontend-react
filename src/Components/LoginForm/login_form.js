@@ -86,7 +86,10 @@ const Login = (props) => {
       <div className="login-form-container">
         {showBorder && <><span class="top"></span>
         </>}
-        <h2 className="login-title">Login</h2>
+        {props.type ?
+          <h2 className="login-title">Login</h2>
+          : <h3 className="login-title">Login admin</h3>
+        }
         <Form
           name="loginForm"
           initialValues={{ remember: true }}
@@ -154,20 +157,20 @@ const Login = (props) => {
               <Checkbox style={{ color: 'white' }} onChange={handleCheckboxChange}
               >Remember me</Checkbox>
             </Form.Item>
-
-            <a style={{ float: 'right', color: 'dodgerblue' }} onClick={() => props.forgetPassCallback()}>
-              Forgot password?
-            </a>
+            {props.type &&
+              <a style={{ float: 'right', color: 'dodgerblue' }} onClick={() => props.forgetPassCallback()}>
+                Forgot password?
+              </a>}
           </Form.Item>
           {error && <p className={classes.errorText}>Incorrect password or Roll number</p>}
           <Form.Item>
             <Button type="primary" htmlType="button" className="login-form-button" style={{ backgroundColor: 'transparent', color: 'white', zIndex: 1 }} onClick={handleSubmit}>
               {loading ? <CircularProgress size={20} style={{ color: 'white' }} /> : `Log in`}
             </Button>
-            <div style={{ display: 'flex', flexDirection: 'row', paddingTop: '5%' }}>
+            {props.type && <div style={{ display: 'flex', flexDirection: 'row', paddingTop: '5%' }}>
               <p style={{ color: 'white', margin: 0 }}>Already have an account?&nbsp;&nbsp;</p>
               <a onClick={handleShowSignup}>register now!</a>
-            </div>
+            </div>}
           </Form.Item>
 
           <div style={{ textAlign: 'center', color: 'white', marginTop: '20px' }}>

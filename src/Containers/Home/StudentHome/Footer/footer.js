@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@mui/styles';
-import { Container, Grid, Typography, createTheme, ThemeProvider, IconButton } from '@mui/material';
+import { Container, Grid, Typography, createTheme, ThemeProvider, IconButton, Skeleton } from '@mui/material';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import TwitterIcon from '@mui/icons-material/Twitter';
@@ -8,11 +8,18 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import constants from '../../../../Constants/constants';
 import { useMediaQuery } from '@mui/material';
+import createAuthenticatedRequest from '../../../../RequestwithHeader';
 import { useNavigate, useLocation } from 'react-router-dom';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setFooterSocieties } from '../../../../ReduxStore/actions/setConstantsAction';
 const Footer = (props) => {
-
+  const requestInstance = createAuthenticatedRequest()
   const location = useLocation()
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const societies = useSelector((state) => state.Footersocieties.societies);
+
+
   useEffect(() => {
     if (location.pathname === "/login") {
       return null
@@ -34,6 +41,24 @@ const Footer = (props) => {
   const handleEvents = () => {
     navigate('/events')
   }
+  useEffect(() => {
+    const fetchSocieties = async () => {
+      try {
+        const response = await requestInstance.get(`${constants.BASE_URL}footer-popular-societies`);
+        if (response.data) {
+          dispatch(setFooterSocieties(response.data));
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    if (societies.length === 0) {
+      fetchSocieties();
+    }
+  }, [dispatch]);
+
   return (
     <footer className={classes.footer} style={{ backgroundColor: props.EditedFooter ? 'rgba(157, 148, 181, 1)' : 'rgba(30, 144, 255, 0.7)' }}>
       <Container maxWidth="lg">
@@ -58,25 +83,32 @@ const Footer = (props) => {
             <Typography variant="h6" className={classes.text}>
               Societies
             </Typography>
-            <div className={classes.societyContainer}>
-              <div>
-                <Typography variant="body2" className={classes.text2}>
-                  <ChevronRightIcon className={classes.arrowIcon} /> Media Club
-                </Typography>
-                <Typography variant="body2" className={classes.text2}>
-                  <ChevronRightIcon className={classes.arrowIcon} /> Youth Club
-                </Typography>
-                <Typography variant="body2" className={classes.text2}>
-                  <ChevronRightIcon className={classes.arrowIcon} /> Art Club
-                </Typography>
-                <Typography variant="body2" className={classes.text2}>
-                  <ChevronRightIcon className={classes.arrowIcon} /> Adventure Club
-                </Typography>
-                <Typography variant="body2" className={classes.text2}>
-                  <ChevronRightIcon className={classes.arrowIcon} /> Sports Club
-                </Typography>
+            {!loading ? <div>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div className={classes.societyContainer}>
+
+                  {societies.map(society => (
+                    <div key={society._id} style={{ display: 'flex', flexDirection: 'column' }}>
+                      <Typography variant="body2" className={classes.text2}>
+                        <ChevronRightIcon className={classes.arrowIcon} /> {society.name}
+                      </Typography>
+                    </div>
+                  ))}
+                </div>
               </div>
+
             </div>
+              :
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div style={{ flexDirection: 'column', marginTop: '5%' }}>
+                  <Skeleton variant="text" width={150} height={30} />
+                  <Skeleton variant="text" width={150} height={30} />
+                  <Skeleton variant="text" width={150} height={30} />
+                  <Skeleton variant="text" width={150} height={30} />
+                  <Skeleton variant="text" width={150} height={30} />
+                </div>
+              </div>
+            }
           </Grid>
           <Grid item xs={12} sm={3}>
             <Typography variant="h6" className={classes.text}>
@@ -178,8 +210,7 @@ const useStyles = makeStyles((theme) => ({
   },
   societyContainer: {
     marginTop: theme.spacing(2),
-    display: "flex",
-    justifyContent: "center",
+
   },
   text2: {
     display: "flex",

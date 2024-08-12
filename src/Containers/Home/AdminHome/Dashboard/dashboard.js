@@ -9,7 +9,7 @@ import ProgressTrackerCard from './progressValue';
 import Fourbuttons from './fourbutton';
 import { Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { BarChart } from './charts/bargraph';
+import BarChart from './charts/bargraph';
 import calculateTimeAgo from '../../../../Components/functions/timeElapsedFinder';
 import { UserOutlined, BellOutlined } from '@ant-design/icons';
 import SocietyAdminConstantsForm from '../../../../Components/societyAdminConstantForm/societyAdminConstantForm';

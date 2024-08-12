@@ -11,39 +11,77 @@ import { useSelector, useDispatch } from "react-redux";
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import { setEventsDataAll } from "../../ReduxStore/actions/eventsDataActionUser";
+import { setCurrentPage, setTotalPages } from "../../ReduxStore/actions/eventsPaginationActions";
 
 function EventDetailPage() {
   const { state } = useLocation();
   const { _id, eventName } = state?.data;
   const Events = useSelector((state) => state.userAllEvents);
   const eventData = Events.find((event) => event._id === _id);
-  const [loading, setLoading] = useState(!eventData); // Initialize loading state based on eventData
+  const [loading, setLoading] = useState(!eventData);
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width:600px)');
   const requestInstance = createAuthenticatedRequest();
   const dispatch = useDispatch();
-
+  const { currentPage, pageSize } = useSelector((state) => state.eventspagination);
+  const [rerun, setrerun] = useState(false)
   useEffect(() => {
-    if (!eventData) {
-      setLoading(true); // Set loading to true when starting fetch
-      requestInstance.get(`${constants.BASE_URL}get-events`, {
-        params: {
-          amount: 'One',
-          eventName: eventName
-        },
-      })
-        .then((response) => {
-          dispatch(setEventsDataAll([...Events, response.data.events[0]]));
-          setLoading(false); // Update loading state
-        })
-        .catch((error) => {
-          console.error("Error fetching event:", error);
-          setLoading(false); // Update loading state on error
+    const fetchSingleEvent = async () => {
+      try {
+        const response = await requestInstance.get(`${constants.BASE_URL}get-events`, {
+          params: {
+            amount: 'One',
+            eventName: eventName
+          },
         });
+        const newEvent = response.data.events[0];
+        if (newEvent && !Events.some(event => event._id === newEvent._id)) {
+          dispatch(setEventsDataAll([...Events, newEvent]));
+          setrerun(true)
+        }
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching event:", error);
+        setLoading(false);
+      }
+    };
+
+    if (!eventData) {
+      setLoading(true);
+      fetchSingleEvent();
     } else {
-      setLoading(false); // No need to fetch, data is already available
+      setLoading(false);
     }
-  }, [_id, eventData, eventName, Events, dispatch, requestInstance]);
+  }, [eventData, eventName, Events, dispatch, requestInstance]);
+
+  // Effect for fetching all events
+  useEffect(() => {
+    const fetchAllEvents = async () => {
+      try {
+        const response = await requestInstance.get(`${constants.BASE_URL}get-events`, {
+          params: {
+            amount: 'All',
+            page: currentPage,
+            pageSize: pageSize,
+          },
+        });
+        if (response && response.data) {
+          const newEvents = response.data.events.filter(event => !Events.some(existingEvent => existingEvent._id === event._id));
+          if (newEvents.length > 0) {
+            dispatch(setEventsDataAll([...Events, ...newEvents]));
+          }
+          dispatch(setCurrentPage(response.data.currentPage));
+          dispatch(setTotalPages(response.data.totalPages));
+          setrerun(false)
+        }
+      } catch (error) {
+        console.error('Error fetching events:', error);
+      }
+    };
+    if (rerun) {
+      fetchAllEvents();
+    }
+  }, [rerun]);
 
   const backgroundImage = eventData ? {
     backgroundImage: `url(${constants.BASE_URL}images/${eventData.dpimageFileName})`,

@@ -37,6 +37,7 @@
     "react-animated-text": "^0.1.4",
     "react-big-calendar": "^1.8.1",
     "react-chartjs-2": "^5.2.0",
+    "react-countdown-circle-timer": "^3.2.1",
     "react-dom": "^18.2.0",
     "react-fast-marquee": "^1.6.5",
     "react-grid-gallery": "^1.0.1",

@@ -20,7 +20,6 @@ const MarqueeComponent = () => {
                 .then(response => {
                     dispatch(setMarqueeItems(response.data));
                     setLoading(false);
-                    console.log(response)
                 })
                 .catch(error => {
                     console.error('Error fetching marquee items:', error);

@@ -45,6 +45,15 @@ const SocietyCards = (props) => {
     const dispatch = useDispatch()
     const isMobile = useMediaQuery('(max-width: 768px)');
     const { threeSocieties } = props;
+    function isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+    function checkEmptySubKeys(societies) {
+        return Object.keys(societies).some(key => isEmpty(societies[key]));
+    }
+    const threeSocietiesRedux = useSelector(state => state.threeSocieties);
+
+
     useEffect(() => {
         const fetchThreeSocietiesAndConstants = async () => {
             try {
@@ -59,7 +68,8 @@ const SocietyCards = (props) => {
         const areAllPropertiesEmpty = Object.values(SavedConstants).every(
             (val) => typeof val === 'object' && Object.keys(val).length === 0
         );
-        if (areAllPropertiesEmpty) {
+        const hasEmptySubKeys = checkEmptySubKeys(threeSocietiesRedux);
+        if (areAllPropertiesEmpty || hasEmptySubKeys) {
             fetchThreeSocietiesAndConstants();
         }
     }, [dispatch])

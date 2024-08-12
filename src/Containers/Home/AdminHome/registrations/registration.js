@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Tag, Space } from 'antd';
+import { Table, Button, Tag, Space, Spin } from 'antd';
 import { Grid, Typography, useMediaQuery } from '@mui/material';
-import axios from 'axios';
 import { setRequestsDataAdmin } from '../../../../ReduxStore/actions/RequestActionAdmin';
 import { useDispatch, useSelector } from 'react-redux';
 import createAuthenticatedRequest from '../../../../RequestwithHeader';
@@ -10,6 +9,7 @@ import {
   CheckOutlined,
 } from '@ant-design/icons';
 import constants from '../../../../Constants/constants';
+import { CancelOutlined } from '@mui/icons-material';
 
 const AttendeesTable = (props) => {
   const dispatch = useDispatch();
@@ -17,7 +17,8 @@ const AttendeesTable = (props) => {
   const isSmallScreen = useMediaQuery('(max-width: 768px)'); // Adjust the max-width value as needed
   const [isupdatedAfterAction, setisupdatedAfterAction] = useState(false)
   const [runuseffect, setrunuseffect] = useState(false)
-
+  const [loading, setloading] = useState(null)
+  const [mainLoading, setMainloading] = useState(false)
   let pendingRequests;
   let acceptedRequests;
   let rejectedRequests;
@@ -26,6 +27,7 @@ const AttendeesTable = (props) => {
 
   useEffect(() => {
     if (requestsData.length === 0 || runuseffect === true || props.showOnlyActiveUsers) {
+      setMainloading(true)
       requestInstance
         .get(`${constants.BASE_URL}get-all-requests`, {
           params: {
@@ -33,23 +35,30 @@ const AttendeesTable = (props) => {
           }
         })
         .then(response => {
+          setMainloading(false)
           dispatch(setRequestsDataAdmin(response.data));
           navbarvalues()
         })
         .catch(err => {
           console.error('Error:', err);
+          setMainloading(false)
         });
     }
     setrunuseffect(false)
+    setloading(false)
   }, [dispatch, isupdatedAfterAction, props.showOnlyActiveUsers]);
 
   const handleAction = (id, action) => {
+    setloading(id)
     let updatedFields;
     if (action === 'accept') {
       updatedFields = { status: 'active' };
     }
     else if (action === 'reject') {
       updatedFields = { status: 'Rejected' };
+    }
+    else if (action === 'delete-request') {
+      updatedFields = { status: 'delete' };
     }
     else if (action === 'make-admin') {
       updatedFields = { UserType: 'S-Admin' };
@@ -62,9 +71,13 @@ const AttendeesTable = (props) => {
         if (response.data.success === true) {
           setisupdatedAfterAction(!isupdatedAfterAction)
           setrunuseffect(true)
+
+          setloading(null)
         }
       })
       .catch(error => {
+
+        setloading(null)
         console.error('Error updating component:', error);
       });
   }
@@ -119,16 +132,19 @@ const AttendeesTable = (props) => {
       key: 'action',
       render: (_, record) => (
         <Space>
-          {props.showADDRemove ?
-            <>
-              <Button icon={<CheckOutlined style={{ color: 'green' }} />} onClick={() => handleAction(record._id, 'accept')} />
-              <Button icon={<DeleteOutlined />} danger onClick={() => handleAction(record._id, 'reject')} />
-            </>
-            :
-            <>
-              <Button type='primary' onClick={() => handleAction(record._id, 'make-admin')}>Make Admin</Button>
-              <Button danger onClick={() => handleAction(record._id, 'revert')}>revert</Button>
-            </>
+          {
+            loading === record._id ? <Spin size='small' /> :
+              props.showADDRemove ?
+                <>
+                  <Button icon={<CheckOutlined style={{ color: 'green' }} />} onClick={() => handleAction(record._id, 'accept')} />
+                  <Button icon={<DeleteOutlined />} danger onClick={() => handleAction(record._id, 'delete-request')} />
+                  <Button icon={< CancelOutlined />} danger onClick={() => handleAction(record._id, 'reject')} />
+                </>
+                :
+                <>
+                  <Button type='primary' onClick={() => handleAction(record._id, 'make-admin')}>Make Admin</Button>
+                  <Button danger onClick={() => handleAction(record._id, 'revert')}>revert</Button>
+                </>
           }
         </Space>
       ),
@@ -149,7 +165,11 @@ const AttendeesTable = (props) => {
           <Tag color="red">Rejected: {rejectedRequests}</Tag>
         </Grid>}
       </Grid>
-      <Table columns={columns} dataSource={requestsData} style={{ overflowX: 'auto' }} />
+      {mainLoading ? <div style={{ position: 'relative', height: '100vh', width: '100%' }}>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }}>
+          <Spin size='large' />
+        </div>
+      </div> : <Table columns={columns} dataSource={requestsData} style={{ overflowX: 'auto' }} />}
     </div>
   );
 };

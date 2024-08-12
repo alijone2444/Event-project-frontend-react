@@ -11,6 +11,7 @@ import { setCurrentPage } from "../../ReduxStore/actions/eventsPaginationActions
 import { setTotalPages } from "../../ReduxStore/actions/eventsPaginationActions";
 import { setSocietiesData } from "../../ReduxStore/actions/societyDataAction";
 import { setMarqueeItems } from "../../ReduxStore/actions/marqueeAction";
+import { setFooterSocieties } from "../../ReduxStore/actions/setConstantsAction";
 const EventDataProvider = () => {
 
     const calanderevents = useSelector(state => state.CalanderEvents)
@@ -19,8 +20,16 @@ const EventDataProvider = () => {
     const Societies = useSelector((state) => state.Societies);
     const Allevents = useSelector((state) => state.userAllEvents);
     const coverPhotosMarquee = useSelector(state => state.marqueeData.items);
+    const Footersocieties = useSelector((state) => state.Footersocieties);
+    const threeSocieties = useSelector(state => state.threeSocieties);
     const requestInstance = createAuthenticatedRequest()
     const dispatch = useDispatch()
+    function isEmpty(obj) {
+        return Object.keys(obj).length === 0;
+    }
+    function checkEmptySubKeys(societies) {
+        return Object.keys(societies).some(key => isEmpty(societies[key]));
+    }
     useEffect(() => {
         const fetchEvents = async () => {
             try {
@@ -53,10 +62,11 @@ const EventDataProvider = () => {
                 console.log(err.message)
             }
         };
+        const hasEmptySubKeys = checkEmptySubKeys(threeSocieties);
         const areAllPropertiesEmpty = Object.values(SavedConstants).every(
             (val) => typeof val === 'object' && Object.keys(val).length === 0
         );
-        if (areAllPropertiesEmpty) {
+        if (areAllPropertiesEmpty || hasEmptySubKeys) {
             fetchThreeSocietiesAndConstants();
         }
     }, [dispatch])
@@ -98,6 +108,23 @@ const EventDataProvider = () => {
             fetchData(1, 10);
         }
     }, [dispatch]);
+    useEffect(() => {
+        const fetchSocieties = async () => {
+            try {
+                const response = await requestInstance.get(`${constants.BASE_URL}footer-popular-societies`);
+                if (response.data) {
+                    dispatch(setFooterSocieties(response.data));
+                }
+            } catch (err) {
+                console.log(err);
+            }
+        };
+
+        if (Footersocieties.length === 0) {
+            fetchSocieties();
+        }
+    }, [dispatch]);
+
 
     useEffect(() => {
         if (coverPhotosMarquee.length === 0) {

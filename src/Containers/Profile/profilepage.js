@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Container, Grid, Typography, Box, IconButton, Avatar } from '@mui/material';
 import { Instagram, Twitter } from '@mui/icons-material';
 import AnimatedNumbers from 'react-animated-numbers';
+import { Switch, message } from 'antd';
 import Skeleton from 'react-loading-skeleton'; // Import skeleton loader
 import cover from '../../images/profileBackground.jpg';
 import WrapperComponent from '../../FooterAndHeaderwrapper';
@@ -11,13 +12,17 @@ import { useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setProfileData } from '../../ReduxStore/actions/profileDataAction';
 import constants from '../../Constants/constants';
+import SpringAnimatedNums from '../../Components/react-springs/springAnimatedNumbers';
 import createAuthenticatedRequest from '../../RequestwithHeader';
 const ProfilePage = () => {
     const [loading, setLoading] = useState(true);
     const profileData = useSelector(state => state.profiledata);
     const requestInstance = createAuthenticatedRequest()
     const isSmallScreen = useMediaQuery('(max-width:600px)');
+    const istablet = useMediaQuery('(max-width:1024px)');
     const dispatch = useDispatch()
+    const [visibility, setVisibility] = useState(profileData.visibility); // Assuming default visibility is false
+
 
     useEffect(() => {
         const fetchProfileData = async () => {
@@ -39,7 +44,20 @@ const ProfilePage = () => {
         }
     }, [dispatch, profileData]);
 
-
+    const handleToggle = async (checked) => {
+        try {
+            setVisibility(checked);
+            await requestInstance.post(`${constants.BASE_URL}profile-update-visibility`, {
+                visibility: checked,
+            });
+            message.success('Visibility updated successfully');
+        } catch (error) {
+            console.error('Error updating visibility:', error);
+            message.error('Error updating visibility');
+            // Optionally revert the state
+            setVisibility(!checked);
+        }
+    };
     return (
         <WrapperComponent>
             <div style={{ position: 'relative' }}>
@@ -77,39 +95,51 @@ const ProfilePage = () => {
                             {loading ? <Skeleton width={120} /> : profileData.username} {/* Show skeleton or username */}
                         </Typography>
                         <Typography variant="subtitle1" sx={{ color: 'lightgray' }}>
-                            {loading ? <Skeleton width={100} /> : profileData.subHeader} {/* Show skeleton or subheader */}
+                            {loading ? <Skeleton width={100} /> : profileData.regno} {/* Show skeleton or subheader */}
                         </Typography>
-                    </Box>
+                    </Box><div style={{
+                        position: 'absolute',
+                        right: istablet ? 10 : 20,
+                        top: istablet ? 10 : 20,
+                        transform: 'translate(0, 0)', // Adjusted transformation to prevent unwanted shifts
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        clipPath: 'polygon(100% 0, 0 0, 100% 100%)',
+                        padding: istablet ? '10%' : '5%',
+                        paddingTop: '1%',
+                        paddingRight: '1%'
+                    }}>
+                        <Typography variant="subtitle1" style={{ color: 'white', textAlign: 'right' }}>
+                            Profile Visibility
+                        </Typography>
+                        <Typography variant="body1" style={{ color: visibility ? '#28a745' : 'red', fontWeight: 'bold', textAlign: 'right' }}>
+                            {`${visibility ? 'public' : 'private'}`}
+                        </Typography>
+                        <div style={{ width: '100%', textAlign: 'right', marginTop: '3%' }}>
+                            <Switch
+                                checked={visibility}
+                                onChange={handleToggle}
+                            />
+                        </div>
+                    </div>
 
                     {/* Additional content */}
-                    <Grid container spacing={3} justifyContent="center" sx={{ marginTop: 2 }}>
-                        {[
-                            { label: 'Subscriptions', value: profileData.subscriptions },
-                            { label: 'Age', value: profileData.age },
-                            { label: 'Events liked', value: profileData.eventsLiked },
-                        ].map((item, index) => (
-                            <Grid item key={index}>
-                                <Box textAlign="center" sx={{ color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                    {loading ? (
-                                        <Skeleton width={100} height={50} />
-                                    ) : (
-                                        <AnimatedNumbers
-                                            animateToNumber={item.value || 0}
-                                            fontStyle={{ fontSize: 32, fontWeight: 'bold' }}
-                                            configs={[
-                                                { mass: 1, tension: 220, friction: 100 },
-                                                { mass: 1, tension: 180, friction: 130 },
-                                            ]}
-                                        />
-                                    )
+                    <Grid container justifyContent="center" sx={{ marginTop: 2 }}>
+                        <Grid item >
+                            <Box textAlign="center" sx={{ color: 'white', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                {loading ? (
+                                    <Skeleton width={100} height={50} />
+                                ) : (
 
-                                    }
-                                    <Typography variant="subtitle1" sx={{ marginTop: 0.5 }}>
-                                        {loading ? <Skeleton width={80} /> : item.label}
-                                    </Typography>
-                                </Box>
-                            </Grid>
-                        ))}
+                                    <SpringAnimatedNums num1={profileData.subscriptions} num2={profileData.age} num3={profileData.eventsLiked}
+                                        Label1={'Subscriptions'} Label2={'Age'} Label3={'Events liked'} />)
+                                }
+                                <Typography variant="subtitle1" sx={{ marginTop: 0.5 }}>
+                                    {loading ? <Skeleton width={80} /> : ''}
+                                </Typography>
+
+                            </Box>
+                        </Grid>
+
                     </Grid>
 
                     {/* Social media icons */}

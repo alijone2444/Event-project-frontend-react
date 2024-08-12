@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { CircularProgress, Grid, IconButton, Typography } from '@mui/material';
-import { ThumbUp, ThumbUpOutlined } from '@mui/icons-material';
+import { ThumbUp, ThumbUpOutlined, VisibilityOutlined } from '@mui/icons-material';
 import './gridview.css';
 import { Spin, Button, Space } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
@@ -45,14 +45,30 @@ const EventCard = (props) => {
       {props.eventData.map((event, index) => (
         <Grid key={event._id} item xs={12} sm={6} md={4}>
           <div style={{ border: '1px solid lightgrey', borderRadius: '2%' }}>
-            <div style={{ padding: '5%' }}>
+            <div style={{ padding: '5%', position: 'relative' }}>
               <img
                 className="event-image"
-                style={{ height: '150px' }}
+                style={{ height: '150px', }}
                 src={`${constants.BASE_URL}images/${event.dpimageFileName}`}
                 alt="Event"
               />
+              <div style={{
+                position: 'absolute',
+                top: '11%',
+                right: '5%',
+                display: 'flex',
+                alignItems: 'center',
+                background: 'rgba(0, 0, 0, 0.6)',
+                color: 'white',
+                padding: '8px 12px',
+                borderBottomLeftRadius: '15px', // Use px for better control
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+              }}>
+                <VisibilityOutlined style={{ marginRight: '8px' }} />
+                <span>{event.userViews}</span>
+              </div>
             </div>
+
             <div style={{ padding: '5%', paddingTop: 0 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                 <Typography variant="h6" component="h2" style={{ marginBottom: '2%' }} className='hover-3 truncate-title'>

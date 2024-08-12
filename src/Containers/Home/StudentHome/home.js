@@ -23,6 +23,7 @@ import { setFCMToken } from "../../../ReduxStore/actions/fcmTokenState";
 import SocietyCards from "../../../Components/SocietyCards/SocietyCards";
 import EventDataProvider from "../../../Components/dataFetchingComponent/dataFetchingComponent";
 import MarqueeComponent from "../../../Components/marqueeComponent/marquee";
+import TimerComponent from "../../../Components/timer/timer";
 function Home() {
   const requestInstance = createAuthenticatedRequest();
   const dispatch = useDispatch();
@@ -154,7 +155,7 @@ function Home() {
           <ScrollingHorizontally data={popularEvents} title={'Hot'} subheader={'Find Trending Occasions'} toNavigate='/Home' />
         </div>
         <div>
-
+          <TimerComponent startDate={UpcommingEvent[0]?.startDate} startTime={UpcommingEvent[0]?.startTime} />
           <SocietyCards threeSocieties={threeSocieties.societies} />
         </div>
         <HomeBody />

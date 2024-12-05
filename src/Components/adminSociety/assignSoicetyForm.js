@@ -4,7 +4,7 @@ import axios from 'axios';
 import constants from '../../Constants/constants';
 import createAuthenticatedRequest from '../../RequestwithHeader';
 
-const AssignSocietyForm = ({ SocietyName }) => {
+const AssignSocietyForm = ({ SocietyName, closemodal }) => {
     const [usernames, setUsernames] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -31,21 +31,24 @@ const AssignSocietyForm = ({ SocietyName }) => {
     };
 
     const handleSubmit = async () => {
-        if (selectedUser) {
-            setLoading(true)
+        if (selectedUser) {  // Ensure both selectedUser and role are available
+            setLoading(true);
             try {
+                // Sending request with societyName, selectedUser (username), and role
                 await requestInstance.post(`${constants.BASE_URL}assign-society`, {
                     societyName: SocietyName,
-                    username: selectedUser
+                    username: selectedUser,
+                    role: 'President' // Make sure role is passed
                 });
-                setLoading(false)
+                setLoading(false);
+                closemodal(); // Close the modal after successful assignment
             } catch (err) {
-                setLoading(false)
-                setError('Failed to assign society');
+                setLoading(false);
+                setError('Failed to assign society'); // Display error if request fails
             }
         } else {
-            console.log('No user selected');
-            setLoading(false)
+            console.log('No user selected or role not assigned');
+            setLoading(false);
         }
     };
 
@@ -61,7 +64,7 @@ const AssignSocietyForm = ({ SocietyName }) => {
                         <Radio.Group onChange={handleChange} value={selectedUser} style={{ display: 'flex', flexDirection: 'column' }}>
                             {usernames.map((user) => (
                                 <Radio key={user.Rollno} value={user.Rollno} style={{ marginBottom: '10px' }}>
-                                    {user.Rollno}
+                                    {`${user.Rollno}  (${user.Email})`}
                                 </Radio>
                             ))}
                         </Radio.Group>

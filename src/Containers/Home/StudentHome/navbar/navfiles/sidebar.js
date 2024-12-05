@@ -23,6 +23,7 @@ import { setProfileData } from '../../../../../ReduxStore/actions/profileDataAct
 import createAuthenticatedRequest from '../../../../../RequestwithHeader';
 import UserIcon from '@mui/icons-material/AccountCircleOutlined'
 import EditProfileModal from '../../../../Profile/profileEditModal';
+import Badge from '../../../../../Components/badge/badge';
 function SidebarComponent(props) {
   const [openSlide, setopenSlide] = useState("");
   const sideNavRef = useRef(null);
@@ -93,8 +94,14 @@ function SidebarComponent(props) {
   }
   const handleSettings = (item) => {
     if (item === 'Society Admin Portal')
-      navigate('/SocietyAdminPortal');
+      if (props.usertype === 'admin') {
+        navigate('/SocietyAdminPortal');
+      }
+      else {
+        navigate('/sub-admin-panel', { state: { role: props.usertype } });
+      }
   }
+
   return (
     <div className={classes.parent} >
       <div className={classes.parent2} >
@@ -109,10 +116,14 @@ function SidebarComponent(props) {
                 onClick={() => {
                   navigate('/user-profile', { state: profileData });
                 }}></Avatar>
+              <div style={{ position: 'absolute', top: 10, left: 10, backgroundColor: 'white', zIndex: 999 }}>
+                <Badge badgeImageUrl={profileData.badgeImageUrl} isSidebar={true} />
+              </div>
               <IconButton sx={{ position: 'absolute', top: 10, right: 10, backgroundColor: 'white', zIndex: 999 }}
                 onClick={() => {
                   setshowprofilemodal(true)
                 }}>
+
                 <EditIcon style={{ fontSize: 15 }} />
               </IconButton>
               <EditProfileModal open={showprofilemodal} onClose={() => { setshowprofilemodal(false) }} />

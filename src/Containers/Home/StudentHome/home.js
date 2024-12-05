@@ -150,9 +150,7 @@ function Home() {
         <CarouselComponent />
         <ScrollToTopButton />
         <div style={{ marginBottom: "5%", marginTop: isSmallScreen ? "10%" : "5%" }}>
-          <ScrollingHorizontally data={recentEvents} title={'Recent'} subheader={'Check Latest Happenings'} toNavigate='/Home' />
-          <ScrollingHorizontally data={UpcommingEvent} title={'Upcomming'} subheader={'Future Gatherings'} toNavigate='/Home' />
-          <ScrollingHorizontally data={popularEvents} title={'Hot'} subheader={'Find Trending Occasions'} toNavigate='/Home' />
+          <ScrollingHorizontally data={UpcommingEvent} title={'Upcomming'} subheader={'Future Gatherings'} toNavigate='/Home' DescriptionKey='upcomingEvents' />
         </div>
         <div>
           <TimerComponent startDate={UpcommingEvent[0]?.startDate} startTime={UpcommingEvent[0]?.startTime} />

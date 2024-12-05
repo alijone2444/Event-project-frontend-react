@@ -25,7 +25,8 @@
 }
 
 .animation-2 div:first-child {
-  animation: text-animatione 12s infinite;
+  animation: text-animatione 9s infinite;
+  /* Adjusted duration */
 }
 
 .first-text div {
@@ -38,11 +39,10 @@
 
 .third-text div {
   background-color: rgba(154, 65, 255, 0.349);
+  overflow: ellipsis;
 }
 
-.fourth-text div {
-  background-color: rgba(255, 255, 255, 0.342);
-}
+/* Removed fourth-text class */
 
 @keyframes text-animatione {
   0% {
@@ -53,40 +53,18 @@
     margin-top: 0;
   }
 
-  20% {
-    margin-top: -3.62rem;
+  33% {
+    margin-top: -3rem;
+    /* Position for first transition */
   }
 
-  30% {
-    margin-top: -7.60rem;
-  }
-
-  40% {
-    margin-top: -9.24rem;
-  }
-
-  50% {
-    margin-top: -11.24rem;
-  }
-
-  60% {
-    margin-top: -11.24rem;
-  }
-
-  70% {
-    margin-top: -9.24rem;
-  }
-
-  80% {
-    margin-top: -7.60rem;
-  }
-
-  90% {
-    margin-top: -3.62rem;
-    /* Maintain position until the end */
+  66% {
+    margin-top: -6rem;
+    /* Position for second transition */
   }
 
   100% {
     margin-top: 0;
+    /* Reset to original */
   }
 }

@@ -13,6 +13,7 @@ import BarChart from './charts/bargraph';
 import calculateTimeAgo from '../../../../Components/functions/timeElapsedFinder';
 import { UserOutlined, BellOutlined } from '@ant-design/icons';
 import SocietyAdminConstantsForm from '../../../../Components/societyAdminConstantForm/societyAdminConstantForm';
+import FacebookPostButton from '../../../../Components/facebookPosts/fbpostsComponent';
 const { Header, Content } = Layout;
 const Dashboard = (props) => {
   const currentDate = new Date().toLocaleDateString();
@@ -112,10 +113,10 @@ const Dashboard = (props) => {
           <ProgressTrackerCard stats={props.totalsize} usersData={props.usersData} />
         </Grid>
       </Grid>
-
       <Fourbuttons fourbuttonPressed={(BtnType) => { handleFourButtons(BtnType) }} />
       <Grid container spacing={1} style={{ padding: "5%", display: 'flex', justifyContent: "center" }}>
         <Grid item xs={12} md={10} lg={10} >
+          <FacebookPostButton />
           <BarChart />
         </Grid>
       </Grid>

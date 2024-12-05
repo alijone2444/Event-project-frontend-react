@@ -2,24 +2,29 @@ import EventCard from "../Home/AdminHome/AdminEvents/gridview";
 import WrapperComponent from "../../FooterAndHeaderwrapper";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import { Typography } from "@mui/material";
 import { Spin, Pagination } from "antd";
 import { useNavigate } from "react-router-dom";
 import { setEventsDataAll } from "../../ReduxStore/actions/eventsDataActionUser";
 import { setCurrentPage, setPageSize, setTotalPages, setLastvisited } from "../../ReduxStore/actions/eventsPaginationActions";
 import createAuthenticatedRequest from '../../RequestwithHeader';
 import constants from '../../Constants/constants';
-
+import { useMediaQuery } from "@mui/material";
+import ScrollingHorizontally from "../Home/StudentHome/HomePageScrolls/HrScroll";
+import { setEventsDataPopular, setEventsDataUserRecent } from "../../ReduxStore/actions/eventsDataActionUser";
 function AllEvents() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true);
     const Events = useSelector((state) => state.userAllEvents);
+    const recentEvents = useSelector((state) => state.userRecentEvents);
+    const popularEvents = useSelector((state) => state.userpopularEvents);
     const { currentPage, pageSize, totalPages, lastVisitedPage } = useSelector((state) => state.eventspagination);
-
+    const isSmallScreen = useMediaQuery('(max-width:768px)');
+    const requestInstance = createAuthenticatedRequest();
     const fetchEvents = async (page, size) => {
         try {
             setLoading(true);
-            const requestInstance = createAuthenticatedRequest();
             const response = await requestInstance.get(`${constants.BASE_URL}get-events`, {
                 params: {
                     amount: 'All',
@@ -38,7 +43,39 @@ function AllEvents() {
             setLoading(false);
         }
     };
+    useEffect(() => {
+        if (popularEvents.length === 0) {
+            requestInstance
+                .get(`${constants.BASE_URL}get-events`, {
+                    params: {
+                        amount: 'get-popular',
+                    },
+                })
+                .then(response => {
+                    dispatch(setEventsDataPopular(response.data.events));
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                });
+        }
+    }, [dispatch])
 
+    useEffect(() => {
+        if (recentEvents.length === 0) {
+            requestInstance
+                .get(`${constants.BASE_URL}get-events`, {
+                    params: {
+                        amount: 'recent',
+                    },
+                })
+                .then(response => {
+                    dispatch(setEventsDataUserRecent(response.data.events));
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                });
+        }
+    }, [dispatch])
     useEffect(() => {
         if (Events.length === 0) {
             fetchEvents(currentPage, pageSize);
@@ -66,23 +103,36 @@ function AllEvents() {
                     <Spin size="large" />
                 </div>
             ) : (
-                <div>
-                    <EventCard
-                        eventData={Events.slice((currentPage - 1) * pageSize, currentPage * pageSize)} // Slice the eventsData array based on current page and page size
-                        showEditDelete={false}
-                        openEvent={handleOpenEvent}
-                    />
-                    <div style={{ width: '100%', zIndex: 99, marginBottom: '5%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <Pagination
-                            current={currentPage}
-                            total={totalPages * pageSize} // Multiply totalPages by pageSize
-                            pageSize={pageSize}
-                            onChange={handlePageChange}
-                            style={{ textAlign: 'center' }}
+                <>
+                    <div style={{ marginBottom: '0%', textAlign: 'center', margin: '5%', marginTop: '2%' }}>
+                        <Typography variant='h5' style={{ fontWeight: 'bold' }}>
+                            All Events
+                        </Typography>
+                        <EventCard
+                            eventData={Events.slice((currentPage - 1) * pageSize, currentPage * pageSize)} // Slice the eventsData array based on current page and page size
+                            showEditDelete={false}
+                            openEvent={handleOpenEvent}
                         />
+                        <div style={{ width: '100%', zIndex: 99, marginBottom: '5%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <Pagination
+                                current={currentPage}
+                                total={totalPages * pageSize} // Multiply totalPages by pageSize
+                                pageSize={pageSize}
+                                onChange={handlePageChange}
+                                style={{ textAlign: 'center' }}
+                            />
+                        </div>
                     </div>
-                </div>
+                    <div style={{ marginBottom: "5%", marginTop: isSmallScreen ? "5%" : "2.5%" }}>
+                        <ScrollingHorizontally data={recentEvents} title={'Recent'} subheader={'Check Latest Happenings'} toNavigate='/events' DescriptionKey='recentEvents' />
+                        <ScrollingHorizontally data={popularEvents} title={'Hot'} subheader={'Find Trending Occasions'} toNavigate='/events' DescriptionKey='popularEvents' />
+                    </div>
+
+                </>
+
             )}
+
+
         </WrapperComponent>
     );
 }

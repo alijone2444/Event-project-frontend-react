@@ -58,10 +58,17 @@ function Navbar(props) {
   };
 
   const handleClick = async (option) => {
+    console.log('option', option, usertype)
     try {
-      if (option === 'Society Admin Portal' && (usertype === 'admin' || usertype === 'S-Admin')) {
-        navigate('/SocietyAdminPortal');
-      } else if (option === 'Logout') {
+      if (option === 'Society Admin Portal') {
+        if (usertype === 'admin') {
+          navigate('/SocietyAdminPortal');
+        }
+        else {
+          navigate('/sub-admin-panel', { state: { role: usertype } });
+        }
+      }
+      else if (option === 'Logout') {
         setlogout(true);
       }
       else if (option === 'About Us') {
@@ -69,6 +76,9 @@ function Navbar(props) {
       }
       else if (option === 'Profile') {
         navigate('/user-profile', { state: profileData });
+      }
+      else if (option === 'Calander') {
+        navigate('/Calander', { state: profileData });
       }
     } catch (error) {
       console.error('Error handling click:', error);
@@ -88,7 +98,7 @@ function Navbar(props) {
 
         {constants.settings.map((val, index) => {
           const isSocietyAdminPortal = val.name === 'Society Admin Portal';
-          const isAdminOrSAdmin = usertype === 'admin' || usertype === 'S-Admin';
+          const isAdminOrSAdmin = usertype === 'admin' || usertype === 'President';
           const shouldDisableButton = isSocietyAdminPortal && !isAdminOrSAdmin;
 
           return (

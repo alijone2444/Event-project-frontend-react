@@ -1,14 +1,23 @@
 .parent {
     z-index: 1;
-    /* Standard syntax */
-    color: #0294c5;
-
+    color: #00abe5;
+    -webkit-text-stroke: 1px #000;
+    /* WebKit-based browsers */
+    text-stroke: 1px #000;
     padding-top: 1%;
     padding-bottom: 1%;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+}
+
+.text-stroke-navbar {
+    font-weight: bolder;
+    color: #00abe5;
+    -webkit-text-stroke: 0.5px #000;
+    /* WebKit-based browsers */
+    text-stroke: 0.5px #000;
 }
 
 .overlay {
@@ -25,12 +34,11 @@
 .heading-text {
     padding-left: 5%;
     font-family: 'roboto';
-    font-size: 17px;
     display: flex;
     font-weight: bold;
-    letter-spacing: 1px;
     flex-direction: row;
-    user-select: none;
+    align-items: center;
+    cursor: pointer;
 }
 
 .heading-text .wrapper {
@@ -38,11 +46,19 @@
     padding-right: 1px;
     padding-top: 2px;
     padding-bottom: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .heading-text .wrapper .letter {
+    height: 100%;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    letter-spacing: 1px;
     transition: ease-out 1s;
-    transform: translateY(20%);
+    /* transform: translateY(20%); */
 }
 
 .heading-text .wrapper .shadow {
@@ -69,14 +85,6 @@
 
     }
 
-    .parent {
-
-        color: #00abe5;
-        -webkit-text-stroke: 1px #000;
-        /* WebKit-based browsers */
-        text-stroke: 1px #000;
-    }
-
     .heading-text .wrapper {
         padding-left: 1px;
         padding-right: 1px;
@@ -85,9 +93,13 @@
         font-weight: bold;
     }
 
+    .heading-text {
+        padding-left: 3%;
+    }
+
     .heading-text .wrapper .letter {
         transition: ease-out 1s;
-        transform: translateY(40%);
+        /* transform: translateY(10%); */
     }
 }
 

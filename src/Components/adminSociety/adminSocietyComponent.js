@@ -184,7 +184,7 @@ const SocietiesAdminComponent = (props) => {
                                 onCancel={() => { setAssignSociety(false); setedit(false) }}
                                 footer={null}
                             >
-                                <AssignSocietyForm SocietyName={tempSocietyNameStorage} />
+                                <AssignSocietyForm SocietyName={tempSocietyNameStorage} closemodal={() => { setAssignSociety(false) }} />
                             </Modal>
                         </Grid>
                     </div>

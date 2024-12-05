@@ -78,14 +78,6 @@ function ToolbarBelowNavbar() {
                     height={50}
                     width={50}
                 />
-                <section className="animation-2">
-                    <div className="first-text"><div>Hi! Im Evento</div></div>
-                    <div className="second-text"><div>Chat with me</div></div>
-                    <div className="third-text"><div>Get Assistance</div></div>
-                    <div className="fourth-text"><div>Get Support</div></div>
-                </section>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <Button variant="contained" sx={{ fontSize: '0.75rem', padding: '6px 12px' }} style={{ backgroundColor: 'transparent', border: '1px solid white', color: 'white', }} className={classes.button} onClick={handleOpen}>
                     <Wave
                         text="Try Evento Now"
@@ -96,6 +88,15 @@ function ToolbarBelowNavbar() {
                         paused={paused}
                     />
                 </Button>
+
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', width: 'auto' }}>
+
+                <section className="animation-2">
+                    <div className="first-text"><div>Search Events</div></div>
+                    <div className="second-text"><div>Search Profiles</div></div>
+                    <div className="third-text"><div>Search Societies</div></div>
+                </section>
                 {!isMobile && <Button
                     icon={<SearchOutlined />}
                     style={{ backgroundColor: 'transparent', color: 'white', marginLeft: '5%' }}

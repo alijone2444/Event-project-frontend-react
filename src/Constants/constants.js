@@ -14,8 +14,9 @@ const constants = {
         { name: "Home", icon: <HomeOutlined /> },
         { name: "Events", icon: <StarBorderOutlined /> },
         { name: "Societies", icon: <img alt="Event Icon" src={societyicon} style={{ width: "24px", height: "24px" }} /> },
-        { name: "Calander", icon: <CalendarTodayOutlined /> },
     ], settings: [
+        { name: "Calander", icon: <CalendarTodayOutlined /> },
+
         {
             name: 'Profile',
             description: 'Learn more about our organization, our mission, and the team behind our services.',
@@ -41,10 +42,10 @@ const constants = {
     ],
 
     // // /ist-ems-backend/
-    // BASE_URL: 'http://192.168.1.5:3002/ist-ems-backend/',
-    BASE_URL: 'https://ist-ems.live/ist-ems-backend/',
+    BASE_URL: 'http://192.168.1.18:3002/ist-ems-backend/',
+    // BASE_URL: 'https://ist-ems.live/ist-ems-backend/',
 
-    BASE_URL_2: 'http://192.168.60.129:5000/',
+    BASE_URL_2: 'http://192.168.1.9:5000/',
     departmentOptions: [
         "Computer Science",
         "Aeronautics and Astronautics",
@@ -100,7 +101,10 @@ const constants = {
             email: 'alijone2444@gmail.com',
             phone: '0334-5082594',
         }
-    }
+    },
+    recentEvents: `These are the latest events added to our platform, showcasing the most current and newly published happenings. Stay up-to-date with what's just been announced!`,
+    upcomingEvents: `A curated list of events scheduled to take place soon. This list helps you plan ahead and ensures you don’t miss out on events that align with your interests.`,
+    popularEvents: `These events have gained significant attention and are highly favored by our community. Discover what’s trending and join in on the most talked-about activities!`
 }
 
 

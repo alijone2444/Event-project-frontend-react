@@ -139,7 +139,7 @@ const AboutSocietyPage = () => {
     return (
         <WrapperComponent transparentNavbar={true}>
             <AppBarComponent backgroundColor={'purple'} onBackButtonClick={() => { society.Simple ? navigate('/societies') : navigate('/SocietyAdminPortal') }} title='Go Back' />
-            {((UserType === 'admin' || UserType === 'S-Admin') && !society.Simple) && <AppBar position="static" style={{ backgroundColor: 'purple', boxShadow: 'none', borderBottom: '1px solid #e0e0e0' }}>
+            {((UserType === 'admin' || UserType === 'President') && !society.Simple) && <AppBar position="static" style={{ backgroundColor: 'purple', boxShadow: 'none', borderBottom: '1px solid #e0e0e0' }}>
                 <Toolbar >
                     <MuiTypography variant="h6" style={{ flexGrow: 1, color: 'white', margin: 0 }}>
                         Add Event : {society.created_by}

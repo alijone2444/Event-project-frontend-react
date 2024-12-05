@@ -61,7 +61,7 @@ const AttendeesTable = (props) => {
       updatedFields = { status: 'delete' };
     }
     else if (action === 'make-admin') {
-      updatedFields = { UserType: 'S-Admin' };
+      updatedFields = { UserType: 'President' };
     }
     else if (action === 'revert') {
       updatedFields = { UserType: 'student' };

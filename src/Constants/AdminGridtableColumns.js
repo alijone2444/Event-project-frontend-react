@@ -5,7 +5,8 @@ import {
   EditOutlined,
 } from '@ant-design/icons';
 import constants from './constants';
-const columns = (handleDeleteEvent) => [
+
+const columns = (handleDeleteEvent, handleEditEvent, handleApproveEvent) => [
   {
     title: 'Event Name',
     dataIndex: 'eventName',
@@ -60,22 +61,50 @@ const columns = (handleDeleteEvent) => [
     dataIndex: 'dpimageFileName',
     key: 'dpimageFileName',
     render: (dpimageFileName) => <img src={`${constants.BASE_URL}images/${dpimageFileName}`} alt="Event" style={{ width: '50px', height: '50px' }} />,
-
+  }, {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status',
+    render: (status) => (
+      <span style={{ color: status === 'Approved' ? 'green' : 'red' }}>
+        {status}
+      </span>
+    ),
   },
+
   {
     title: 'Action',
     dataIndex: 'action',
     key: 'action',
     render: (text, record) => (
       <Space>
-        <Button icon={<EditOutlined />} />
+        <Button
+          icon={<EditOutlined />}
+          onClick={() => handleEditEvent(record._id)}
+        />
         <Button
           icon={<DeleteOutlined />}
           danger
           onClick={() => handleDeleteEvent(record._id)}
         />
+        {record.status !== 'Approved' ? (
+          <Button
+            type="primary"
+            onClick={() => handleApproveEvent(record._id, false)}
+          >
+            Approve
+          </Button>
+        ) : (
+          <Button
+            type="primary"
+            onClick={() => handleApproveEvent(record._id, true)}
+          >
+            Disapprove
+          </Button>
+        )}
       </Space>
     ),
   },
 ];
-export default columns;  
+
+export default columns;

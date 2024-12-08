@@ -72,8 +72,8 @@ const SocietyForm = (props) => {
                     src: `${constants.BASE_URL}images/${society}`,
                 })),
             });
-            if (props.Previousvalues.cover_photo) {
-                setCoverPhoto(props.Previousvalues.cover_photo);
+            if (props.Previousvalues.coverPhotoName) {
+                setCoverPhoto(`${constants.BASE_URL}societyImages/${props.Previousvalues.coverPhotoName}`);
             }
         }
     }, [props.Previousvalues]);

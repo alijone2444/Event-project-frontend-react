@@ -6,6 +6,7 @@ import { Spin, Button, Space } from 'antd';
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import createAuthenticatedRequest from '../../../../RequestwithHeader';
 import constants from '../../../../Constants/constants';
+import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { setEventsDataAll } from '../../../../ReduxStore/actions/eventsDataActionUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEventsDataAdmin } from '../../../../ReduxStore/actions/eventsDataAction';
@@ -101,6 +102,16 @@ const EventCard = (props) => {
                   </Space>
                 }
               </div>
+
+              <Button
+                type="primary"
+                style={{ marginTop: '2%', width: '100%', background: event.status === 'Approved' ? 'green' : 'dodgerblue', color: 'white' }}
+                onClick={() => { props.handleApprovedEvent(event._id, event.status === 'Approved' ? true : false) }}
+
+                icon={event.status === 'Approved' ? <CheckOutlined /> : <></>}
+              >
+                {event.status === 'Approved' ? 'Approved' : 'Approve'}
+              </Button>
             </div>
           </div>
         </Grid>

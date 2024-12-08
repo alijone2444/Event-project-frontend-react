@@ -96,6 +96,31 @@ const EventManagementInterface = () => {
       console.log('Event not found with id:', id);
     }
   }
+  const handleApprovedEvent = async (eventId, approve) => {
+    try {
+      console.log('Approve:', approve);
+
+      // Send a PUT request to update the event's status
+      const response = await requestInstance.put(`${constants.BASE_URL}events/${eventId}/approve`, {
+        approve: approve,  // Boolean value to approve or set to pending
+      });
+
+      // Handle success
+      console.log('Event status updated:', response.data.message);
+
+      // Get the updated event from the response
+      const updatedEvent = response.data.event; // Assuming the backend returns the updated event
+      console.log('Updated Event:', updatedEvent);
+      const updatedEvents = eventsData.map((event) =>
+        event._id === updatedEvent._id ? { ...event, status: updatedEvent.status } : event
+      );
+      dispatch(setEventsDataAdmin(updatedEvents));
+
+    } catch (error) {
+      console.error('Error updating event status:', error.response ? error.response.data : error.message);
+    }
+  };
+
 
   const handleSortChange = (value) => {
     setSortOption(value);
@@ -179,6 +204,7 @@ const EventManagementInterface = () => {
                           :
                           <EventCard eventData={eventsData.slice((currentPage - 1) * pageSize, currentPage * pageSize)} // Slice the eventsData array based on current page and page size
                             showEditDelete={true}
+                            handleApprovedEvent={(id, status) => handleApprovedEvent(id, status)}
                             openEvent={(id) => { handleopenEvent(id) }}
                             editEvent={(id) => { handleEditEvent(id) }}
                             showLoading={showLoading}
@@ -191,7 +217,7 @@ const EventManagementInterface = () => {
                     <div style={{ overflowX: 'auto' }}>
                       {/* Wrap table with overflowX */}
                       <Table
-                        columns={columns(handleDeleteEvent)} // Pass the callback function to the columns configuration
+                        columns={columns(handleDeleteEvent, handleEditEvent, handleApprovedEvent)} // Pass the callback function to the columns configuration
                         dataSource={eventsData}
                         pagination={false} // Disable server-side pagination
                       />

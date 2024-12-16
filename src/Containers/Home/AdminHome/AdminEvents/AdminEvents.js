@@ -29,7 +29,7 @@ const { Option } = Select;
 const EventManagementInterface = () => {
   const dispatch = useDispatch()
   const eventsData = useSelector((state) => state.adminEvents);
-  const [sortOption, setSortOption] = useState('latest');
+  const [sortOption, setSortOption] = useState('Show All');
   const [viewType, setViewType] = useState('grid');
   const [showeventsComponent, setshoweventsComponent] = useState(true)
   const requestInstance = createAuthenticatedRequest()
@@ -67,6 +67,7 @@ const EventManagementInterface = () => {
         });
     }
   }, [dispatch, AgainRunUseEffect]);
+
   const handleDeleteEvent = async (id) => {
     setshowLoading(true)
     try {
@@ -137,6 +138,7 @@ const EventManagementInterface = () => {
   const handleopenEvent = (id) => {
     const foundEvent = eventsData.find((event) => event._id === id);
     if (foundEvent) {
+      console.log('forned event', foundEvent)
       seteventToSendToOpenEvent(foundEvent)
     } else {
       console.log('Event not found with id:', id);
@@ -178,11 +180,13 @@ const EventManagementInterface = () => {
                 </Grid>
                 <Grid item xs={8} sm={8} md={8} lg={8} style={{ textAlign: 'right' }}>
                   <Grid container>
-                    <Grid item xs={12} sm={8} md={8} lg={10} style={{ padding: "2%" }}>
-                      <Select defaultValue="latest" onChange={handleSortChange} >
-                        <Option value="latest">Latest</Option>
-                        <Option value="mostpopular">Most Popular</Option>
+                    <Grid item xs={12} sm={8} md={8} lg={10} style={{ padding: "2%", }}>
+                      <Select defaultValue="Show All" onChange={handleSortChange}>
+                        <Option value="Show All">Show All</Option>
+                        <Option value="Not Approved">Not Approved</Option>
+                        <Option value="Approved">Approved</Option>
                       </Select>
+
                     </Grid>
                     <Grid item xs={12} sm={4} md={4} lg={2} style={{ padding: "2%" }}>
                       <Radio.Group onChange={handleViewTypeChange} defaultValue="grid" buttonStyle="solid" value={viewType} >
@@ -204,6 +208,7 @@ const EventManagementInterface = () => {
                           :
                           <EventCard eventData={eventsData.slice((currentPage - 1) * pageSize, currentPage * pageSize)} // Slice the eventsData array based on current page and page size
                             showEditDelete={true}
+                            sortOption={sortOption}
                             handleApprovedEvent={(id, status) => handleApprovedEvent(id, status)}
                             openEvent={(id) => { handleopenEvent(id) }}
                             editEvent={(id) => { handleEditEvent(id) }}

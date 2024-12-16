@@ -160,11 +160,17 @@ const SocietyPanel = () => {
                                         Members:
                                     </Typography>
                                     <ul style={{ maxHeight: '50px', overflowY: 'auto' }}>
-                                        {society.members.map((member) => (
-                                            <li key={member.name}>
-                                                {member.role}: {member.name}
-                                            </li>
-                                        ))}
+                                        {society.members
+                                            .filter(member =>
+                                                typeof member === 'object' && // Ensure the element is an object
+                                                member !== null &&           // Exclude `null` values
+                                                member.role !== 'Member'    // Exclude objects where `role` is "student"
+                                            )
+                                            .map((member) => (
+                                                <li key={member.name}>
+                                                    {member.role}: {member.name}
+                                                </li>
+                                            ))}
                                     </ul>
                                     {renderActions(society)}
 

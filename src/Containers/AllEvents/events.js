@@ -11,6 +11,7 @@ import createAuthenticatedRequest from '../../RequestwithHeader';
 import constants from '../../Constants/constants';
 import { useMediaQuery } from "@mui/material";
 import ScrollingHorizontally from "../Home/StudentHome/HomePageScrolls/HrScroll";
+import { setEventsDataAdmin } from "../../ReduxStore/actions/eventsDataAction";
 import { setEventsDataPopular, setEventsDataUserRecent } from "../../ReduxStore/actions/eventsDataActionUser";
 function AllEvents() {
     const navigate = useNavigate();
@@ -21,7 +22,9 @@ function AllEvents() {
     const popularEvents = useSelector((state) => state.userpopularEvents);
     const { currentPage, pageSize, totalPages, lastVisitedPage } = useSelector((state) => state.eventspagination);
     const isSmallScreen = useMediaQuery('(max-width:768px)');
+    console.log('all events are:', Events)
     const requestInstance = createAuthenticatedRequest();
+
     const fetchEvents = async (page, size) => {
         try {
             setLoading(true);
@@ -95,6 +98,31 @@ function AllEvents() {
             dispatch(setLastvisited(page));
         }
     };
+    const handleApprovedEvent = async (eventId, approve) => {
+        try {
+            console.log('Approve:', approve);
+
+            // Send a PUT request to update the event's status
+            const response = await requestInstance.put(`${constants.BASE_URL}events/${eventId}/approve`, {
+                approve: approve,  // Boolean value to approve or set to pending
+            });
+
+            // Handle success
+            console.log('Event status updated:', response.data.message);
+
+            // Get the updated event from the response
+            const updatedEvent = response.data.event; // Assuming the backend returns the updated event
+            console.log('Updated Event:', updatedEvent);
+            const updatedEvents = Events.map((event) =>
+                event._id === updatedEvent._id ? { ...event, status: updatedEvent.status } : event
+            );
+            dispatch(setEventsDataAll(updatedEvents));
+
+        } catch (error) {
+            console.error('Error updating event status:', error.response ? error.response.data : error.message);
+        }
+    };
+
 
     return (
         <WrapperComponent>
@@ -111,7 +139,9 @@ function AllEvents() {
                         <EventCard
                             eventData={Events.slice((currentPage - 1) * pageSize, currentPage * pageSize)} // Slice the eventsData array based on current page and page size
                             showEditDelete={false}
+                            handleApprovedEvent={(id, status) => handleApprovedEvent(id, status)}
                             openEvent={handleOpenEvent}
+                            sortOption={'Approved'}
                         />
                         <div style={{ width: '100%', zIndex: 99, marginBottom: '5%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <Pagination

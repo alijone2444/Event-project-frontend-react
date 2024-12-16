@@ -98,7 +98,9 @@ function Navbar(props) {
 
         {constants.settings.map((val, index) => {
           const isSocietyAdminPortal = val.name === 'Society Admin Portal';
-          const isAdminOrSAdmin = usertype === 'admin' || usertype === 'President';
+          const adminRoles = ['admin', 'President', 'Vice President', 'Secretary', 'Liaison'];
+          const isAdminOrSAdmin = adminRoles.includes(usertype);
+
           const shouldDisableButton = isSocietyAdminPortal && !isAdminOrSAdmin;
 
           return (

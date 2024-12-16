@@ -58,11 +58,12 @@ const AssignRoleModal = ({ open, role, closeModal, SocietyName }) => {
                 closeModal();
             } catch (err) {
                 setLoading(false);
-                setError('Failed to assign society');
+                console.log(err.response.data.message)
+                setError(err.response.data.message);
             }
         } else {
             setLoading(false);
-            console.log('No user selected');
+            setError('no user selected');
         }
     };
 

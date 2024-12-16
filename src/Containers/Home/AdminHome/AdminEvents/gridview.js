@@ -16,6 +16,7 @@ const EventCard = (props) => {
   const [loadingStates, setLoadingStates] = useState({}); // Manage loading state per event
   const events = useSelector((state) => state.userAllEvents); // Adjust according to your state structure
   const AdminEvents = useSelector((state) => state.adminEvents); // Adjust according to your state structure
+  const [FilteredData, setFilteredData] = useState([])
   const toggleLike = async (eventId, isLIKE) => {
     try {
       setLoadingStates(prev => ({ ...prev, [eventId]: true })); // Set loading state for specific event
@@ -41,9 +42,26 @@ const EventCard = (props) => {
       console.error('Error:', error.response ? error.response.data : error.message);
     }
   };
+
+  useEffect(() => {
+    const filterEvents = () => {
+      console.log('event data', props.eventData)
+      if (props.sortOption === 'Approved') {
+        return props.eventData.filter(event => event.status === 'Approved');
+      } else if (props.sortOption === 'Not Approved') {
+        return props.eventData.filter(event => event.status === 'Pending');
+      } else if (props.sortOption === 'Show All') {
+        return props.eventData;
+      }
+      return []; // Default to an empty array if sortOption is unexpected
+    };
+
+    setFilteredData(filterEvents());
+  }, [props.eventData, props.sortOption]);
+
   return (
     <Grid container spacing={3} style={{ padding: '2%' }}>
-      {props.eventData.map((event, index) => (
+      {FilteredData.map((event, index) => (
         <Grid key={event._id} item xs={12} sm={6} md={4}>
           <div style={{ border: '1px solid lightgrey', borderRadius: '2%' }}>
             <div style={{ padding: '5%', position: 'relative' }}>
@@ -90,9 +108,9 @@ const EventCard = (props) => {
                   )}
                 </IconButton>
               </div>
-              <div style={{ marginBottom: '5%' }} className='event-description-truncate'>{event.description}</div>
+              <div style={{ marginBottom: '5%', color: 'black' }} className='event-description-truncate'>{event.description}</div>
               <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <Button type="primary" style={{ width: '100%', background: 'DodgerBlue', color: 'white' }} onClick={() => { props.openEvent(event) }}>
+                <Button type="primary" style={{ width: '100%', background: 'DodgerBlue', color: 'white' }} onClick={() => { props.openEvent(event._id) }}>
                   Visit
                 </Button>
                 {props.showEditDelete &&
@@ -102,16 +120,16 @@ const EventCard = (props) => {
                   </Space>
                 }
               </div>
+              {props.showEditDelete &&
+                <Button
+                  type="primary"
+                  style={{ marginTop: '2%', width: '100%', background: event.status === 'Approved' ? 'green' : 'dodgerblue', color: 'white' }}
+                  onClick={() => { props.handleApprovedEvent(event._id, event.status === 'Approved' ? true : false) }}
 
-              <Button
-                type="primary"
-                style={{ marginTop: '2%', width: '100%', background: event.status === 'Approved' ? 'green' : 'dodgerblue', color: 'white' }}
-                onClick={() => { props.handleApprovedEvent(event._id, event.status === 'Approved' ? true : false) }}
-
-                icon={event.status === 'Approved' ? <CheckOutlined /> : <></>}
-              >
-                {event.status === 'Approved' ? 'Approved' : 'Approve'}
-              </Button>
+                  icon={event.status === 'Approved' ? <CheckOutlined /> : <></>}
+                >
+                  {event.status === 'Approved' ? 'Approved' : 'Approve'}
+                </Button>}
             </div>
           </div>
         </Grid>

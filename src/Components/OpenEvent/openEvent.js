@@ -55,7 +55,7 @@ const OpenEvent = (props) => {
   const fullUrl = window.location.href;
 
   const mainImage = [{ src: `${constants.BASE_URL}images/${props.eventData.dpimageFileName}` }];
-
+  console.log('data in here', props.eventData)
   return (
     <div>
       {/* Add your styling or background image here if needed */}

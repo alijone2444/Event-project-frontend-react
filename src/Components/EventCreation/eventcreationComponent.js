@@ -17,6 +17,7 @@ import SaveIcon from '@mui/icons-material/Save';
 import makeStyles from '@mui/styles/makeStyles';
 import createAuthenticatedRequest from '../../RequestwithHeader';
 import constants from '../../Constants/constants';
+import CircularProgress from '@mui/material/CircularProgress';
 import axios from 'axios';
 
 const CreateEvent = (props) => {
@@ -25,6 +26,7 @@ const CreateEvent = (props) => {
   const classes = useStyles();
   const [imageUrl, setimageUrl] = useState(false)
   const [image, setimage] = useState(null)
+  const [showLoader, setshowLoader] = useState(false)
   const [eventData, setEventData] = useState({
     eventName: '',
     subheader: '',
@@ -105,6 +107,7 @@ const CreateEvent = (props) => {
     formData.append('imageFileNames', JSON.stringify(imageFileNames));
 
     try {
+      setshowLoader(true)
       const response = await requestInstance.post(`${constants.BASE_URL}save-events`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data', // Set the content type for FormData
@@ -112,9 +115,11 @@ const CreateEvent = (props) => {
       });
 
       if (response.data.success === true) {
+        setshowLoader(false)
         props.onclose()
       }
     } catch (error) {
+      setshowLoader(false)
       console.error('Error uploading images:', error);
     }
   };
@@ -151,9 +156,11 @@ const CreateEvent = (props) => {
               <CloseIcon />
             </IconButton>
             <Typography variant="h6">Create Event</Typography>
-            <Button color="inherit" type='submit' startIcon={<SaveIcon />} >
-              Save
-            </Button>
+            {showLoader ? <CircularProgress style={{ color: 'white' }} />
+              :
+              <Button color="inherit" type='submit' startIcon={<SaveIcon />} >
+                Save
+              </Button>}
           </Toolbar>
         </AppBar>
         <FormGroup style={{ padding: '5%' }}>

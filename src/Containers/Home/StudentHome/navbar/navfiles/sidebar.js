@@ -172,7 +172,7 @@ function SidebarComponent(props) {
               {props.usertype !== 'student' && props.usertype !== 'undefined' && constants.settings.map((val, index) => {
                 // Check if the name is not 'Profile', 'About Us', or 'Logout'
                 return (
-                  (val.name !== 'Profile' && val.name !== 'About Us' && val.name !== 'Logout') ? (
+                  (val.name !== 'Profile' && val.name !== 'About Us' && val.name !== 'Logout' && val.name !== 'Calander') ? (
                     <MenuItem
                       key={index}
                       style={{ background: 'rgba(255,255,255,0.3)' }}

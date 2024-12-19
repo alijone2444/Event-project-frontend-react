@@ -138,11 +138,26 @@ const AboutSocietyPage = () => {
 
     return (
         <WrapperComponent transparentNavbar={true}>
-            <AppBarComponent backgroundColor={'purple'} onBackButtonClick={() => { society.Simple ? navigate('/societies') : navigate('/SocietyAdminPortal') }} title='Go Back' />
+            <AppBarComponent backgroundColor={'purple'}
+                onBackButtonClick={() => {
+                    if (society.Simple) {
+                        navigate('/societies');
+                        console.log('run 1')
+                    } else if (!society.Simple && society.comeBackTo) {
+                        navigate(society.comeBackTo, { state: { role: UserType }, replace: true });
+                        console.log('run 2')
+                    } else {
+                        navigate('/SocietyAdminPortal');
+                        console.log('run 3')
+                    }
+                }} title='Go Back' />
             {((UserType === 'admin' || UserType === 'President') && !society.Simple) && <AppBar position="static" style={{ backgroundColor: 'purple', boxShadow: 'none', borderBottom: '1px solid #e0e0e0' }}>
                 <Toolbar >
                     <MuiTypography variant="h6" style={{ flexGrow: 1, color: 'white', margin: 0 }}>
-                        Add Event : {society.created_by}
+                        Add Event : {society.members
+                            .filter(member => typeof member === "object" && member.role === UserType) // Filter objects with matching 'role'
+                            .map(filteredMember => filteredMember.name) // Extract the 'name' of each filtered member
+                            .join(', ')}
                     </MuiTypography>
                     <IconButton style={{ backgroundColor: 'white' }} onClick={openEventModal}>
                         <Add style={{ color: 'purple' }} />

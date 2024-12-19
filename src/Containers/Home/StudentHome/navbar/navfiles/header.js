@@ -81,6 +81,7 @@ const Header = (props) => {
             {!isMobile && (
               <>
                 {constants.menuitems.map((item, index) => (
+                  item.name !== 'Calander' &&
                   <Button
                     key={index}
                     className='text-stroke-navbar'

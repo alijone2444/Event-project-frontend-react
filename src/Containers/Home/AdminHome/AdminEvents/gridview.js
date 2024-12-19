@@ -110,7 +110,7 @@ const EventCard = (props) => {
               </div>
               <div style={{ marginBottom: '5%', color: 'black' }} className='event-description-truncate'>{event.description}</div>
               <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <Button type="primary" style={{ width: '100%', background: 'DodgerBlue', color: 'white' }} onClick={() => { props.openEvent(event._id) }}>
+                <Button type="primary" style={{ width: '100%', background: 'DodgerBlue', color: 'white' }} onClick={() => { props.openEvent(event._id, event.eventName) }}>
                   Visit
                 </Button>
                 {props.showEditDelete &&

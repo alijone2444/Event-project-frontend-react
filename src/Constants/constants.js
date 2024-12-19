@@ -4,6 +4,8 @@ import StarBorderOutlined from '@mui/icons-material/StarBorderOutlined';
 import societyicon from '../images/societyicon.png'
 import CalendarTodayOutlined from '@mui/icons-material/CalendarTodayOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+
 import Info from '@mui/icons-material/InfoOutlined';
 import UserIcon from '@mui/icons-material/AccountCircleOutlined'
 import { AimOutlined, TeamOutlined, AppstoreAddOutlined, RocketOutlined } from '@ant-design/icons';
@@ -14,36 +16,38 @@ const constants = {
         { name: "Home", icon: <HomeOutlined /> },
         { name: "Events", icon: <StarBorderOutlined /> },
         { name: "Societies", icon: <img alt="Event Icon" src={societyicon} style={{ width: "24px", height: "24px" }} /> },
-    ], settings: [
         { name: "Calander", icon: <CalendarTodayOutlined /> },
-
+    ], settings: [
         {
-            name: 'Profile',
-            description: 'Learn more about our organization, our mission, and the team behind our services.',
+            name: "Calendar",
+            description: "View and manage your events and schedules.",
+            Icon: <CalendarTodayOutlined />
+        },
+        {
+            name: "Profile",
+            description: "View your profile and account details.",
             Icon: <UserIcon />
         },
         {
-            name: 'About Us',
-            description: 'Learn more about our organization, our mission, and the team behind our services.',
+            name: "About Us",
+            description: "Discover our mission and team.",
             Icon: <Info />
         },
         {
             name: "Society Admin Portal",
-            description: 'These are some available options for a society leader to maintain the information of their society.',
-            Icon: ''
+            description: "Manage society information and settings.",
+            Icon: <AdminPanelSettingsIcon />
         },
-
         {
             name: "Logout",
-            description: 'A logout option allows users to securely end their current session and sign out of their account.',
+            description: "Sign out of your account securely.",
             Icon: <LogoutIcon style={{ color: 'red' }} />
-        },
-
+        }
     ],
 
     // // /ist-ems-backend/
-    // BASE_URL: 'http://192.168.1.8:3002/ist-ems-backend/',
-    BASE_URL: 'https://ist-ems.live/ist-ems-backend/',
+    BASE_URL: 'http://192.168.1.13:3002/ist-ems-backend/',
+    // BASE_URL: 'https://ist-ems.live/ist-ems-backend/',
 
     BASE_URL_2: 'http://192.168.1.9:5000/',
     departmentOptions: [

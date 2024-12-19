@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Grid, Card, Button, Typography, Skeleton, Box } from "@mui/material";
 import WrapperComponent from "../../FooterAndHeaderwrapper";
 import { Button as AntdButton } from 'antd';
+import { useNavigate } from "react-router-dom";
 import SocietyForm from "./societyFormFields";
-import { EditOutlined } from '@ant-design/icons';
+import { EditOutlined, EyeInvisibleOutlined, EyeOutlined } from '@ant-design/icons';
 import { Modal } from "antd";
 import { Modal as materialModal } from '@mui/material'
 import constants from "../../Constants/constants";
@@ -14,6 +15,7 @@ import CreateEvent from "../EventCreation/eventcreationComponent";
 
 const SocietyPanel = () => {
     const location = useLocation();
+    const navigate = useNavigate()
     const { role } = location.state || {}; // Destructure role from state  
     const [societies, setSocieties] = useState([]);
     const [loading, setLoading] = useState(true);  // Track loading state
@@ -153,6 +155,13 @@ const SocietyPanel = () => {
                                             icon={<EditOutlined />}
                                             size={'medium'}
                                             onClick={() => { setshowSocietyEditModal(true); setPreviousvalues(society) }}
+                                        />
+                                        <AntdButton
+                                            type="primary"
+                                            style={{ background: 'transparent' }}
+                                            icon={<EyeOutlined />}
+                                            size={'medium'}
+                                            onClick={() => navigate('society-page', { state: { ...society, Simple: false, comeBackTo: "/sub-admin-panel" } })}
                                         />
                                     </div>
                                     <Typography variant="subtitle1">{role}</Typography>

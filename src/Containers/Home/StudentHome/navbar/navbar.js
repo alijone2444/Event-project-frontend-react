@@ -105,7 +105,6 @@ function Navbar(props) {
 
           return (
             <div style={{ width: '100%' }} key={index}>
-              <p>{val.description}</p>
               <Button
                 disabled={shouldDisableButton}
                 onClick={() => { handleClick(val.name) }}
@@ -131,6 +130,9 @@ function Navbar(props) {
                 </div>
                 {val.Icon}
               </Button>
+              <div style={{ textAlign: 'center' }}>
+                <p>{val.description}</p>
+              </div>
             </div>
           );
         })}

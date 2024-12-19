@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { setEventsDataAll } from "../../ReduxStore/actions/eventsDataActionUser";
 import { setCurrentPage, setPageSize, setTotalPages, setLastvisited } from "../../ReduxStore/actions/eventsPaginationActions";
 import createAuthenticatedRequest from '../../RequestwithHeader';
+import ArrowForward from '@mui/icons-material/ArrowForward';
 import constants from '../../Constants/constants';
 import { useMediaQuery } from "@mui/material";
 import ScrollingHorizontally from "../Home/StudentHome/HomePageScrolls/HrScroll";
@@ -87,8 +88,7 @@ function AllEvents() {
         }
     }, [dispatch]); // Fetch data only once when the component mounts
 
-    const handleOpenEvent = (event) => {
-        const { _id, eventName } = event
+    const handleOpenEvent = (_id, eventName) => {
         navigate(`/eventdetail/${eventName}`, { state: { data: { _id, eventName }, toNavigate: '/events' } });
     };
     const handlePageChange = (page) => {
@@ -133,15 +133,15 @@ function AllEvents() {
             ) : (
                 <>
                     <div style={{ marginBottom: '0%', textAlign: 'center', margin: '5%', marginTop: '2%' }}>
-                        <Typography variant='h5' style={{ fontWeight: 'bold' }}>
-                            All Events
-                        </Typography>
+
                         <EventCard
                             eventData={Events.slice((currentPage - 1) * pageSize, currentPage * pageSize)} // Slice the eventsData array based on current page and page size
                             showEditDelete={false}
                             handleApprovedEvent={(id, status) => handleApprovedEvent(id, status)}
-                            openEvent={handleOpenEvent}
+                            // openEvent={handleOpenEvent}
                             sortOption={'Approved'}
+                            openEvent={(id, name) => { handleOpenEvent(id, name) }}
+
                         />
                         <div style={{ width: '100%', zIndex: 99, marginBottom: '5%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                             <Pagination

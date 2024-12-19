@@ -58,7 +58,6 @@ const AssignRoleModal = ({ open, role, closeModal, SocietyName }) => {
                 closeModal();
             } catch (err) {
                 setLoading(false);
-                console.log(err.response.data.message)
                 setError(err.response.data.message);
             }
         } else {

@@ -9,6 +9,8 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import constants from '../../Constants/constants';
 import { CircularProgress } from '@mui/material';
 
+import { Space } from 'antd';
+import { ArrowRightOutlined } from '@ant-design/icons';
 
 const Login = (props) => {
   const [Rollno, setRollno] = useState('');
@@ -77,7 +79,15 @@ const Login = (props) => {
   const handleShowSignup = () => {
     setshowBorder(true)
     setTimeout(() => {
-      props.showSignup();
+      props.showSignup(true);
+    }, 1000);
+  }
+
+  const handleShowAdminSignup = () => {
+
+    setshowBorder(true)
+    setTimeout(() => {
+      props.showSignup(false);
     }, 1000);
   }
 
@@ -167,10 +177,29 @@ const Login = (props) => {
             <Button type="primary" htmlType="button" className="login-form-button" style={{ backgroundColor: 'transparent', color: 'white', zIndex: 1 }} onClick={handleSubmit}>
               {loading ? <CircularProgress size={20} style={{ color: 'white' }} /> : `Log in`}
             </Button>
-            {props.type && <div style={{ display: 'flex', flexDirection: 'row', paddingTop: '5%' }}>
-              <p style={{ color: 'white', margin: 0 }}>Already have an account?&nbsp;&nbsp;</p>
-              <a onClick={handleShowSignup}>register now!</a>
-            </div>}
+            {props.type && (
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: "flex-start", paddingTop: '5%' }}>
+                <p style={{ color: 'white', margin: 0, width: '100%' }}>
+                  Don't have an account ?&nbsp;&nbsp;
+                </p>
+                <Button
+                  type="link"
+                  onClick={handleShowAdminSignup}
+                  icon={<ArrowRightOutlined />}
+                  style={{ color: 'dodgerblue' }}
+                >
+                  Request Signup (Admin Approval)
+                </Button>
+                <Button
+                  type="link"
+                  onClick={handleShowSignup}
+                  icon={<ArrowRightOutlined />}
+                  style={{ color: 'dodgerblue' }}
+                >
+                  Quick Signup (Card Scan)
+                </Button>
+              </div>
+            )}
           </Form.Item>
 
           <div style={{ textAlign: 'center', color: 'white', marginTop: '20px' }}>

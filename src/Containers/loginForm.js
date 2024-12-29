@@ -13,6 +13,7 @@ import ForgotPassword from "../Components/ForgetPasswordForm/ForgetPasswordForm"
 function Login(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const [isQuickSignup, setisQuickSignup] = useState(true)
   const [flag, setFlag] = useState(true);
   const [login, setLogin] = useState(true);
   const audioRef = useRef(new Audio(backgroundMusic));
@@ -65,11 +66,12 @@ function Login(props) {
               showAdmin={() => { navigate(location.pathname + '/success') }}
               issmall={isMobile}
               type={props.type}
-              showSignup={() => { setLogin(false) }}
+              showSignup={(isQuickSignup) => { setLogin(false); setisQuickSignup(isQuickSignup) }}
             />
           ) : (
             <SignUp
               issmall={isMobile}
+              isQuickSignup={isQuickSignup}
               showSignIn={() => { setLogin(true) }}
             />
           )

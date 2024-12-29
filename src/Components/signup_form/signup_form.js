@@ -8,7 +8,7 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import constants from '../../Constants/constants';
 import { makeStyles, styled } from '@mui/styles';
 import { CircularProgress } from '@mui/material';
-
+import CameraComponent from '../camera/cameraAuthentication';
 
 const { Option } = Select;
 
@@ -25,7 +25,7 @@ const SignUp = (props) => {
   const [checked, setisChecked] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [loading, setloading] = useState(false);
-
+  const [showcamera, setshowcamera] = useState(true)
 
   const onFinish = (values) => {
   };
@@ -97,6 +97,7 @@ const SignUp = (props) => {
   return (
     <div className="signup-container">
       <div className="signup-form-container">
+        {(props.isQuickSignup && showcamera) && <CameraComponent onClose={() => { setshowcamera(false); handleShowlogin() }} />}
         {showBorder && <><span className="top"></span></>}
         {showTerms ? (
           <TermsAndConditions gobackToSignup={() => setshowTerms(false)} />
@@ -126,6 +127,7 @@ const SignUp = (props) => {
                     placeholder="Select Department"
                     style={{ backgroundColor: 'transparent', color: 'white' }}
                     onChange={(value) => setSelectedDepartment(value)}
+                    disabled={props.isQuickSignup}
                   >
                     {constants.departmentOptions.map((department, index) => (
                       <Option key={index} value={department} style={{ backgroundColor: 'rgba(0,0,0,0.5)', color: 'white' }}>{department}</Option>
@@ -140,6 +142,7 @@ const SignUp = (props) => {
                   className={classes.border}
                   placeholder="Roll number"
                   type="email"
+                  disabled={props.isQuickSignup}
                   required
                   value={Rollno}
                   onChange={(e) => setRollno(e.target.value)}

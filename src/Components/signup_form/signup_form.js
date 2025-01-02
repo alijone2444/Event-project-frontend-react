@@ -30,6 +30,9 @@ const SignUp = (props) => {
   const onFinish = (values) => {
   };
 
+  const handleCardOcr = (images) => {
+    console.log('sending these images', images)
+  }
   const handleSubmit = async () => {
     setloading(true)
     try {
@@ -97,7 +100,7 @@ const SignUp = (props) => {
   return (
     <div className="signup-container">
       <div className="signup-form-container">
-        {(props.isQuickSignup && showcamera) && <CameraComponent onClose={() => { setshowcamera(false); handleShowlogin() }} />}
+        {(props.isQuickSignup && showcamera) && <CameraComponent onfinish={(images) => { setshowcamera(false); handleCardOcr(images) }} />}
         {showBorder && <><span className="top"></span></>}
         {showTerms ? (
           <TermsAndConditions gobackToSignup={() => setshowTerms(false)} />

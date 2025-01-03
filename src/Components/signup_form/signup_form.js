@@ -9,6 +9,9 @@ import constants from '../../Constants/constants';
 import { makeStyles, styled } from '@mui/styles';
 import { CircularProgress } from '@mui/material';
 import CameraComponent from '../camera/cameraAuthentication';
+import Tesseract from 'tesseract.js';
+
+
 
 const { Option } = Select;
 
@@ -25,14 +28,36 @@ const SignUp = (props) => {
   const [checked, setisChecked] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [loading, setloading] = useState(false);
+  const [loadingOcr, setloadingOcr] = useState(false);
   const [showcamera, setshowcamera] = useState(true)
-
+  const [ocrResults, setOcrResults] = useState([])
   const onFinish = (values) => {
   };
+  const handleCardOcr = async (images) => {
+    console.log("Sending these images", images);
+    setloadingOcr(true)
+    const ocrResults = []; // To store OCR results for each image
+    try {
+      for (let i = 0; i < images.length; i++) {
+        console.log(`Processing image ${i + 1} of ${images.length}`);
 
-  const handleCardOcr = (images) => {
-    console.log('sending these images', images)
-  }
+        const { data: { text } } = await Tesseract.recognize(images[i], "eng", {
+          logger: (info) => console.log(`Image ${i + 1} progress:`, info), // Logs OCR progress
+        });
+
+        ocrResults.push({ image: images[i], text });
+      }
+
+      console.log("OCR results for all images:", ocrResults);
+      setloadingOcr(false)
+      // Do something with the OCR results (e.g., update state or send to backend)
+      setOcrResults(ocrResults);
+    } catch (error) {
+      console.error("Error during OCR processing:", error);
+      setloadingOcr(false)
+    }
+  };
+
   const handleSubmit = async () => {
     setloading(true)
     try {
@@ -107,6 +132,16 @@ const SignUp = (props) => {
         ) : (
           <>
             <h2 className="signup-title">Sign Up</h2>
+            {loadingOcr ?
+              <CircularProgress size={20} style={{ color: 'white' }} />
+              :
+              <>
+                {ocrResults.map((item, index) => (
+                  <h6 key={index} style={{ color: 'white' }}>
+                    {item.text}
+                  </h6>
+                ))}
+              </>}
             <Form name="signupForm" initialValues={{ remember: true }} onFinish={onFinish}>
 
               <Form.Item name="Email Address" rules={[{ required: true, message: 'Enter your email to link your account to it!' }]}>

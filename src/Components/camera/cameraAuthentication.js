@@ -1,22 +1,21 @@
 import React, { useRef, useState, useEffect } from "react";
 import * as tf from "@tensorflow/tfjs";
-import { Modal, Progress } from "antd";
+
 
 const CameraComponent = ({ onfinish }) => {
     const [model, setModel] = useState(null);
-    const [IsModalOpen, setIsModalOpen] = useState(true);
     const [highestDetection, setHighestDetection] = useState(null);
     const [croppedImages, setCroppedImages] = useState([]);
+    const [progress, setProgress] = useState(0); // Track progress percentage
     const videoRef = useRef(null);
     const canvasRef = useRef(null);
+    const animationFrameId = useRef(null);
+
     const ClassNames = ["studentCard", "notstudentCard"];
-    const animationFrameId = useRef(null); // Reference to store animation frame ID
 
     useEffect(() => {
         const loadModel = async () => {
-            console.log("Loading model...");
             const loadedModel = await tf.loadGraphModel("/model/model.json");
-            console.log("Model loaded!");
             setModel(loadedModel);
         };
         loadModel();
@@ -25,9 +24,10 @@ const CameraComponent = ({ onfinish }) => {
     useEffect(() => {
         const setupCamera = async () => {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { width: 640, height: 480 },
-                });
+                const constraints = {
+                    video: { width: 640, height: 480, facingMode: "environment" },
+                };
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
                 if (videoRef.current) {
                     videoRef.current.srcObject = stream;
                 }
@@ -38,10 +38,9 @@ const CameraComponent = ({ onfinish }) => {
         setupCamera();
 
         return () => {
-            if (videoRef.current && videoRef.current.srcObject) {
-                const stream = videoRef.current.srcObject;
-                const tracks = stream.getTracks();
-                tracks.forEach(track => track.stop());
+            if (videoRef.current?.srcObject) {
+                const tracks = videoRef.current.srcObject.getTracks();
+                tracks.forEach((track) => track.stop());
             }
             if (animationFrameId.current) {
                 cancelAnimationFrame(animationFrameId.current);
@@ -50,14 +49,10 @@ const CameraComponent = ({ onfinish }) => {
     }, []);
 
     const detectObjects = async () => {
-        if (!model || !videoRef.current) {
-            return;
-        }
+        if (!model || !videoRef.current) return;
 
         const videoElement = videoRef.current;
-        if (videoElement.videoWidth === 0 || videoElement.videoHeight === 0) {
-            return;
-        }
+        if (videoElement.videoWidth === 0 || videoElement.videoHeight === 0) return;
 
         const canvas = canvasRef.current;
         const ctx = canvas.getContext("2d");
@@ -70,21 +65,12 @@ const CameraComponent = ({ onfinish }) => {
         const predictionArray = predictions.arraySync()[0];
 
         let highestDetection = null;
-        for (let i = 0; i < predictionArray.length; i++) {
-            const [xCenter, yCenter, width, height, confidence, ...classProbs] = predictionArray[i];
+        predictionArray.forEach(([xCenter, yCenter, width, height, confidence, ...classProbs]) => {
             const classId = classProbs.indexOf(Math.max(...classProbs));
-
-            const detection = {
-                box: [xCenter, yCenter, width, height],
-                score: confidence,
-                classId: classId,
-                className: ClassNames[classId],
-            };
-
             if (!highestDetection || confidence > highestDetection.score) {
-                highestDetection = detection;
+                highestDetection = { box: [xCenter, yCenter, width, height], score: confidence, classId, className: ClassNames[classId] };
             }
-        }
+        });
 
         setHighestDetection(highestDetection);
 
@@ -112,32 +98,22 @@ const CameraComponent = ({ onfinish }) => {
             croppedCanvas.width = scaledWidth;
             croppedCanvas.height = scaledHeight;
 
-            croppedCtx.drawImage(
-                canvas,
-                scaledX,
-                scaledY,
-                scaledWidth,
-                scaledHeight,
-                0,
-                0,
-                scaledWidth,
-                scaledHeight
-            );
+            croppedCtx.drawImage(canvas, scaledX, scaledY, scaledWidth, scaledHeight, 0, 0, scaledWidth, scaledHeight);
 
             const croppedImageUrl = croppedCanvas.toDataURL();
 
             if (highestDetection.score > 0.9) {
-                setCroppedImages(prev => {
+                setCroppedImages((prev) => {
                     const updatedImages = [...prev, croppedImageUrl];
+                    const progressPercentage = (updatedImages.length / 10) * 100;
+                    setProgress(progressPercentage); // Update progress
                     if (updatedImages.length >= 10) {
-                        setIsModalOpen(false);
                         onfinish(updatedImages);
                     }
                     return updatedImages;
                 });
             }
         }
-
         tf.dispose([img, resizedImg, inputTensor]);
     };
 
@@ -147,47 +123,101 @@ const CameraComponent = ({ onfinish }) => {
             animationFrameId.current = requestAnimationFrame(detectLoop);
         };
 
-        if (model && IsModalOpen) {
-            detectLoop();
-        }
+        if (model) detectLoop();
 
         return () => {
-            if (animationFrameId.current) {
-                cancelAnimationFrame(animationFrameId.current);
-            }
+            if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
         };
-    }, [model, IsModalOpen]);
+    }, [model]);
 
     return (
-        <Modal
-            title="YOLOv5 Object Detection"
-            visible={IsModalOpen}
-            footer={null}
-            onCancel={() => setIsModalOpen(false)}
+        <div
+            style={{
+                position: "fixed",
+                top: 0,
+                left: 0,
+                width: "100vw",
+                height: "100vh",
+                backgroundColor: "black",
+                zIndex: 9999,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
         >
-            <div>
-                <Progress
-                    percent={(croppedImages.length / 10) * 100}
-                    strokeColor={croppedImages.length >= 10 ? "lightgreen" : "blue"}
-                    showInfo={false}
-                    strokeWidth={15}
-                    style={{ marginBottom: 20 }}
-                />
+            {/* Close Button */}
+            <button
+                style={{
+                    position: "absolute",
+                    top: "10px",
+                    right: "10px",
+                    backgroundColor: "red",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "50%",
+                    width: "40px",
+                    height: "40px",
+                    fontSize: "18px",
+                    cursor: "pointer",
+                    zIndex: 1000,
+                }}
+                onClick={() => onfinish(croppedImages)}
+            >
+                ×
+            </button>
+
+            {/* Video Container */}
+            <div
+                style={{
+                    position: "relative",
+                    width: "100%",
+                    maxWidth: "640px",
+                    backgroundColor: "black",
+                    aspectRatio: "4/3",
+                }}
+            >
                 <video
                     ref={videoRef}
                     autoPlay
-                    width={320}
-                    height={240}
-                    style={{ display: "none" }}
+                    playsInline
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "contain",
+                    }}
                 />
                 <canvas
-                    width={320}
-                    height={240}
                     ref={canvasRef}
-                    style={{ border: "1px solid black" }}
+                    style={{
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                    }}
                 />
             </div>
-        </Modal>
+
+            {/* Progress Bar */}
+            <div
+                style={{
+                    position: "absolute",
+                    bottom: "10%",
+                    color: "white",
+                    fontSize: "20px",
+                    textAlign: "center",
+                }}
+            ><div style={{ color: "white", fontSize: "20px", textAlign: "center" }}>
+                    {croppedImages.length < 10
+                        ? `Scanning ${croppedImages.length}/10 items... Please wait.`
+                        : "Scanning complete! Processing results..."}
+                </div>
+
+            </div>
+        </div>
     );
 };
 

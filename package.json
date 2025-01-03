@@ -58,6 +58,7 @@
     "react-webcam": "^7.2.0",
     "reactochart": "^6.1.1",
     "redux": "^5.0.1",
+    "tesseract.js": "^5.1.1",
     "three": "0.161.0",
     "three.js": "^0.77.1",
     "typewriter-effect": "^2.21.0",

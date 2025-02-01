@@ -16,7 +16,14 @@ const firebaseConfig = {
 };
 
 const firebaseApp = initializeApp(firebaseConfig);
-const messaging = getMessaging(firebaseApp);
+let messaging;
+if ('serviceWorker' in navigator && 'PushManager' in window) {
+    // Proceed with Firebase Messaging initialization
+    messaging = getMessaging(firebaseApp);
+    // ... rest of your messaging code
+} else {
+    console.warn('Firebase Messaging is not supported in this browser.');
+}
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 const requestInstance = createAuthenticatedRequest();

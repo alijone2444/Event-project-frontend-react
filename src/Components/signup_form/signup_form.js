@@ -33,28 +33,54 @@ const SignUp = (props) => {
   const [ocrResults, setOcrResults] = useState([])
   const onFinish = (values) => {
   };
+  const getImageDimensions = (base64) => {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = base64;
+      img.onload = () => {
+        resolve({ width: img.width, height: img.height });
+      };
+      img.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+
   const handleCardOcr = async (images) => {
+    getImageDimensions(images[0])
+      .then(dimensions => console.log("Image Dimensions:", dimensions))
+      .catch(error => console.error("Error loading image:", error));
+
     console.log("Sending these images", images);
-    setloadingOcr(true)
-    const ocrResults = []; // To store OCR results for each image
+    setloadingOcr(true);
+    setCroppedImages(images);
+
     try {
-      for (let i = 0; i < images.length; i++) {
-        console.log(`Processing image ${i + 1} of ${images.length}`);
+      // Array to store the OCR results
+      const ocrResults = [];
 
-        const { data: { text } } = await Tesseract.recognize(images[i], "eng", {
-          logger: (info) => console.log(`Image ${i + 1} progress:`, info), // Logs OCR progress
-        });
-
-        ocrResults.push({ image: images[i], text });
+      // Process each image with Tesseract.js
+      for (const image of images) {
+        const result = await Tesseract.recognize(
+          image, // Image URL or base64-encoded image
+          'eng',  // Language code (English in this case)
+          {
+            logger: (m) => console.log(m), // Log progress (optional)
+            tessedit_pageseg_mode: 6
+          }
+        );
+        ocrResults.push(result.data.text);  // Collect the OCR text
       }
 
-      console.log("OCR results for all images:", ocrResults);
-      setloadingOcr(false)
-      // Do something with the OCR results (e.g., update state or send to backend)
+      console.log("OCR Results:", ocrResults);
+
+      // Store the OCR results in state
       setOcrResults(ocrResults);
+      setloadingOcr(false);
+
     } catch (error) {
       console.error("Error during OCR processing:", error);
-      setloadingOcr(false)
+      setloadingOcr(false);
     }
   };
 
@@ -121,9 +147,18 @@ const SignUp = (props) => {
       props.showSignIn();
     }, 1000);
   };
+  const [croppedImages, setCroppedImages] = useState([]); // Store the cropped images
 
   return (
     <div className="signup-container">
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {croppedImages.map((image, index) => (
+          <div key={index} style={{ margin: '10px' }}>
+            <img src={image} alt={`Cropped ${index}`} width={150} height={150} />
+            <div>{ocrResults[index]}</div>
+          </div>
+        ))}
+      </div>
       <div className="signup-form-container">
         {(props.isQuickSignup && showcamera) && <CameraComponent onfinish={(images) => { setshowcamera(false); handleCardOcr(images) }} />}
         {showBorder && <><span className="top"></span></>}

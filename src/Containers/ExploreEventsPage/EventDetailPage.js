@@ -22,6 +22,7 @@ function EventDetailPage() {
   const navigate = useNavigate();
   const isMobile = useMediaQuery('(max-width:600px)');
   const requestInstance = createAuthenticatedRequest();
+  console.log('id is ', _id)
   const dispatch = useDispatch();
   const { currentPage, pageSize } = useSelector((state) => state.eventspagination);
   const [rerun, setrerun] = useState(false)

@@ -44,7 +44,7 @@ function CarouselComponent(props) {
       <div style={{ position: 'absolute', top: 0, zIndex: 2, width: '100%' }}>
         <ToolbarBelowNavbar />
       </div>
-      <Carousel duration={2000} navButtonsAlwaysVisible={true} height={"95vh"} animation={'fade'} indicatorContainerProps={{
+      <Carousel duration={1000} navButtonsAlwaysVisible={true} height={"95vh"} animation={'slide'} indicatorContainerProps={{
         style: {
           position: "absolute",
           bottom: "0",
@@ -144,7 +144,20 @@ function Item(props) {
         position: "absolute", top: isSmallScreen ? "35%" : "40%", left: "50%", transform: "translate(-50%,-40%)", width: "70%",
         display: "flex", justifyContent: "center", flexDirection: "column"
       }}>
-        <p style={{ textAlign: "Center", color: "rgba(255,255,255,0.9)", marginTop: 0 }}>{props.item.subheader}</p>
+        <h3 style={{ textAlign: "Center", color: "rgba(255,255,255,0.9)", marginTop: 0 }}>{props.item.subheader}</h3>
+        <p
+          style={{
+            textAlign: "center",
+            color: "rgba(255,255,255,0.9)",
+            marginTop: 0,
+            display: "-webkit-box",
+            WebkitBoxOrient: "vertical",
+            WebkitLineClamp: 3,
+            overflow: "hidden",
+          }}
+        >
+          {props.item.description}
+        </p>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Button className="CheckButton" style={{ backgroundColor: "#f4373a", color: "white", maxWidth: "150px" }}
             onClick={() => {

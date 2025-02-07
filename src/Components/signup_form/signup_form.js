@@ -45,24 +45,66 @@ const SignUp = (props) => {
       };
     });
   };
+  // Function to crop the bottom-right portion of the image dynamically
+  const cropBottomRight = (image, widthRatioStart = 0.5, heightRatioStart = 0.55, widthRatioEnd = 0.98, heightRatioEnd = 0.95) => {
+    const img = new Image();
+    img.src = image;
 
+    return new Promise((resolve, reject) => {
+      img.onload = () => {
+        const width = img.width;
+        const height = img.height;
+
+        // Calculate the crop area
+        const left = width * widthRatioStart;
+        const top = height * heightRatioStart;
+        const right = width * widthRatioEnd;
+        const bottom = height * heightRatioEnd;
+
+        // Create a canvas to perform the cropping
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = right - left;
+        canvas.height = bottom - top;
+
+        // Draw the cropped image on the canvas
+        ctx.drawImage(img, left, top, right - left, bottom - top, 0, 0, canvas.width, canvas.height);
+
+        // Get the base64 data URL of the cropped image
+        const croppedImage = canvas.toDataURL('image/jpeg');
+        resolve(croppedImage);
+      };
+
+      img.onerror = (error) => {
+        reject(error);
+      };
+    });
+  };
+  // not the corrext way of ocr use segmentation is not this way
   const handleCardOcr = async (images) => {
-    getImageDimensions(images[0])
-      .then(dimensions => console.log("Image Dimensions:", dimensions))
-      .catch(error => console.error("Error loading image:", error));
-
-    console.log("Sending these images", images);
-    setloadingOcr(true);
-    setCroppedImages(images);
-
     try {
+      setloadingOcr(true);
+
+      // Array to store the cropped images
+      const croppedImages = [];
+
+      // Process each image with cropping
+      for (const image of images) {
+        // Crop the image before sending to OCR
+        const croppedImage = await cropBottomRight(image);
+        croppedImages.push(croppedImage);
+      }
+
+      console.log("Cropped Images:", croppedImages);
+
       // Array to store the OCR results
       const ocrResults = [];
 
-      // Process each image with Tesseract.js
-      for (const image of images) {
+      // Process each cropped image with Tesseract.js
+      setCroppedImages(croppedImages);
+      for (const croppedImage of croppedImages) {
         const result = await Tesseract.recognize(
-          image, // Image URL or base64-encoded image
+          croppedImage, // Cropped image URL or base64-encoded image
           'eng',  // Language code (English in this case)
           {
             logger: (m) => console.log(m), // Log progress (optional)
@@ -83,7 +125,6 @@ const SignUp = (props) => {
       setloadingOcr(false);
     }
   };
-
   const handleSubmit = async () => {
     setloading(true)
     try {

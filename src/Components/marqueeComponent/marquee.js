@@ -42,7 +42,10 @@ const MarqueeComponent = () => {
                     ))
                 ) : (
                     coverPhotosMarquee.map((item, index) => (
-                        <div key={index} className="marquee-item">
+                        <div key={index} className="marquee-item"
+                            onClick={() => {
+                                window.open(`${item.links.instagram || item.links.facebook}`, "_blank");
+                            }}>
                             <img
                                 src={`${constants.BASE_URL}societyImages/${item.cover_photo}`}
                                 alt={`Brand ${index + 1}`}
@@ -63,7 +66,10 @@ const MarqueeComponent = () => {
                     ))
                 ) : (
                     coverPhotosMarquee.map((item, index) => (
-                        <div key={index} className="marquee-item">
+                        <div key={index} className="marquee-item"
+                            onClick={() => {
+                                window.open(`${item.links.instagram || item.links.facebook}`, "_blank");
+                            }}>
                             <span className="marquee-name">{item.name}</span>
                         </div>
                     ))

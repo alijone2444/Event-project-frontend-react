@@ -89,7 +89,9 @@ const Footer = (props) => {
 
                   {societies.map(society => (
                     <div key={society._id} style={{ display: 'flex', flexDirection: 'column' }}>
-                      <Typography variant="body2" className={classes.text2}>
+                      <Typography variant="body2" className={classes.text2} onClick={() => {
+                        window.open(`${society.social_media_links.instagram || society.social_media_links.facebook}`, "_blank");
+                      }}>
                         <ChevronRightIcon className={classes.arrowIcon} /> {society.name}
                       </Typography>
                     </div>

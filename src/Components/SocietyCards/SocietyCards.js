@@ -17,7 +17,8 @@ import { setConstants } from '../../ReduxStore/actions/setConstantsAction';
 import { useEffect } from 'react';
 import constants from '../../Constants/constants';
 import createAuthenticatedRequest from '../../RequestwithHeader';
-const CustomCard = ({ IconComponent, title, name, content, gradient, allData }) => {
+const CustomCard = ({ IconComponent, type, title, name, content, gradient, allData }) => {
+
     const navigate = useNavigate()
 
     return (
@@ -33,7 +34,20 @@ const CustomCard = ({ IconComponent, title, name, content, gradient, allData }) 
                 <h2>{title}</h2>
                 <h3 style={{ color: 'white' }}>{name}</h3>
                 <p>{content}</p>
-                <a className="effect effect-1" title="Visit" onClick={() => { navigate('society-page', { state: { ...allData, Simple: true } }); recordSocietyVisit(name) }}>See more</a>
+                <a className="effect effect-1" title="Visit"
+                    onClick={() => {
+                        console.log(type, name, allData)
+                        if (type === 'Event')
+                            navigate(`/eventdetail/${name}`, { state: { data: { _id: allData._id, name }, toNavigate: '/Home' } });
+                        else {
+                            navigate('society-page', { state: { ...allData, Simple: true } }); recordSocietyVisit(name)
+                        }
+                    }}
+                >
+
+                    See more
+                </a>
+
             </div>
         </Card >
     );
@@ -101,15 +115,16 @@ const SocietyCards = (props) => {
             <div className="container-societycards">
                 <CustomCard
                     IconComponent={<FireFilled style={{ fontSize: '5rem', color: '#ff2ae0' }} />}
-                    title={"Top Rated"}
-                    name={threeSocieties.topRated?.name}
+                    title={"Top Events"}
+                    name={threeSocieties.topRated?.eventName}
                     content={threeSocieties.topRated?.description || "Loading..."}
                     gradient="linear-gradient(to bottom, #ff2ae0, #645bf6)"
                     allData={threeSocieties.topRated}
+                    type={'Event'}
                 />
                 <CustomCard
                     IconComponent={<TrendingUpIcon style={{ fontSize: '5rem', color: '#ffec61' }} />}
-                    title={"Trending Now"}
+                    title={"Trending Societies"}
                     name={threeSocieties.trending?.name}
                     content={threeSocieties.trending?.description || "Loading..."}
                     gradient="linear-gradient(to bottom, #ffec61, #f321d7)"

@@ -29,7 +29,15 @@
     display: inline-block;
     /* Display items inline */
     margin: 0 20px;
+    border: 1px solid white;
+    cursor: pointer;
     /* Add margin to space out the items */
+}
+
+.marquee-item:hover {
+    background-color: lightgrey;
+    border: 1px solid black;
+    /* Light grey background on hover */
 }
 
 .marquee-image {
@@ -56,4 +64,5 @@
     /* Adjust font size as needed */
     margin: 0 20px;
     /* Margin between names */
+    cursor: pointer;
 }

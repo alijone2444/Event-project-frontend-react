@@ -7,6 +7,7 @@ import {
   Button,
   TextField,
   FormControl,
+  MenuItem,
   InputLabel,
   FormGroup,
   FormControlLabel,
@@ -18,7 +19,7 @@ import makeStyles from '@mui/styles/makeStyles';
 import createAuthenticatedRequest from '../../RequestwithHeader';
 import constants from '../../Constants/constants';
 import CircularProgress from '@mui/material/CircularProgress';
-import axios from 'axios';
+import IcogramsMap from '../MapComponent.js/icongramMap';
 
 const CreateEvent = (props) => {
 
@@ -27,6 +28,7 @@ const CreateEvent = (props) => {
   const [imageUrl, setimageUrl] = useState(false)
   const [image, setimage] = useState(null)
   const [showLoader, setshowLoader] = useState(false)
+const [isOutsideIST, setIsOutsideIST] = useState("inside");
   const [eventData, setEventData] = useState({
     eventName: '',
     subheader: '',
@@ -188,7 +190,7 @@ const CreateEvent = (props) => {
             onChange={(e) => handleChange('description', e.target.value)}
             helperText="Enter a description for the event"
           />
-          <TextField
+          {/* <TextField
             className={classes.data_fields}
             label="Location"
             required
@@ -196,6 +198,41 @@ const CreateEvent = (props) => {
             onChange={(e) => handleChange('location', e.target.value)}
             helperText="Enter the location of the event"
           />
+           */}
+<TextField
+      className={classes.data_fields}
+      select
+      label="Is the location inside IST?"
+      value={isOutsideIST}
+      onChange={(e) => setIsOutsideIST(e.target.value)}
+      helperText="Select if the event is inside or outside IST"
+      required
+    >
+      <MenuItem value="inside">Inside IST</MenuItem>
+      <MenuItem value="outside">Outside IST</MenuItem>
+    </TextField>
+
+    {/* Show location field only if 'Outside IST' is selected */}
+    {isOutsideIST === "outside" ? (
+      <TextField
+        className={classes.data_fields}
+        label="Location"
+        required
+        value={eventData.location}
+        onChange={(e) => handleChange("location", e.target.value)}
+        helperText="Enter the location of the event"
+      />
+    ):
+    <div style={{overflow:'auto',width:'100%',marginBottom:'5%'}}>
+      <IcogramsMap 
+    getlocation={(text) => {
+      const locationText = text !== "DHA" ? `Institute of Space and Technology, ${text}` : text;
+      handleChange("location", locationText);
+    }} 
+  />
+  
+    </div>
+    }
           <TextField
             className={classes.data_fields}
             label="Start Time"

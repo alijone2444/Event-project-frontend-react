@@ -27,6 +27,14 @@ if ('serviceWorker' in navigator && 'PushManager' in window) {
 const auth = getAuth(firebaseApp);
 const db = getFirestore(firebaseApp);
 const requestInstance = createAuthenticatedRequest();
+// "@firebase/app": "^0.10.6",
+//     "@firebase/messaging": "^0.12.10",
+    
+// const firebaseApp = initializeApp(firebaseConfig);
+// const messaging = getMessaging(firebaseApp);
+// const auth = getAuth(firebaseApp);
+// const db = getFirestore(firebaseApp);
+// const requestInstance = createAuthenticatedRequest();
 const getAuthToken = () => {
     return new Promise((resolve, reject) => {
         const token = localStorage.getItem('authToken');

@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Radio, Select, Space, Table, Tag, Spin, Pagination } from 'antd'; // Import Pagination
+import { Button, Radio, Space, Table, Tag, Spin, Pagination } from 'antd'; // Import Pagination
 import { Grid } from '@mui/material';
 import { Typography } from '@mui/material';
 import './gridview.css'
 import axios from 'axios';
 import columns from '../../../../Constants/AdminGridtableColumns';
+import { Select, MenuItem } from "@mui/material";
+
 import { InboxOutlined } from '@ant-design/icons';
 import {
   PlusOutlined,
@@ -99,8 +101,7 @@ const EventManagementInterface = () => {
   }
   const handleApprovedEvent = async (eventId, approve) => {
     try {
-      console.log('Approve:', approve);
-
+      console.log('Approve:', approve)
       // Send a PUT request to update the event's status
       const response = await requestInstance.put(`${constants.BASE_URL}events/${eventId}/approve`, {
         approve: approve,  // Boolean value to approve or set to pending
@@ -181,11 +182,15 @@ const EventManagementInterface = () => {
                 <Grid item xs={8} sm={8} md={8} lg={8} style={{ textAlign: 'right' }}>
                   <Grid container>
                     <Grid item xs={12} sm={8} md={8} lg={10} style={{ padding: "2%", }}>
-                      <Select defaultValue="Show All" onChange={handleSortChange}>
-                        <Option value="Show All">Show All</Option>
-                        <Option value="Not Approved">Not Approved</Option>
-                        <Option value="Approved">Approved</Option>
-                      </Select>
+                    <Select
+  defaultValue="Show All"
+  onChange={handleSortChange}
+  sx={{ backgroundColor: "white",height:'35px' }} // MUI uses `sx` for styling
+>
+  <MenuItem value="Show All">Show All</MenuItem>
+  <MenuItem value="Not Approved">Not Approved</MenuItem>
+  <MenuItem value="Approved">Approved</MenuItem>
+</Select>
 
                     </Grid>
                     <Grid item xs={12} sm={4} md={4} lg={2} style={{ padding: "2%" }}>
@@ -232,7 +237,7 @@ const EventManagementInterface = () => {
               </Grid>
               <Grid container>
                 <Grid item xs={12}>
-                  <div className='hover-2' style={{ width: "100%", zIndex: 998, position: "fixed", top: 'auto', bottom: 0, height: '34px', paddingRight: "5%" }}>
+                  <div className='hover-2' style={{ width: "100%", zIndex: 998, position: "fixed", top: 'auto', bottom: 0, height: '5vh', paddingRight: "5%" }}>
                     <div>
                       <div style={{ textAlign: "center", background: "white" }} onClick={showOpenedEvent ? () => { setshowOpenedEvent(false); setBackgroundImage(null) } : handleEventCreation}>
                         <Button type="primary" icon={showOpenedEvent ? <ArrowLeftOutlined /> : <PlusOutlined />} style={{ flexGrow: 1, background: 'white', marginRight: "20%", color: 'DodgerBlue' }}>

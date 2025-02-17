@@ -46,8 +46,8 @@ const constants = {
     ],
 
     // // /ist-ems-backend/
-    BASE_URL: 'http://192.168.1.13:3002/ist-ems-backend/',
-    // BASE_URL: 'https://ist-ems.live/ist-ems-backend/',
+    // BASE_URL: 'http://192.168.1.13:3002/ist-ems-backend/',
+    BASE_URL: 'https://ist-ems.live/ist-ems-backend/',
 
     BASE_URL_2: 'http://192.168.1.16:5000/',
     departmentOptions: [

@@ -1,6 +1,6 @@
 import React, { Suspense, useState, useEffect, useRef, useMemo } from "react";
-import { Canvas, useThree, useFrame } from "@react-three/fiber";
-import { OrbitControls, useGLTF, useProgress, Text ,Html} from "@react-three/drei";
+import { Canvas, useThree } from "@react-three/fiber";
+import { OrbitControls, useGLTF, useProgress, Text, Html } from "@react-three/drei";
 import * as THREE from "three";
 import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper";
 
@@ -11,22 +11,8 @@ function Loader() {
     <Html center>
       <div style={{ color: "white", textAlign: "center" }}>
         <div>Loading {Math.round(progress)}%</div>
-        <div
-          style={{
-            width: "200px",
-            height: "4px",
-            background: "rgba(255,255,255,0.2)",
-            margin: "10px auto",
-          }}
-        >
-          <div
-            style={{
-              width: `${progress}%`,
-              height: "100%",
-              background: "white",
-              transition: "width 0.1s",
-            }}
-          />
+        <div style={{ width: "200px", height: "4px", background: "rgba(255,255,255,0.2)", margin: "10px auto" }}>
+          <div style={{ width: `${progress}%`, height: "100%", background: "white", transition: "width 0.1s" }} />
         </div>
       </div>
     </Html>
@@ -41,7 +27,7 @@ const UniversityMap = () => {
     spot: 5,
     rectArea: 10,
   });
-
+  const [isPanelOpen, setIsPanelOpen] = useState(true);
   const [cameraPos] = useState({ x: 2500, y: 2500, z: 2500 });
   const [modelLoaded, setModelLoaded] = useState(false);
 
@@ -90,56 +76,42 @@ const UniversityMap = () => {
         ))}
       </Canvas>
 
-
       {/* Control Panel */}
-      <div className="control-panel">
-        {Object.entries(lights).map(([key, value]) => (
-          <div key={key} className="control-item">
-            <label>{key.charAt(0).toUpperCase() + key.slice(1)} Light: </label>
-            <input
-              type="range"
-              min="0"
-              max={key === "rectArea" ? 100 : 10}
-              step="0.1"
-              value={value}
-              onChange={(e) =>
-                setLights((prev) => ({ ...prev, [key]: parseFloat(e.target.value) }))
-              }
-            />
-          </div>
-        ))}
-      </div>
+      {isPanelOpen && (
+        <div className="control-panel">
+          <button className="close-button" onClick={() => setIsPanelOpen(false)}>
+            ×
+          </button>
+          {Object.entries(lights).map(([key, value]) => (
+            <div key={key} className="control-item">
+              <label>{key.charAt(0).toUpperCase() + key.slice(1)} Light: </label>
+              <input
+                type="range"
+                min="0"
+                max={key === "rectArea" ? 100 : 10}
+                step="0.1"
+                value={value}
+                onChange={(e) =>
+                  setLights((prev) => ({ ...prev, [key]: parseFloat(e.target.value) }))
+                }
+              />
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
 
 const OptimizedTextLabel = React.memo(({ position, text }) => {
-  const ref = useRef()
-  const { camera } = useThree()
-
-  useFrame(() => {
-    ref.current.quaternion.copy(camera.quaternion)
-    ref.current.scale.setScalar(camera.position.distanceTo(ref.current.position) * 0.01)
-  })
-
   return (
-    <Text
-      ref={ref}
-      position={position}
-      color="white"
-      fontSize={1}
-      anchorX="center"
-      anchorY="middle"
-      outlineColor="black"
-      outlineWidth={2}
-      depthTest={false}
-      renderOrder={2}
-      sdfGlyphSize={16}
-    >
-      {text}
-    </Text>
+    <Html position={position} center>
+      <div className="text-label">
+        {text}
+      </div>
+    </Html>
   )
-})
+});
 
 const Scene = React.memo(({ lights, onLoaded }) => {
   const { scene } = useGLTF("/IST.glb")
@@ -203,16 +175,7 @@ const Scene = React.memo(({ lights, onLoaded }) => {
 
 // Add styles and export...
 // Rest of the code remains same...
-const CameraUpdater = ({ cameraPos }) => {
-  const { camera } = useThree();
-  useEffect(() => {
-    camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
-    camera.updateProjectionMatrix();
-  }, [cameraPos, camera]);
-  return null;
-};
 
-// Styles for Control Panel
 const styles = `
   .control-panel {
     position: absolute;
@@ -223,6 +186,47 @@ const styles = `
     border-radius: 8px;
     min-width: 250px;
     box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+  }
+
+  .text-label {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    display: inline-block;
+    backdrop-filter: blur(2px);
+  }
+
+  .close-button {
+    display: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    border: none;
+    color: #333;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .control-panel {
+      top: auto;
+      bottom: 20px;
+      right: 20px;
+      left: auto;
+      width: calc(100% - 40px);
+      max-width: 300px;
+    }
+    .close-button {
+      display: block;
+    }
   }
 
   .control-item {
@@ -242,7 +246,6 @@ const styles = `
   }
 `;
 
-// Inject styles
 document.head.insertAdjacentHTML("beforeend", `<style>${styles}</style>`);
 
 export default UniversityMap;

@@ -1,10 +1,13 @@
 import React, { Suspense, useState, useEffect, useRef, useMemo } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
-import { OrbitControls, useGLTF, useProgress, Text, Html } from "@react-three/drei";
+import { OrbitControls, useGLTF, useProgress, Text, Html, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper";
+import { useLocation } from "react-router-dom";
+import { cameraPositions, defaultCameraPos, labels, initialLights } from "./mapConstants";
+import { useLoader } from "@react-three/fiber";
+import { TextureLoader } from "three";
 
-// Loader Component
 function Loader() {
   const { progress } = useProgress();
   return (
@@ -19,57 +22,194 @@ function Loader() {
   );
 }
 
-const UniversityMap = () => {
-  const [lights, setLights] = useState({
-    ambient: 3,
-    directional: 3,
-    hemisphere: 1,
-    spot: 5,
-    rectArea: 10,
-  });
-  const [isPanelOpen, setIsPanelOpen] = useState(true);
-  const [cameraPos] = useState({ x: 2500, y: 2500, z: 2500 });
-  const [modelLoaded, setModelLoaded] = useState(false);
+const Scene = React.memo(({ lights, onLoaded, highlightPosition, remainingData, onMarkerClick }) => {
+  const { scene } = useGLTF("/compressed_IST.glb");
+  const rectAreaLightRef = useRef();
+  const helperRef = useRef();
 
-  const labels = useMemo(() => [
-    { position: [600, 450, -40], text: "Raza Block" },
-    { position: [-1000, 450, 350], text: "Block 2" },
-    { position: [-300, 650, -1150], text: "Block 3" },
-    { position: [-2700, 550, 350], text: "Futsal Court" },
-    { position: [-4700, 1050, 350], text: "Girls Hostel" },
-    { position: [1400, 550, -4500], text: "Block 6" },
-    { position: [2400, 550, -6500], text: "Block 7" },
-    { position: [-4700, 550, -3000], text: "Football Ground" },
-  ], []);
+  const iconTexture = useTexture("/symbol.png");
+  const sunTexture = useLoader(TextureLoader, "/Sun_Texture.jpg");
+
+  // Get the camera and renderer from the Three.js context
+  const { camera } = useThree();
+
+  useEffect(() => {
+    if (scene) onLoaded();
+    return () => {
+      scene.traverse((child) => {
+        if (child.isLight) child.dispose();
+      });
+    };
+  }, [scene, onLoaded]);
+
+  useEffect(() => {
+    if (rectAreaLightRef.current && !helperRef.current) {
+      helperRef.current = new RectAreaLightHelper(rectAreaLightRef.current);
+      rectAreaLightRef.current.add(helperRef.current);
+    }
+
+    return () => {
+      if (helperRef.current) {
+        helperRef.current.dispose();
+        helperRef.current = null;
+      }
+    };
+  }, []);
+
+  const handleMarkerClick = () => {
+    if (highlightPosition && remainingData) {
+      onMarkerClick(remainingData); // Trigger the modal with remainingData
+    }
+  };
+
+  return (
+    <group>
+      <primitive object={scene} scale={1.01} position={[0, 0.1, 0]} />
+
+      {/* Highlighted marker for the matched location */}
+      {highlightPosition && (
+        <sprite
+          position={new THREE.Vector3(highlightPosition.x, highlightPosition.y + 300, highlightPosition.z)}
+          onClick={handleMarkerClick}
+          scale={[400, 400, 1]}
+        >
+          <spriteMaterial map={iconTexture} />
+        </sprite>
+      )}
+
+      {/* Sun Mesh */}
+      <mesh position={new THREE.Vector3(-13000, 2000, -6000)}>
+        <sphereGeometry args={[500, 64, 64]} />
+        <meshStandardMaterial
+          map={sunTexture} // Apply sun texture
+          emissive={"#ffff00"} // Yellow emissive glow
+          emissiveMap={sunTexture} // Use the same texture for emissive
+          emissiveIntensity={4} // Increase glow intensity
+        />
+      </mesh>
+
+      {/* Point Light for Sun Shine */}
+      <pointLight
+        position={new THREE.Vector3(-13000, 2000, -6000)} // Same position as the sun
+        intensity={2} // Brightness of the light
+        color="#ffff00" // Yellow color for the sun's glow
+        distance={10000}
+        decay={2}
+      />
+
+      {/* Lights */}
+      <directionalLight
+        position={[-defaultCameraPos.x - 8000, defaultCameraPos.y + 2000, -defaultCameraPos.z - 4000]}
+        intensity={1.5}
+        color="#ffff00"
+        castShadow
+        shadow-mapSize-width={2048}
+        shadow-mapSize-height={2048}
+        shadow-camera-far={100000}
+      />
+
+      <ambientLight intensity={lights.ambient} />
+      <directionalLight intensity={lights.directional} position={[10, 50, 20]} shadow-mapSize={[1024, 1024]} />
+      <hemisphereLight intensity={lights.hemisphere} groundColor="#804000" />
+      <spotLight intensity={lights.spot} position={[600, 450, -50]} angle={0.3} penumbra={1} decay={2} />
+    </group>
+  );
+});
+
+// Optimized Text Label Component
+const OptimizedTextLabel = React.memo(({ position, text }) => {
+  return (
+    <Html position={position} center>
+      <div className="text-label">{text}</div>
+    </Html>
+  );
+});
+
+// Custom Modal Component
+const CustomModal = ({ isOpen, onClose, data }) => {
+  if (!isOpen) return null;
+
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <button className="modal-close-button" onClick={onClose}>
+          ×
+        </button>
+        <h2>{data.eventName}</h2>
+        <p><strong>Description:</strong> {data.description}</p>
+        <p><strong>Location:</strong> {data.location}</p>
+        <p><strong>Date:</strong> {data.date}</p>
+        <p><strong>Tags:</strong> {data.tags.join(", ")}</p>
+      </div>
+    </div>
+  );
+};
+
+// UniversityMap Component
+const UniversityMap = () => {
+  const location = useLocation();
+  const { state } = location;
+  const { location: coordinates, locationName, remainingData } = state || {};
+
+  const [lights, setLights] = useState(initialLights);
+  const [isPanelOpen, setIsPanelOpen] = useState(true);
+  const [modelLoaded, setModelLoaded] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalData, setModalData] = useState(null);
+
+  const highlightPosition = useMemo(() => {
+    if (locationName) {
+      const matchedLocation = Object.keys(cameraPositions).find((key) =>
+        locationName.toLowerCase().includes(key.toLowerCase())
+      );
+      if (matchedLocation) {
+        const label = labels.find((label) => label.text === matchedLocation);
+        if (label) {
+          return new THREE.Vector3(...label.position);
+        }
+      }
+    }
+    return null;
+  }, [locationName]);
+
+  const handleMarkerClick = (data) => {
+    setModalData(data);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setModalData(null);
+  };
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "fixed", top: 0, left: 0 }}>
       <Canvas
         camera={{
-          position: [cameraPos.x, cameraPos.y, cameraPos.z],
+          position: [defaultCameraPos.x, defaultCameraPos.y, defaultCameraPos.z],
           fov: 50,
           near: 1,
-          far: 10000,
+          far: 100000,
         }}
         gl={{
           logarithmicDepthBuffer: true,
           antialias: true,
-          powerPreference: "high-performance"
+          powerPreference: "high-performance",
         }}
         shadows
         style={{ background: "black" }}
       >
         <Suspense fallback={<Loader />}>
-          <Scene lights={lights} onLoaded={() => setModelLoaded(true)} />
+          <Scene
+            lights={lights}
+            onLoaded={() => setModelLoaded(true)}
+            highlightPosition={highlightPosition}
+            remainingData={remainingData}
+            onMarkerClick={handleMarkerClick}
+          />
         </Suspense>
 
-        <OrbitControls
-          enableDamping
-          zoomToCursor
-          minDistance={50}
-          maxDistance={10000}
-          makeDefault
-        />
+        <OrbitControls enableDamping zoomToCursor minDistance={50} maxDistance={10000} makeDefault />
 
         {modelLoaded && labels.map((label, index) => (
           <OptimizedTextLabel key={index} {...label} />
@@ -99,83 +239,14 @@ const UniversityMap = () => {
           ))}
         </div>
       )}
+
+      {/* Custom Modal */}
+      <CustomModal isOpen={isModalOpen} onClose={closeModal} data={modalData} />
     </div>
   );
 };
 
-const OptimizedTextLabel = React.memo(({ position, text }) => {
-  return (
-    <Html position={position} center>
-      <div className="text-label">
-        {text}
-      </div>
-    </Html>
-  )
-});
-
-const Scene = React.memo(({ lights, onLoaded }) => {
-  const { scene } = useGLTF("/IST.glb")
-  const rectAreaLightRef = useRef()
-  const helperRef = useRef()
-
-  useEffect(() => {
-    if (scene) onLoaded()
-    return () => {
-      scene.traverse(child => {
-        if (child.isLight) child.dispose()
-      })
-    }
-  }, [scene, onLoaded])
-
-  useEffect(() => {
-    if (rectAreaLightRef.current && !helperRef.current) {
-      helperRef.current = new RectAreaLightHelper(rectAreaLightRef.current)
-      rectAreaLightRef.current.add(helperRef.current)
-    }
-    
-    return () => {
-      if (helperRef.current) {
-        helperRef.current.dispose()
-        helperRef.current = null
-      }
-    }
-  }, [])
-
-  return (
-    <group>
-      <primitive object={scene} scale={1.01} position={[0, 0.1, 0]} />
-
-      <ambientLight intensity={lights.ambient} />
-      <directionalLight
-        intensity={lights.directional}
-        position={[10, 50, 20]}
-        shadow-mapSize={[1024, 1024]}
-      />
-      <hemisphereLight intensity={lights.hemisphere} groundColor="#804000" />
-      <spotLight
-        intensity={lights.spot}
-        position={[600, 450, -50]}
-        angle={0.3}
-        penumbra={1}
-        decay={2}
-      />
-
-      {/* <rectAreaLight
-        ref={rectAreaLightRef}
-        intensity={lights.rectArea}
-        position={[600, 450, -50]}
-        width={100}
-        height={100}
-        color="white"
-        decay={2}
-      /> */}
-    </group>
-  )
-})
-
-// Add styles and export...
-// Rest of the code remains same...
-
+// Styles
 const styles = `
   .control-panel {
     position: absolute;
@@ -201,7 +272,7 @@ const styles = `
   }
 
   .close-button {
-    display: none;
+    display: block;
     position: absolute;
     top: 5px;
     right: 5px;
@@ -213,6 +284,39 @@ const styles = `
     padding: 0;
     width: 20px;
     height: 20px;
+  }
+
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+
+  .modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    position: relative;
+  }
+
+  .modal-close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
   }
 
   @media (max-width: 768px) {

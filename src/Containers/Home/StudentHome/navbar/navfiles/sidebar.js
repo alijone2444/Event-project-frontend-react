@@ -85,6 +85,9 @@ function SidebarComponent(props) {
   const handleCalander = () => {
     navigate("/calander")
   }
+  const handleIstMap = () => {
+    navigate("/ist-3d-map")
+  }
   const handleHome = () => {
     navigate("/Home")
   }
@@ -100,6 +103,9 @@ function SidebarComponent(props) {
       else {
         navigate('/sub-admin-panel', { state: { role: props.usertype } });
       }
+      // else if(item==="IST MAP"){
+      //   navigate('/ist-3d-map')
+      // }
   }
 
   return (
@@ -152,6 +158,7 @@ function SidebarComponent(props) {
                     menuItem.name === 'Societies' ? handleSocieties :
                       menuItem.name === 'Calander' ? handleCalander :
                         menuItem.name === 'Events' ? handleEvents :
+                        menuItem.name==='IST MAP' ? handleIstMap:
                           null // Add more cases if needed
                 }
               >
@@ -172,7 +179,10 @@ function SidebarComponent(props) {
               {props.usertype !== 'student' && props.usertype !== 'undefined' && constants.settings.map((val, index) => {
                 // Check if the name is not 'Profile', 'About Us', or 'Logout'
                 return (
-                  (val.name !== 'Profile' && val.name !== 'About Us' && val.name !== 'Logout' && val.name !== 'Calander') ? (
+                  (val.name !== 'Profile' && val.name !== 'About Us' && val.name !== 'Logout' && val.name !== 'Calendar' &&
+                    val.name !== 'IST MAP'
+
+                  ) ? (
                     <MenuItem
                       key={index}
                       style={{ background: 'rgba(255,255,255,0.3)' }}

@@ -86,7 +86,7 @@ const OpenEvent = (props) => {
 
       </Grid>
 
-      <MapComponent locationName={props.eventData.location} />
+      <MapComponent locationName={props.eventData.location} remainingData={props.eventData}/>
       <ShareComponent
         open={shareOpen}
         handleClose={handleCloseShare}

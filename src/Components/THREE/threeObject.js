@@ -5,7 +5,6 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
 import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls";
 import image1 from '../../images/Earth_Texture_Full.jpg';
-import image2 from '../../images/Sun_Texture.jpg';
 import image3 from '../../images/Venus_Texture.jpg';
 import image4 from '../../images/Mercury_Texture.jpg';
 import image5 from '../../images/Saturn_Texture.jpg'
@@ -38,7 +37,7 @@ function ThreeScene(props) {
       new THREE.SphereGeometry(0.82, 64, 64),
       new THREE.MeshStandardMaterial({
         emissive: "#ffff00",
-        emissiveMap: new THREE.TextureLoader().load(image2), // Sun texture
+        emissiveMap: new THREE.TextureLoader().load('/Sun_Texture.jpg'), // Sun texture
       }),
       "Sun",
       "The Sun is the star at the center of our solar system. It has a diameter of about 1.4 million kilometers and contains 99.86% of the total mass of the solar system. The Sun's core temperature reaches about 15 million degrees Celsius (27 million degrees Fahrenheit), where nuclear fusion reactions convert hydrogen into helium, releasing enormous amounts of energy in the form of sunlight and heat.",

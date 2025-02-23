@@ -105,7 +105,7 @@ const Scene = React.memo(({ lights, onLoaded, highlightPosition, remainingData, 
         castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
-        shadow-camera-far={100000}
+        shadow-camera-far={50000}
       />
 
       <ambientLight intensity={lights.ambient} />
@@ -189,7 +189,7 @@ const UniversityMap = () => {
           position: [defaultCameraPos.x, defaultCameraPos.y, defaultCameraPos.z],
           fov: 50,
           near: 1,
-          far: 100000,
+          far: 50000,
         }}
         gl={{
           logarithmicDepthBuffer: true,
@@ -197,7 +197,7 @@ const UniversityMap = () => {
           powerPreference: "high-performance",
         }}
         shadows
-        style={{ background: "black" }}
+        style={{ background: "#87CEEB" }}
       >
         <Suspense fallback={<Loader />}>
           <Scene

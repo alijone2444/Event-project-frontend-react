@@ -1,14 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
-import { TextField, Button, Grid, Container, CircularProgress, Typography } from '@mui/material';
+import { TextField, Button, Grid, Container, CircularProgress, Typography ,Popover} from '@mui/material';
 import constants from '../../Constants/constants';
 import createAuthenticatedRequest from '../../RequestwithHeader';
+import { ChromePicker } from 'react-color';
 
 const SocietyForm = (props) => {
     axios.defaults.maxContentLength = 5000000; // Set maximum content length allowed in bytes
     const requestInstance = createAuthenticatedRequest();
     const [enableSettingCoverphoto, setenableSettingCoverphoto] = useState(false)
     const [loadinginButton, setloadinginButton] = useState(false)
+    const [colorPickerAnchorEl, setColorPickerAnchorEl] = useState(null);
     const [formData, setFormData] = useState({
         name: '',
         description: '',
@@ -23,6 +25,7 @@ const SocietyForm = (props) => {
             phone: ''
         },
         tags: '',
+        referenceColor:'',
         social_media_links: {
             facebook: '',
             twitter: '',
@@ -38,7 +41,23 @@ const SocietyForm = (props) => {
     });
     const [coverPhoto, setCoverPhoto] = useState(null);
     const fileInputRef = useRef(null);
+    const handleColorPickerOpen = (event) => {
+        setColorPickerAnchorEl(event.currentTarget);
+    };
 
+    const handleColorPickerClose = () => {
+        setColorPickerAnchorEl(null);
+    };
+    const handleColorChange = (color) => {
+        setFormData(prevFormData => ({
+            ...prevFormData,
+            referenceColor: color.hex
+        }));
+    };
+    const colorPickerOpen = Boolean(colorPickerAnchorEl);
+    const colorPickerId = colorPickerOpen ? 'color-picker-popover' : undefined;
+
+  
     // useEffect to set initial form values based on props.Previousvalues
     useEffect(() => {
 
@@ -67,6 +86,7 @@ const SocietyForm = (props) => {
                     email: props.Previousvalues.contact_info?.email || '',
                     phone: props.Previousvalues.contact_info?.phone || ''
                 },
+                referenceColor:props.Previousvalues.referenceColor || '',
                 cover_photo: props.Previousvalues.cover_photo,
                 imageFiles: (props.Previousvalues?.imageFileNames || []).map(society => ({
                     src: `${constants.BASE_URL}images/${society}`,
@@ -77,7 +97,7 @@ const SocietyForm = (props) => {
             }
         }
     }, [props.Previousvalues]);
-
+  
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         const keys = name.split('.');
@@ -223,6 +243,37 @@ const SocietyForm = (props) => {
                             rows={4}
                         />
                     </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            label="Reference Color For Your Society"
+                            name="referenceColor"
+                            value={formData.referenceColor}
+                            variant="outlined"
+                            onClick={handleColorPickerOpen}
+                            InputProps={{
+                                readOnly: true,
+                                style: { backgroundColor: formData.referenceColor }
+                            }}
+                        />
+                        <Popover
+                            id={colorPickerId}
+                            open={colorPickerOpen}
+                            anchorEl={colorPickerAnchorEl}
+                            onClose={handleColorPickerClose}
+                            anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'left',
+                            }}
+                        >
+                            
+                            <ChromePicker
+                                color={formData.referenceColor}
+                                onChangeComplete={handleColorChange}
+                            />
+                        </Popover>
+                    </Grid>
+
                     <Grid item xs={12} sm={6}>
                         <TextField
                             fullWidth

@@ -10,7 +10,7 @@ import SettingsOutlined from '@mui/icons-material/SettingsOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AboutIcon from '@mui/icons-material/InfoOutlined';
 import CalendarTodayOutlined from '@mui/icons-material/CalendarTodayOutlined';
-import ist_logo2 from '../../../../../images/editedlogo_2.png'
+import ist_logo2 from '../../../../../images/Header_logo_.png'
 import { useMediaQuery, IconButton } from '@mui/material';
 import constants from '../../../../../Constants/constants';
 import LogOut from '../../../../../Components/logout/logout';

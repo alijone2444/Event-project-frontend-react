@@ -7,7 +7,8 @@ import { useLocation } from "react-router-dom";
 import { cameraPositions, defaultCameraPos, labels, initialLights } from "./mapConstants";
 import { useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
-
+import AppBarComponent from "../../Components/SubAppbar/appbar";
+import { useNavigate } from "react-router-dom";
 function Loader() {
   const { progress } = useProgress();
   return (
@@ -156,7 +157,7 @@ const UniversityMap = () => {
   const [modelLoaded, setModelLoaded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
-
+  const navigate=useNavigate()
   const highlightPosition = useMemo(() => {
     if (locationName) {
       const matchedLocation = Object.keys(cameraPositions).find((key) =>
@@ -184,6 +185,8 @@ const UniversityMap = () => {
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "fixed", top: 0, left: 0 }}>
+       <AppBarComponent title={'Back'} onBackButtonClick={() => { navigate(state.toNavigate) }} />
+     
       <Canvas
         camera={{
           position: [defaultCameraPos.x, defaultCameraPos.y, defaultCameraPos.z],

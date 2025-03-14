@@ -291,7 +291,7 @@ const styles = {
         left: "50%", // Move the left edge to the middle of the screen
         transform: "translate(-50%, -50%)", // Shift the div back by 50% of its own width and height
         width: "90%", // Keep the width as 80% of the parent container
-        height: "70%", // Keep the height as 60% of the parent container
+        height: "50%", // Keep the height as 60% of the parent container
         border: "2px dashed white",
         zIndex: 1001
     },

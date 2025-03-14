@@ -43,7 +43,7 @@ const Header = (props) => {
 
   const handleNavigation = (path) => {
     console.log(path.name)
-    navigate(`/${path.name}`);
+    navigate(`/${path.name}`,{toNavigate: '/events'});
   };
 
   const handleDrawer = () => {

@@ -7,6 +7,8 @@ import {
   QuestionCircleOutlined,
   LogoutOutlined,
   UserAddOutlined,
+  ReadOutlined,
+  FacebookOutlined,
   PictureOutlined,
   Broadcast
 } from '@ant-design/icons';
@@ -51,6 +53,18 @@ export const menuItems = [
     key: 'schedules',
     icon: <ScheduleOutlined />,
     name: 'Schedules',
+  },
+  
+  {
+    key: 'post-to-facebook',
+    icon: <FacebookOutlined />,
+    name: 'Post to facebook',
+  },
+  
+  {
+    key: 'bot-knowledge',
+    icon: <ReadOutlined />,
+    name: 'Evento Knowledge',
   },
   {
     key: 'BroadCast',

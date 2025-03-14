@@ -3,7 +3,7 @@ import * as tf from "@tensorflow/tfjs";
 import { CircularProgress } from "@mui/material";
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-const CameraComponent = ({ onfinish }) => {
+const CameraComponent = ({ onfinish, onclose }) => {
     const [model, setModel] = useState(null);
     const [highestDetection, setHighestDetection] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -148,7 +148,7 @@ const CameraComponent = ({ onfinish }) => {
         <div style={styles.container}>
             <button
                 style={styles.closeButton}
-                onClick={() => capturedImage && onfinish([capturedImage])}
+                onClick={onclose}
             >
                 ×
             </button>
@@ -168,7 +168,7 @@ const CameraComponent = ({ onfinish }) => {
                     </div>
                 )}
 
-                <div style={styles.guideBox}>
+                <div style={isSmallScreen ? styles.guideBoxSmall : styles.guideBox}>
                     <div style={styles.guideText}>Place Card Here</div>
                 </div>
 
@@ -277,10 +277,21 @@ const styles = {
     },
     guideBox: {
         position: "absolute",
-        top: "30%",
-        left: "20%",
-        width: "60%",
-        height: "40%",
+        top: "50%", // Move the top edge to the middle of the screen
+        left: "50%", // Move the left edge to the middle of the screen
+        transform: "translate(-50%, -50%)", // Shift the div back by 50% of its own width and height
+        width: "80%", // Keep the width as 80% of the parent container
+        height: "70%", // Keep the height as 60% of the parent container
+        border: "2px dashed white",
+        zIndex: 1001
+    },
+    guideBoxSmall: {
+        position: "absolute",
+        top: "50%", // Move the top edge to the middle of the screen
+        left: "50%", // Move the left edge to the middle of the screen
+        transform: "translate(-50%, -50%)", // Shift the div back by 50% of its own width and height
+        width: "90%", // Keep the width as 80% of the parent container
+        height: "70%", // Keep the height as 60% of the parent container
         border: "2px dashed white",
         zIndex: 1001
     },

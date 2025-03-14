@@ -47,7 +47,7 @@ const SignUp = (props) => {
     });
   };
   // Function to crop the bottom-right portion of the image dynamically
-  const cropBottomRight = (image, widthRatioStart = 0.5, heightRatioStart = 0.55, widthRatioEnd = 0.98, heightRatioEnd = 0.95) => {
+  const cropBottomRight = (image, widthRatioStart = 0.65, heightRatioStart = 0.7, widthRatioEnd = 0.98, heightRatioEnd = 0.95) => {
     const img = new Image();
     img.src = image;
 
@@ -202,7 +202,7 @@ const SignUp = (props) => {
         ))}
       </div>
       <div className="signup-form-container">
-        {(props.isQuickSignup && showcamera) && <CameraComponentVersionOne onfinish={(images) => { setshowcamera(false); handleCardOcr(images) }} />}
+        {(props.isQuickSignup && showcamera) && <CameraComponentVersionOne onclose={() => setshowcamera(false)} onfinish={(images) => { setshowcamera(false); handleCardOcr(images) }} />}
         {showBorder && <><span className="top"></span></>}
         {showTerms ? (
           <TermsAndConditions gobackToSignup={() => setshowTerms(false)} />

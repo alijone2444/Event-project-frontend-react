@@ -41,41 +41,41 @@ function TermsAndConditions(props) {
               <br />
               2. <strong>Disclaimer of Accuracy:</strong>
               <ul style={{ paddingLeft: "3%" }}>
-                <li>IST EMS does not guarantee the accuracy of information on the site.</li>
+                <li>Eventive does not guarantee the accuracy of information on the site.</li>
                 <li>Users are responsible for the risks associated with providing personal information.</li>
               </ul>
               <br />
               3. <strong>Event Participation:</strong>
               <ul style={{ paddingLeft: "3%" }}>
-                <li>IST EMS does not supervise events and is not liable for any damages resulting from them.</li>
+                <li>Eventive does not supervise events and is not liable for any damages resulting from them.</li>
                 <li>Users participate in events at their own discretion and assume all associated risks.</li>
               </ul>
               <br />
               4. <strong>Waiver and Release:</strong>
               <ul style={{ paddingLeft: "3%" }}>
-                <li>Users acknowledge and release IST EMS from any liability related to events.</li>
+                <li>Users acknowledge and release Eventive from any liability related to events.</li>
                 <li>A waiver may be provided, and users are responsible for verifying and acknowledging it.</li>
               </ul>
               <br />
               5. <strong>External Links:</strong>
               <ul style={{ paddingLeft: "3%" }}>
-                <li>The site may contain links to external sites, and IST EMS is not responsible for their content.</li>
+                <li>The site may contain links to external sites, and Eventive is not responsible for their content.</li>
               </ul>
               <br />
               6. <strong>User-Generated Content:</strong>
               <ul style={{ paddingLeft: "3%" }}>
                 <li>Users may post content, but offensive or unlawful content is prohibited.</li>
-                <li>IST EMS may remove or edit user-generated content.</li>
+                <li>Eventive may remove or edit user-generated content.</li>
               </ul>
               <br />
               7. <strong>Grant of License:</strong>
               <ul style={{ paddingLeft: "3%" }}>
-                <li>By posting content, users grant IST EMS a license to use, reproduce, and display the content.</li>
+                <li>By posting content, users grant Eventive a license to use, reproduce, and display the content.</li>
               </ul>
               <br />
               8. <strong>Changes to Terms and Conditions:</strong>
               <ul style={{ paddingLeft: "3%" }}>
-                <li>IST EMS may revise terms and conditions, and users are bound by the latest version.</li>
+                <li>Eventive may revise terms and conditions, and users are bound by the latest version.</li>
               </ul>
               <br />
               9. <strong>Prohibited Activities:</strong>
@@ -86,24 +86,24 @@ function TermsAndConditions(props) {
               <br />
               10. <strong>Acceptable Use Policy:</strong>
               <ul style={{ paddingLeft: "3%" }}>
-                <li>Users must comply with the Acceptable Use Policy, reporting violations to IST EMS.</li>
+                <li>Users must comply with the Acceptable Use Policy, reporting violations to Eventive.</li>
               </ul>
               <br />
               11. <strong>Reporting Violations:</strong>
               <ul style={{ paddingLeft: "3%" }}>
-                <li>Users are encouraged to report policy violations to IST EMS.</li>
+                <li>Users are encouraged to report policy violations to Eventive.</li>
               </ul>
               <br />
               12. <strong>Definitions:</strong>
               <ul style={{ paddingLeft: "3%" }}>
-                <li>Service: IST EMS website.</li>
+                <li>Service: Eventive website.</li>
                 <li>User: Individual or entity registering an account.</li>
                 <li>Contributor: Individual contributing funds.</li>
               </ul>
               <br />
               13. <strong>Legal Representations:</strong>
               <ul style={{ paddingLeft: "3%" }}>
-                <li>Users represent that funds obtained through IST EMS will be used for specified purposes.</li>
+                <li>Users represent that funds obtained through Eventive will be used for specified purposes.</li>
                 <li>Users must comply with local, state, and federal laws in fundraising activities.</li>
               </ul>
               <br />
@@ -114,7 +114,7 @@ function TermsAndConditions(props) {
               <br />
               15. <strong>Contact and Questions:</strong>
               <ul style={{ paddingLeft: "3%" }}>
-                <li>Users may contact IST EMS for questions or to report violations.</li>
+                <li>Users may contact Eventive for questions or to report violations.</li>
               </ul>
               <br />
               By signing up to the website, users agree to abide by these terms and conditions.

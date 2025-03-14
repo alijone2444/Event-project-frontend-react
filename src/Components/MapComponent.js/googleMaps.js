@@ -3,11 +3,12 @@ import axios from 'axios';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import Skeleton from 'react-loading-skeleton';
-import locationNotFound from '../../images/locationNotFound.png';
+// import locationNotFound from '../../images/locationNotFound.png';
 import { Icon } from 'leaflet';
 import { useNavigate } from 'react-router-dom'; 
 import { Button } from 'antd';
 import { EnvironmentOutlined } from '@ant-design/icons';
+import locationFound from '../../images/symbol.png'
 const containerStyle = {
     width: '100%',
     height: '400px',
@@ -22,11 +23,7 @@ const MapComponent = ({ locationName ,remainingData}) => {
     const navigate = useNavigate(); // Initialize useNavigate
     console.log(remainingData)
     const myIcon = new Icon({
-        iconUrl: '/symbol',
-        iconSize: [32, 32],
-    });
-    const myNolocationIcon = new Icon({
-        iconUrl: locationNotFound,
+        iconUrl: locationFound,
         iconSize: [32, 32],
     });
     const [coordinates, setCoordinates] = useState(null); // Initial state as null
@@ -52,11 +49,11 @@ const MapComponent = ({ locationName ,remainingData}) => {
                     });
                     setError(null);
                 } else {
-                    setCoordinates(defaultLocation); // Set default location if not found
-                    setError('Location not found.');
+                    setCoordinates(defaultLocation); 
+                    setError('Exact Location not found.');
                 }
             } catch (error) {
-                setCoordinates(defaultLocation); // Set default location if there's an error
+                setCoordinates(defaultLocation); 
                 setError('Error fetching location.');
             }
         };
@@ -64,7 +61,6 @@ const MapComponent = ({ locationName ,remainingData}) => {
         fetchCoordinates();
     }, [locationName]);
 
-    // Function to check if the location name includes specific keywords
     const isUniversityLocation = (name) => {
         const keywords = ['IST', 'ist', 'Institute of Space and Technology'];
         return keywords.some(keyword => name.toLowerCase().includes(keyword.toLowerCase()));
@@ -76,7 +72,8 @@ const MapComponent = ({ locationName ,remainingData}) => {
             state: {
                 location: coordinates, // Send the coordinates (latitude and longitude)
                 locationName: locationName, // Send the location name
-                remainingData:remainingData
+                remainingData:remainingData,
+                toNavigate: '/Home'
             },
         });
     };
@@ -93,7 +90,7 @@ const MapComponent = ({ locationName ,remainingData}) => {
                             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         />
-                        <Marker position={coordinates} icon={!error ? myIcon : myNolocationIcon}>
+                        <Marker position={coordinates} icon={myIcon}>
                             <Popup>
                                 {locationName || 'Default Location'} <br /> Latitude: {coordinates.lat}, Longitude: {coordinates.lng}
                             </Popup>
@@ -106,7 +103,7 @@ const MapComponent = ({ locationName ,remainingData}) => {
             style={{ background: 'dodgerblue', color: 'white' }}
             icon={<EnvironmentOutlined />} // Add the map icon
         >
-            Open IST MAP
+            Open IST map for more precise location
         </Button>
     </div>
 )}

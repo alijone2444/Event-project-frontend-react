@@ -11,7 +11,7 @@ function HomeBody() {
 
       <Grid item xs={12} sm={12}>
         <Typography variant="h4" gutterBottom>
-          IST UNIVERSITY & IST EMS
+          IST UNIVERSITY & EVENTIVE
         </Typography>
 
       </Grid>
@@ -34,7 +34,7 @@ function HomeBody() {
               At IST University, we believe in the transformative power of events and the profound
               impact they can have on shaping a vibrant society. To ensure a seamless and unforgettable
               experience for both organizers and participants,
-              we proudly introduce IST EMS, our cutting-edge event management platform.
+              we proudly introduce EVENTIVE, our cutting-edge event management platform.
             </Typography>
           </ScrollAnimation>
 

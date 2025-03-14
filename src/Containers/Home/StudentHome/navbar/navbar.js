@@ -77,7 +77,7 @@ function Navbar(props) {
       else if (option === 'Profile') {
         navigate('/user-profile', { state: profileData });
       }
-      else if (option === 'Calander') {
+      else if (option === 'Calendar') {
         navigate('/Calander', { state: profileData });
       }
       else if (option === 'IST MAP') {

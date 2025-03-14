@@ -10,6 +10,7 @@ import { makeStyles, styled } from '@mui/styles';
 import { CircularProgress } from '@mui/material';
 import CameraComponent from '../camera/cameraAuthentication';
 import Tesseract from 'tesseract.js';
+import CameraComponentVersionOne from '../camera/cameraAuthenticationV1';
 
 
 
@@ -201,7 +202,7 @@ const SignUp = (props) => {
         ))}
       </div>
       <div className="signup-form-container">
-        {(props.isQuickSignup && showcamera) && <CameraComponent onfinish={(images) => { setshowcamera(false); handleCardOcr(images) }} />}
+        {(props.isQuickSignup && showcamera) && <CameraComponentVersionOne onfinish={(images) => { setshowcamera(false); handleCardOcr(images) }} />}
         {showBorder && <><span className="top"></span></>}
         {showTerms ? (
           <TermsAndConditions gobackToSignup={() => setshowTerms(false)} />

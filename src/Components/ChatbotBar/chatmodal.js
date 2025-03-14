@@ -31,7 +31,7 @@ const ChatModal = ({ open, handleClose }) => {
         setInput(''); // Clear input field immediately after sending the message
 
         try {
-            const response = await requestInstance.post(`${constants.BASE_URL_2}ask-evento`, { message: text });
+            const response = await requestInstance.post(`${constants.BASE_URL}ask-evento`, { question: text });
             const responseData = response.data;
             setLoading(false);
             const botResponse = { text: responseData ? responseData : 'sorry i cant find an answer to you question', sender: 'bot' };
@@ -87,8 +87,8 @@ const ChatModal = ({ open, handleClose }) => {
                 <List>
                     <Alert
                         message="Under Maintenance"
-                        description="Sorry, I'm under maintenance. My creator is working on me 😊 ."
-                        type="error"
+                        description="Sorry, if my responses are not according to querry😊 ."
+                        type="warning"
                         showIcon
                         closable={false}
                     />

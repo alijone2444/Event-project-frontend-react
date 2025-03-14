@@ -65,7 +65,7 @@ const Footer = (props) => {
         <Grid container spacing={4}>
           <Grid item xs={12} sm={3}>
             <Typography variant="h6" className={[classes.text]} >
-              IST EMS
+              Eventive
             </Typography>
             <div style={{ marginTop: '5%' }}>
               <Typography variant="body2" style={{ padding: "1%" }} className={classes.text}>
@@ -160,7 +160,7 @@ const Footer = (props) => {
         An Event Management Platform
       </Typography>
       <Typography variant="body2" className={classes.text} >
-        © {new Date().getFullYear()} IST EMS. All rights reserved.
+        © {new Date().getFullYear()} Eventive. All rights reserved.
       </Typography>
     </footer>
   );

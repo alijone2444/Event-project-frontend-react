@@ -1,7 +1,7 @@
 import { DollarCircleOutlined, ExclamationCircleOutlined, UserAddOutlined, PictureOutlined } from '@ant-design/icons';
 
 const DashboardData = {
-  title: "Welcome to ISTHUB Alpha",
+  title: "Welcome to Eventive Alpha",
   content: "Effortlessly manage events, attendees, and schedules in one place. Analyze event performance with insightful analytics. Elevate your event management game with Eventify. Let's create extraordinary and memorable events together."
 };
 

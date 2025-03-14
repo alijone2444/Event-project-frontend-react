@@ -37,7 +37,7 @@ const AboutPage = () => {
                     <img src={require('../../images/event-background.jpg')} alt="About" />
 
                     <div className='custom-position-text-about'>
-                        <Typography.Title style={{ color: 'white', }} level={3}>'With IST EMS'</Typography.Title>
+                        <Typography.Title style={{ color: 'white', }} level={3}>'With Eventive'</Typography.Title>
                         <Typography.Text className='small-description-text' style={{ color: 'white', fontSize: 15 }}>Efficiently organize tasks, increase individual engagement, save time.</Typography.Text>
 
                         <Button className='more-about-us' onClick={handleScroll}>

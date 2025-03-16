@@ -1,57 +1,64 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Input } from 'antd';
+import { Button, Input, Modal } from 'antd';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { CircularProgress } from '@mui/material';
+import constants from '../../Constants/constants';
 
 const QuickSignup = ({ inputString, onConfirm, showLogin }) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [userInfo, setUserInfo] = useState({ name: 'N/A', department: 'N/A', rollno: 'N/A' });
-    const analyzeInputString = (input) => {
-        console.log("input is ", input);
 
-        // Ensure the input is a string
-        if (typeof input !== 'string') {
-            console.error('Input is not a string:', input);
-            return { name: 'N/A', rollno: 'N/A', department: 'N/A' };
+    // Function to analyze the input string and extract fields
+    const analyzeInputString = (string) => {
+        console.log("input is:", string);
+        let input = string[0];
+
+        // Ensure the input is a valid string
+        if (typeof input !== "string") {
+            console.error("Invalid input:", input);
+            return { name: "N/A", department: "N/A", rollno: "N/A" };
         }
 
-        // Split the input by newline characters and trim each line
-        const lines = input.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+        // Split the input by newlines and remove empty lines
+        const lines = input.split("\n").map(line => line.trim()).filter(line => line.length > 0);
 
-        // Initialize variables
-        let name = 'N/A';
-        let department = 'N/A';
-        let rollno = 'N/A';
+        // Ensure there are at least 3 meaningful lines after removing the first
+        if (lines.length < 3) {
+            console.error("Invalid format: Expected at least 3 lines after the first.");
+            return { name: "N/A", department: "N/A", rollno: "N/A" };
+        }
 
         // Extract name, department, and roll number
-        if (lines.length >= 1) {
-            // Name is usually the first line
-            name = lines[0].replace(/[^a-zA-Z ]/g, '').trim(); // Remove special characters
-        }
+        const name = lines[1]; // Second line is the username
+        let department = lines[2]; // Third line is the department
+        const rollno = lines[3].match(/\d{9}/) ? lines[3].match(/\d{9}/)[0] : "N/A"; // Extract 9-digit roll number
 
-        // Extract department and roll number
-        for (const line of lines) {
-            // Department is usually in the format "CS:02 B" or "85 (CS)2"
-            if (line.match(/[A-Za-z]{2}:\d{2} [A-Za-z]|\d{2} \(C[A-Za-z]\)\d/)) {
-                department = line.replace(/[^a-zA-Z0-9:() ]/g, '').trim(); // Clean up the department string
-            }
+        // Find the best matching department from departmentOptions
+        const matchedDepartment = constants.departmentOptions.find(dep =>
+            dep.toLowerCase().includes(department.toLowerCase())
+        );
 
-            // Roll number is usually a 9-digit number
-            if (line.match(/\d{9}/)) {
-                rollno = line.match(/\d{9}/)[0]; // Extract the 9-digit roll number
-            }
-        }
+        // If a match is found, use it; otherwise, keep the extracted department
+        department = matchedDepartment || department;
 
         return { name, department, rollno };
     };
+
     // Use useEffect to process inputString when it changes
     useEffect(() => {
         if (inputString) {
             console.log(inputString);
             const extractedInfo = analyzeInputString(inputString);
             setUserInfo(extractedInfo);
+
+            // Show a pop-up message to verify credentials
+            Modal.info({
+                title: 'Verify Credentials',
+                content: 'Please ensure the extracted credentials are correct, as they cannot be changed later.',
+                okText: 'OK',
+            });
         }
     }, [inputString]);
 
@@ -85,6 +92,24 @@ const QuickSignup = ({ inputString, onConfirm, showLogin }) => {
                         }}
                     >
                         {userInfo.name}
+                    </div>
+                </div>
+
+                <div style={{ marginBottom: '20px' }}>
+                    <label>Department:</label>
+                    <div
+                        style={{
+                            textAlign: 'center',
+                            fontFamily: 'Courier New, Courier, monospace',
+                            fontSize: '1.2em',
+                            fontWeight: 'bold',
+                            color: '#ffffff',
+                            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                            padding: '10px',
+                            borderRadius: '5px',
+                        }}
+                    >
+                        {userInfo.department}
                     </div>
                 </div>
 
@@ -157,12 +182,6 @@ const QuickSignup = ({ inputString, onConfirm, showLogin }) => {
                     >
                         {loading ? <CircularProgress size={20} style={{ color: 'white' }} /> : 'Confirm'}
                     </Button>
-                    <div style={{ color: 'white' }}>
-                        {inputString[0].split('\n').map((line, index) => (
-                            <div key={index}>{line}</div>
-                        ))}
-                    </div>
-
                 </div>
             </div>
         </div>

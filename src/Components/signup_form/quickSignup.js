@@ -3,7 +3,7 @@ import { Button, Input, Modal } from 'antd';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { CircularProgress } from '@mui/material';
 import constants from '../../Constants/constants';
-
+import getFullDepartmentName from '../functions/FetchcomparedDepartment';
 const QuickSignup = ({ inputString, onConfirm, showLogin }) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -34,12 +34,10 @@ const QuickSignup = ({ inputString, onConfirm, showLogin }) => {
         const name = lines[1]; // Second line is the username
         let department = lines[2]; // Third line is the department
         const rollno = lines[3].match(/\d{9}/) ? lines[3].match(/\d{9}/)[0] : "N/A"; // Extract 9-digit roll number
+        // const rollno = lines[3].match(/\d+/) ? lines[3].match(/\d+/)[0] : "N/A"; 
 
         // Find the best matching department from departmentOptions
-        const matchedDepartment = constants.departmentOptions.find(dep =>
-            dep.toLowerCase().includes(department.toLowerCase())
-        );
-
+        const matchedDepartment = getFullDepartmentName(department)
         // If a match is found, use it; otherwise, keep the extracted department
         department = matchedDepartment || department;
 

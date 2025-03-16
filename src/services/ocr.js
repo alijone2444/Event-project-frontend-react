@@ -1,4 +1,5 @@
 import Tesseract from 'tesseract.js';
+
 // Function to crop the bottom-right portion of the image dynamically
 export const cropBottomRight = (image, widthRatioStart = 0.7, heightRatioStart = 0.6, widthRatioEnd = 0.98, heightRatioEnd = 1) => {
     const img = new Image();
@@ -66,7 +67,12 @@ export const handleCardOcr = async (images, setloadingOcr, setCroppedImages, set
                     tessedit_pageseg_mode: 6
                 }
             );
-            ocrResults.push(result.data.text);  // Collect the OCR text
+
+            // Log the OCR text for each image
+            console.log("OCR Text for Image:", result.data.text);
+
+            // Collect the OCR text
+            ocrResults.push(result.data.text);
         }
 
         console.log("OCR Results:", ocrResults);

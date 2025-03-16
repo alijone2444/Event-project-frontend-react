@@ -7,12 +7,9 @@ import TermsAndConditions from './termsAndConditions';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import constants from '../../Constants/constants';
 import { makeStyles, styled } from '@mui/styles';
-import { handleCardOcr } from '../../services/ocr';
 import { CircularProgress } from '@mui/material';
-import CameraComponent from '../camera/cameraAuthentication';
+// import CameraComponent from '../camera/cameraAuthentication';
 import CameraComponentVersionOne from '../camera/cameraAuthenticationV1';
-
-
 
 const { Option } = Select;
 
@@ -29,26 +26,23 @@ const SignUp = (props) => {
   const [checked, setisChecked] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [loading, setloading] = useState(false);
-  const [loadingOcr, setloadingOcr] = useState(false);
+
   const [showcamera, setshowcamera] = useState(true)
-  const [ocrResults, setOcrResults] = useState([])
   const onFinish = (values) => {
   };
-  const getImageDimensions = (base64) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = base64;
-      img.onload = () => {
-        resolve({ width: img.width, height: img.height });
-      };
-      img.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-  const processImages = async (images) => {
-    await handleCardOcr(images, setloadingOcr, setCroppedImages, setOcrResults);
-  };
+  // const getImageDimensions = (base64) => {
+  //   return new Promise((resolve, reject) => {
+  //     const img = new Image();
+  //     img.src = base64;
+  //     img.onload = () => {
+  //       resolve({ width: img.width, height: img.height });
+  //     };
+  //     img.onerror = (error) => {
+  //       reject(error);
+  //     };
+  //   });
+  // };
+
   const handleSubmit = async () => {
     setloading(true)
     try {
@@ -112,27 +106,26 @@ const SignUp = (props) => {
       props.showSignIn();
     }, 1000);
   };
-  const [croppedImages, setCroppedImages] = useState([]); // Store the cropped images
 
   return (
     <div className="signup-container">
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      {/* <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {croppedImages.map((image, index) => (
           <div key={index} style={{ margin: '10px' }}>
             <img src={image} alt={`Cropped ${index}`} width={150} height={150} />
             <div>{ocrResults[index]}</div>
           </div>
         ))}
-      </div>
+      </div> */}
       <div className="signup-form-container">
-        {(props.isQuickSignup && showcamera) && <CameraComponentVersionOne onclose={() => setshowcamera(false)} onfinish={(images) => { setshowcamera(false); processImages(images) }} />}
+        {(props.isQuickSignup && showcamera) && <CameraComponentVersionOne onclose={() => setshowcamera(false)} onfinish={(images) => { setshowcamera(false); props.processImages(images) }} />}
         {showBorder && <><span className="top"></span></>}
         {showTerms ? (
           <TermsAndConditions gobackToSignup={() => setshowTerms(false)} />
         ) : (
           <>
             <h2 className="signup-title">Sign Up</h2>
-            {loadingOcr ?
+            {/* {loadingOcr ?
               <CircularProgress size={20} style={{ color: 'white' }} />
               :
               <>
@@ -141,7 +134,7 @@ const SignUp = (props) => {
                     {item.text}
                   </h6>
                 ))}
-              </>}
+              </>} */}
             <Form name="signupForm" initialValues={{ remember: true }} onFinish={onFinish}>
 
               <Form.Item name="Email Address" rules={[{ required: true, message: 'Enter your email to link your account to it!' }]}>

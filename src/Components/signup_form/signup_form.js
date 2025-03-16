@@ -8,11 +8,8 @@ import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import constants from '../../Constants/constants';
 import { makeStyles, styled } from '@mui/styles';
 import { CircularProgress } from '@mui/material';
-import CameraComponent from '../camera/cameraAuthentication';
-import Tesseract from 'tesseract.js';
+// import CameraComponent from '../camera/cameraAuthentication';
 import CameraComponentVersionOne from '../camera/cameraAuthenticationV1';
-
-
 
 const { Option } = Select;
 
@@ -29,103 +26,23 @@ const SignUp = (props) => {
   const [checked, setisChecked] = useState(false);
   const [selectedDepartment, setSelectedDepartment] = useState(null);
   const [loading, setloading] = useState(false);
-  const [loadingOcr, setloadingOcr] = useState(false);
+
   const [showcamera, setshowcamera] = useState(true)
-  const [ocrResults, setOcrResults] = useState([])
   const onFinish = (values) => {
   };
-  const getImageDimensions = (base64) => {
-    return new Promise((resolve, reject) => {
-      const img = new Image();
-      img.src = base64;
-      img.onload = () => {
-        resolve({ width: img.width, height: img.height });
-      };
-      img.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-  // Function to crop the bottom-right portion of the image dynamically
-  const cropBottomRight = (image, widthRatioStart = 0.5, heightRatioStart = 0.55, widthRatioEnd = 0.98, heightRatioEnd = 0.95) => {
-    const img = new Image();
-    img.src = image;
+  // const getImageDimensions = (base64) => {
+  //   return new Promise((resolve, reject) => {
+  //     const img = new Image();
+  //     img.src = base64;
+  //     img.onload = () => {
+  //       resolve({ width: img.width, height: img.height });
+  //     };
+  //     img.onerror = (error) => {
+  //       reject(error);
+  //     };
+  //   });
+  // };
 
-    return new Promise((resolve, reject) => {
-      img.onload = () => {
-        const width = img.width;
-        const height = img.height;
-
-        // Calculate the crop area
-        const left = width * widthRatioStart;
-        const top = height * heightRatioStart;
-        const right = width * widthRatioEnd;
-        const bottom = height * heightRatioEnd;
-
-        // Create a canvas to perform the cropping
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = right - left;
-        canvas.height = bottom - top;
-
-        // Draw the cropped image on the canvas
-        ctx.drawImage(img, left, top, right - left, bottom - top, 0, 0, canvas.width, canvas.height);
-
-        // Get the base64 data URL of the cropped image
-        const croppedImage = canvas.toDataURL('image/jpeg');
-        resolve(croppedImage);
-      };
-
-      img.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-  // not the corrext way of ocr use segmentation is not this way
-  const handleCardOcr = async (images) => {
-    try {
-      setloadingOcr(true);
-
-      // Array to store the cropped images
-      const croppedImages = [];
-
-      // Process each image with cropping
-      for (const image of images) {
-        // Crop the image before sending to OCR
-        const croppedImage = await cropBottomRight(image);
-        croppedImages.push(croppedImage);
-      }
-
-      console.log("Cropped Images:", croppedImages);
-
-      // Array to store the OCR results
-      const ocrResults = [];
-
-      // Process each cropped image with Tesseract.js
-      setCroppedImages(croppedImages);
-      for (const croppedImage of croppedImages) {
-        const result = await Tesseract.recognize(
-          croppedImage, // Cropped image URL or base64-encoded image
-          'eng',  // Language code (English in this case)
-          {
-            logger: (m) => console.log(m), // Log progress (optional)
-            tessedit_pageseg_mode: 6
-          }
-        );
-        ocrResults.push(result.data.text);  // Collect the OCR text
-      }
-
-      console.log("OCR Results:", ocrResults);
-
-      // Store the OCR results in state
-      setOcrResults(ocrResults);
-      setloadingOcr(false);
-
-    } catch (error) {
-      console.error("Error during OCR processing:", error);
-      setloadingOcr(false);
-    }
-  };
   const handleSubmit = async () => {
     setloading(true)
     try {
@@ -189,27 +106,26 @@ const SignUp = (props) => {
       props.showSignIn();
     }, 1000);
   };
-  const [croppedImages, setCroppedImages] = useState([]); // Store the cropped images
 
   return (
     <div className="signup-container">
-      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+      {/* <div style={{ display: 'flex', flexWrap: 'wrap' }}>
         {croppedImages.map((image, index) => (
           <div key={index} style={{ margin: '10px' }}>
             <img src={image} alt={`Cropped ${index}`} width={150} height={150} />
             <div>{ocrResults[index]}</div>
           </div>
         ))}
-      </div>
+      </div> */}
       <div className="signup-form-container">
-        {(props.isQuickSignup && showcamera) && <CameraComponentVersionOne onfinish={(images) => { setshowcamera(false); handleCardOcr(images) }} />}
+        {(props.isQuickSignup && showcamera) && <CameraComponentVersionOne onclose={() => setshowcamera(false)} onfinish={(images) => { setshowcamera(false); props.processImages(images) }} />}
         {showBorder && <><span className="top"></span></>}
         {showTerms ? (
           <TermsAndConditions gobackToSignup={() => setshowTerms(false)} />
         ) : (
           <>
             <h2 className="signup-title">Sign Up</h2>
-            {loadingOcr ?
+            {/* {loadingOcr ?
               <CircularProgress size={20} style={{ color: 'white' }} />
               :
               <>
@@ -218,7 +134,7 @@ const SignUp = (props) => {
                     {item.text}
                   </h6>
                 ))}
-              </>}
+              </>} */}
             <Form name="signupForm" initialValues={{ remember: true }} onFinish={onFinish}>
 
               <Form.Item name="Email Address" rules={[{ required: true, message: 'Enter your email to link your account to it!' }]}>

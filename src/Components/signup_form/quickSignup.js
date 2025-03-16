@@ -7,8 +7,7 @@ const QuickSignup = ({ inputString, onConfirm, showLogin }) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
-    const [userInfo, setUserInfo] = useState({ name: 'N/A', rollno: 'N/A', department: 'N/A' });
-
+    const [userInfo, setUserInfo] = useState({ name: 'N/A', department: 'N/A', rollno: 'N/A' });
     const analyzeInputString = (input) => {
         console.log("input is ", input);
 
@@ -18,33 +17,41 @@ const QuickSignup = ({ inputString, onConfirm, showLogin }) => {
             return { name: 'N/A', rollno: 'N/A', department: 'N/A' };
         }
 
-        // Split the input by newline characters
+        // Split the input by newline characters and trim each line
         const lines = input.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-        console.log(input)
+
+        // Initialize variables
         let name = 'N/A';
-        let rollno = 'N/A';
         let department = 'N/A';
+        let rollno = 'N/A';
 
-        // Extract name, roll number, and department
+        // Extract name, department, and roll number
         if (lines.length >= 1) {
-            name = lines[0]; // First line is the name
-        }
-        if (lines.length >= 2) {
-            department = lines[1]; // Second line is the department
-        }
-        if (lines.length >= 3) {
-            rollno = lines[2]; // Third line is the roll number
+            // Name is usually the first line
+            name = lines[0].replace(/[^a-zA-Z ]/g, '').trim(); // Remove special characters
         }
 
-        return { name, rollno, department };
+        // Extract department and roll number
+        for (const line of lines) {
+            // Department is usually in the format "CS:02 B" or "85 (CS)2"
+            if (line.match(/[A-Za-z]{2}:\d{2} [A-Za-z]|\d{2} \(C[A-Za-z]\)\d/)) {
+                department = line.replace(/[^a-zA-Z0-9:() ]/g, '').trim(); // Clean up the department string
+            }
+
+            // Roll number is usually a 9-digit number
+            if (line.match(/\d{9}/)) {
+                rollno = line.match(/\d{9}/)[0]; // Extract the 9-digit roll number
+            }
+        }
+
+        return { name, department, rollno };
     };
-
     // Use useEffect to process inputString when it changes
     useEffect(() => {
         if (inputString) {
             console.log(inputString);
-            const { name, rollno, department } = analyzeInputString(inputString);
-            setUserInfo({ name, rollno, department });
+            const extractedInfo = analyzeInputString(inputString);
+            setUserInfo(extractedInfo);
         }
     }, [inputString]);
 
@@ -150,6 +157,12 @@ const QuickSignup = ({ inputString, onConfirm, showLogin }) => {
                     >
                         {loading ? <CircularProgress size={20} style={{ color: 'white' }} /> : 'Confirm'}
                     </Button>
+                    <div style={{ color: 'white' }}>
+                        {inputString[0].split('\n').map((line, index) => (
+                            <div key={index}>{line}</div>
+                        ))}
+                    </div>
+
                 </div>
             </div>
         </div>

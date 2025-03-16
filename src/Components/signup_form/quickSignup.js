@@ -45,21 +45,25 @@ const QuickSignup = ({ inputString, onConfirm, showLogin }) => {
     };
 
     // Use useEffect to process inputString when it changes
+
     useEffect(() => {
         if (inputString) {
             console.log(inputString);
-            const extractedInfo = analyzeInputString(inputString);
-            setUserInfo(extractedInfo);
+            try {
+                const extractedInfo = analyzeInputString(inputString);
+                setUserInfo(extractedInfo);
 
-            // Show a pop-up message to verify credentials
-            Modal.info({
-                title: 'Verify Credentials',
-                content: 'Please ensure the extracted credentials are correct, as they cannot be changed later.',
-                okText: 'OK',
-            });
+                // Show a pop-up message to verify credentials
+                Modal.info({
+                    title: 'Verify Credentials',
+                    content: 'Please ensure the extracted credentials are correct, as they cannot be changed later.',
+                    okText: 'OK',
+                });
+            } catch (error) {
+                console.error("Error analyzing input string:", error);
+            }
         }
     }, [inputString]);
-
     const handleConfirm = () => {
         setLoading(true);
         // Simulate an async operation (e.g., API call)

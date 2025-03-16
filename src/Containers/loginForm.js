@@ -12,7 +12,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import ForgotPassword from "../Components/ForgetPasswordForm/ForgetPasswordForm";
 import QuickSignup from "../Components/signup_form/quickSignup";
 import { handleCardOcr } from "../services/ocr";
-
+import { CircularProgress } from "@mui/material";
 function Login(props) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
@@ -126,6 +126,22 @@ function Login(props) {
             {flag ? "Enable" : "Disable"} Sound Effect
           </Tag>
         </div>*/}
+        {loadingOcr && <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1000,
+          }}
+        >
+          <CircularProgress style={{ color: 'white' }} />
+        </div>}
       </div>
     </div>
   );

@@ -82,7 +82,7 @@ const QuickSignup = ({ inputString, showLogin }) => {
                 }
 
                 // Simulate an API call
-                const response = await fetch(`${constants.BASE_URL}signup`, {
+                const response = await fetch(`${constants.BASE_URL}quick-signup`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

@@ -52,4 +52,4 @@ console.log(getFullDepartmentName("bs cs")); // Output: "Computer Science"
 console.log(getFullDepartmentName("ee t"));  // Output: "Electrical Engineering"
 console.log(getFullDepartmentName("space")); // Output: "Space Science"
 
-export default getFullDepartmentName;
+export default {getFullDepartmentName};

@@ -14,40 +14,40 @@ const QuickSignup = ({ inputString, showLogin }) => {
     const [successModalVisible, setSuccessModalVisible] = useState(false);
     const [isCorrect, setIsCorrect] = useState(false)
     const analyzeInputString = (string) => {
-        // console.log("input is:", string);
-        let input = string[0];
+        try {
+            let input = string[0];
 
-        if (typeof input !== "string") {
-            console.error("Invalid input:", input);
+            if (typeof input !== "string") {
+                console.error("Invalid input:", input);
+                return { name: "N/A", department: "N/A", rollno: "N/A" };
+            }
+
+            const lines = input.split("\n").map(line => line.trim()).filter(line => line.length > 0);
+            if (lines.length < 3) {
+                console.error("Invalid format: Expected at least 3 lines after the first.");
+                return { name: "N/A", department: "N/A", rollno: "N/A" };
+            }
+
+            const name = lines[1];
+            let department = lines[2];
+            let rollno = "N/A"; // Default value
+            if (lines.length > 3 && typeof lines[3] === "string") {
+                const rollnoMatch = lines[3].match(/\d{9}/);
+                rollno = rollnoMatch ? rollnoMatch[0] : "N/A";
+            }
+            const matchedDepartment = getFullDepartmentName(department);
+            setIsCorrect(matchedDepartment !== department);
+            console.log("Matched department:", matchedDepartment);
+
+            return { name, department: matchedDepartment, rollno };
+
+        } catch (error) {
+            console.error("Error analyzing input string:", error);
             return { name: "N/A", department: "N/A", rollno: "N/A" };
         }
-
-        const lines = input.split("\n").map(line => line.trim()).filter(line => line.length > 0);
-
-        if (lines.length < 3) {
-            console.error("Invalid format: Expected at least 3 lines after the first.");
-            return { name: "N/A", department: "N/A", rollno: "N/A" };
-        }
-
-        const name = lines[1];
-        let department = lines[2];
-        const rollno = lines[3].match(/\d{9}/) ? lines[3].match(/\d{9}/)[0] : "N/A";
-
-        const matchedDepartment = getFullDepartmentName(department);
-        department = matchedDepartment || department;
-        if (matchedDepartment) {
-            setIsCorrect(true)
-        }
-        else {
-            setIsCorrect(false)
-        }
-
-        return { name, department, rollno };
     };
-
     useEffect(() => {
         if (inputString) {
-            // console.log(inputString);
             try {
                 const extractedInfo = analyzeInputString(inputString);
                 setUserInfo(extractedInfo);
@@ -57,7 +57,7 @@ const QuickSignup = ({ inputString, showLogin }) => {
                     okText: 'OK',
                 });
             } catch (error) {
-                console.error("Error analyzing input string:", error);
+                console.error("Error in useEffect:", error);
             }
         }
     }, [inputString]);

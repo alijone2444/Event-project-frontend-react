@@ -153,7 +153,7 @@ function Home() {
           <ScrollingHorizontally data={UpcommingEvent} title={'Upcomming'} subheader={'Future Gatherings'} toNavigate='/Home' DescriptionKey='upcomingEvents' />
         </div>
         <div>
-          <TimerComponent startDate={UpcommingEvent[0]?.startDate} startTime={UpcommingEvent[0]?.startTime} />
+          <TimerComponent startDate={UpcommingEvent[0]?.startDate} startTime={UpcommingEvent[0]?.startTime} eventName={UpcommingEvent[0]?.eventName} />
           <SocietyCards threeSocieties={threeSocieties.societies} />
         </div>
         <HomeBody />

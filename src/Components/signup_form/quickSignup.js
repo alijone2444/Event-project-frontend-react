@@ -22,19 +22,24 @@ const QuickSignup = ({ inputString, showLogin }) => {
                 return { name: "N/A", department: "N/A", rollno: "N/A" };
             }
 
+            // Split and clean lines
             const lines = input.split("\n").map(line => line.trim()).filter(line => line.length > 0);
-            if (lines.length < 3) {
-                console.error("Invalid format: Expected at least 3 lines after the first.");
+
+            if (lines.length < 4) {
+                console.error("Invalid format: Expected at least 4 meaningful lines.");
                 return { name: "N/A", department: "N/A", rollno: "N/A" };
             }
 
-            const name = lines[1];
-            let department = lines[2];
-            let rollno = "N/A"; // Default value
-            if (lines.length > 3 && typeof lines[3] === "string") {
-                const rollnoMatch = lines[3].match(/\d{9}/);
-                rollno = rollnoMatch ? rollnoMatch[0] : "N/A";
-            }
+            // Roll number is always the last valid line
+            let rollno = lines[lines.length - 1].match(/\d{9}/) ? lines[lines.length - 1] : "N/A";
+
+            // Department is the second last line
+            let department = lines[lines.length - 2];
+
+            // Name is everything after the first entry and before the department
+            let name = lines.slice(1, lines.length - 2).join(" ");
+
+            // Convert department to full name if applicable
             const matchedDepartment = getFullDepartmentName(department);
             setIsCorrect(matchedDepartment !== department);
             console.log("Matched department:", matchedDepartment);
@@ -46,6 +51,7 @@ const QuickSignup = ({ inputString, showLogin }) => {
             return { name: "N/A", department: "N/A", rollno: "N/A" };
         }
     };
+
     useEffect(() => {
         if (inputString) {
             try {

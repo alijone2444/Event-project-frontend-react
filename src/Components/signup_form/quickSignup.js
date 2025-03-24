@@ -105,7 +105,7 @@ const QuickSignup = ({ inputString, showLogin }) => {
                 if (data.success) {
                     setSuccessModalVisible(true);
                 } else {
-                    message.error(data.message || 'Signup failed');
+                    message.error(data.status || 'Signup failed');
                 }
             } else {
                 message.error('Please fill all fields correctly');

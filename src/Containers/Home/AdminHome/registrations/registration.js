@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Button, Tag, Space, Spin } from 'antd';
+import { Table, Button, Tag, Space, Spin, Input } from 'antd';
 import { Grid, Typography, useMediaQuery } from '@mui/material';
 import { setRequestsDataAdmin } from '../../../../ReduxStore/actions/RequestActionAdmin';
+
 import { useDispatch, useSelector } from 'react-redux';
 import createAuthenticatedRequest from '../../../../RequestwithHeader';
 import {
@@ -17,6 +18,8 @@ const AttendeesTable = (props) => {
   const isSmallScreen = useMediaQuery('(max-width: 768px)'); // Adjust the max-width value as needed
   const [isupdatedAfterAction, setisupdatedAfterAction] = useState(false)
   const [runuseffect, setrunuseffect] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('');
+
   const [loading, setloading] = useState(null)
   const [mainLoading, setMainloading] = useState(false)
   let pendingRequests;
@@ -47,6 +50,11 @@ const AttendeesTable = (props) => {
     setrunuseffect(false)
     setloading(false)
   }, [dispatch, isupdatedAfterAction, props.showOnlyActiveUsers]);
+  const filteredRequests = requestsData.filter(request =>
+    request.Rollno.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    request.department.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    request.UserType.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleAction = (id, action) => {
     setloading(id)
@@ -150,26 +158,38 @@ const AttendeesTable = (props) => {
       ),
     },
   ];
-
   return (
     <div>
-      <Grid container alignItems="center" justifyContent="space-between" style={{ backgroundColor: 'dodgerblue' }}>
+      <Grid container alignItems="center" justifyContent="space-between" style={{ backgroundColor: 'dodgerblue', padding: '10px' }}>
         <Grid item>
-          <Typography variant="h6" style={{ color: 'white', padding: '5%', width: '100%' }}>
+          <Typography variant="h6" style={{ color: 'white' }}>
             {props.name}
           </Typography>
         </Grid>
-        {props.showTage && <Grid item style={{ paddingBottom: isSmallScreen ? '5%' : '0', paddingLeft: isSmallScreen ? '5%' : '0' }}>
-          <Tag color="blue">Pending: {pendingRequests}</Tag>
-          <Tag color="green">Accepted: {acceptedRequests}</Tag>
-          <Tag color="red">Rejected: {rejectedRequests}</Tag>
-        </Grid>}
+        <Grid item>
+          <Input
+            placeholder="Search..."
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{ width: 200, marginRight: 10 }}
+          />
+        </Grid>
+        {props.showTage && (
+          <Grid item>
+            <Tag color="blue">Pending: {pendingRequests}</Tag>
+            <Tag color="green">Accepted: {acceptedRequests}</Tag>
+            <Tag color="red">Rejected: {rejectedRequests}</Tag>
+          </Grid>
+        )}
       </Grid>
-      {mainLoading ? <div style={{ position: 'relative', height: '100vh', width: '100%' }}>
-        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }}>
-          <Spin size='large' />
+      {mainLoading ? (
+        <div style={{ position: 'relative', height: '100vh', width: '100%' }}>
+          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)' }}>
+            <Spin size="large" />
+          </div>
         </div>
-      </div> : <Table columns={columns} dataSource={requestsData} style={{ overflowX: 'auto' }} />}
+      ) : (
+        <Table columns={columns} dataSource={filteredRequests} style={{ overflowX: 'auto' }} />
+      )}
     </div>
   );
 };

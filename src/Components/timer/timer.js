@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Typography, Divider, Col, Row, Skeleton } from 'antd';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
-
+import './timer.css';
 // Ant Design colors
 const colors = {
     primary: '#1E90FF', // Dodger Blue
@@ -25,7 +25,7 @@ const getCombinedDateTime = (date, time) => {
     return new Date(combinedDateTime);
 };
 
-function TimerComponent({ startDate, startTime }) {
+function TimerComponent({ startDate, startTime, eventName }) {
     const combinedDate = getCombinedDateTime(startDate, startTime);
     const now = new Date();
 
@@ -52,6 +52,10 @@ function TimerComponent({ startDate, startTime }) {
                 >
                     <Typography.Title level={3} style={{ color: colors.primary }}>
                         Next Event Countdown
+                    </Typography.Title>
+
+                    <Typography.Title level={3} style={{ color: colors.primary }} className='event-name'>
+                        {eventName}
                     </Typography.Title>
                     <Divider />
                     {isDataMissing ? (

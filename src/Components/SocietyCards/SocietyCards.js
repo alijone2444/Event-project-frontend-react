@@ -38,7 +38,9 @@ const CustomCard = ({ IconComponent, type, title, name, content, gradient, allDa
                     onClick={() => {
                         console.log(type, name, allData)
                         if (type === 'Event')
-                            navigate(`/eventdetail/${name}`, { state: { data: { _id: allData._id, name }, toNavigate: '/Home' } });
+                            // navigate(`/eventdetail/${response.data.events[0].eventName}`, { state: { data: response.data.events[0], toNavigate: '/Home' } });
+
+                            navigate(`/eventdetail/${name}`, { state: { data: allData, toNavigate: '/Home' } });
                         else {
                             navigate('society-page', { state: { ...allData, Simple: true } }); recordSocietyVisit(name)
                         }

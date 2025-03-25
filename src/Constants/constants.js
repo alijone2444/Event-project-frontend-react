@@ -8,7 +8,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 import Info from '@mui/icons-material/InfoOutlined';
 import UserIcon from '@mui/icons-material/AccountCircleOutlined'
-import { AimOutlined, TeamOutlined, AppstoreAddOutlined, RocketOutlined ,EnvironmentOutlined} from '@ant-design/icons';
+import { AimOutlined, TeamOutlined, AppstoreAddOutlined, RocketOutlined, EnvironmentOutlined } from '@ant-design/icons';
 
 const constants = {
 
@@ -17,14 +17,18 @@ const constants = {
         { name: "Events", icon: <StarBorderOutlined /> },
         { name: "Societies", icon: <img alt="Event Icon" src={societyicon} style={{ width: "24px", height: "24px" }} /> },
         { name: "Calander", icon: <CalendarTodayOutlined /> },
-       { name: "IST MAP",
+        {
+            name: "IST MAP",
             // description: "Map of Institute of space and technology.",
-            icon: <EnvironmentOutlined />}
-        
+            icon: <EnvironmentOutlined />
+        }
+
     ], settings: [
-        { name: "IST MAP",
+        {
+            name: "IST MAP",
             description: "Map of Institute of space and technology.",
-            Icon: <EnvironmentOutlined />}
+            Icon: <EnvironmentOutlined />
+        }
         ,
         {
             name: "Calendar",
@@ -46,7 +50,7 @@ const constants = {
             description: "Manage society information and settings.",
             Icon: <AdminPanelSettingsIcon />
         },
-        
+
         {
             name: "Logout",
             description: "Sign out of your account securely.",
@@ -55,7 +59,7 @@ const constants = {
     ],
 
     // // /ist-ems-backend/
-    // BASE_URL: 'http://192.168.1.4:3002/ist-ems-backend/',
+    // BASE_URL: 'http://192.168.1.17:3002/ist-ems-backend/',
     BASE_URL: 'https://ist-ems.live/ist-ems-backend/',
 
     // BASE_URL_2: 'http://192.168.1.16:5000/',

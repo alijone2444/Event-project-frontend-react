@@ -3,13 +3,24 @@ import { CircularProgress, Grid, IconButton, Typography } from '@mui/material';
 import { ThumbUp, ThumbUpOutlined, VisibilityOutlined } from '@mui/icons-material';
 import './gridview.css';
 import { Spin, Button, Space } from 'antd';
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 import createAuthenticatedRequest from '../../../../RequestwithHeader';
 import constants from '../../../../Constants/constants';
 import { CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { setEventsDataAll } from '../../../../ReduxStore/actions/eventsDataActionUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { setEventsDataAdmin } from '../../../../ReduxStore/actions/eventsDataAction';
+import PollCreationModal from '../../../../Components/PollCreation/PollCreationModal';
+import CreatePollForm from '../../../../Components/PollCreation/CreatePollForm';
+
+const pollTypeColors = {
+  voting: '#13c2c2',
+  free_table: '#faad14',
+  collect_ideas: '#fa8c16',
+  survey: '#722ed1',
+  photo_contest: '#001529',
+};
+
 const EventCard = (props) => {
   const requestInstance = createAuthenticatedRequest();
   const dispatch = useDispatch();
@@ -17,6 +28,16 @@ const EventCard = (props) => {
   const events = useSelector((state) => state.userAllEvents); // Adjust according to your state structure
   const AdminEvents = useSelector((state) => state.adminEvents); // Adjust according to your state structure
   const [FilteredData, setFilteredData] = useState([])
+  const [showPollModal, setShowPollModal] = useState(false);
+  const [showCreatePollForm, setShowCreatePollForm] = useState(false);
+  const [selectedEventId, setSelectedEventId] = useState(null);
+  const [selectedPollType, setSelectedPollType] = useState(null);
+  const [selectedPollColor, setSelectedPollColor] = useState(null);
+
+  // Get userType from localStorage
+  const userType = localStorage.getItem('userType');
+  const canCreatePoll = userType === 'President' || userType === 'admin';
+
   const toggleLike = async (eventId, isLIKE) => {
     try {
       setLoadingStates(prev => ({ ...prev, [eventId]: true })); // Set loading state for specific event
@@ -59,82 +80,126 @@ const EventCard = (props) => {
     setFilteredData(filterEvents());
   }, [props.eventData, props.sortOption]);
 
+  const handleCreatePoll = (eventId) => {
+    setSelectedEventId(eventId);
+    setShowPollModal(true);
+  };
+
+  const handlePollTypeSelect = (pollType) => {
+    setSelectedPollType(pollType);
+    setSelectedPollColor(pollTypeColors[pollType] || '#13c2c2');
+    setShowPollModal(false);
+    setShowCreatePollForm(true);
+  };
+
+  const handleCloseCreatePollForm = () => {
+    setShowCreatePollForm(false);
+    setSelectedPollType(null);
+    setSelectedPollColor(null);
+  };
+
   return (
-    <Grid container spacing={3} style={{ padding: '2%' }}>
-      {FilteredData.map((event, index) => (
-        <Grid key={event._id} item xs={12} sm={6} md={4}>
-          <div style={{ border: '1px solid lightgrey', borderRadius: '2%' }}>
-            <div style={{ padding: '5%', position: 'relative' }}>
-              <img
-                className="event-image"
-                style={{ height: '150px', }}
-                src={`${constants.BASE_URL}images/${event.dpimageFileName}`}
-                alt="Event"
-              />
-              <div style={{
-                position: 'absolute',
-                top: '11%',
-                right: '5%',
-                display: 'flex',
-                alignItems: 'center',
-                background: 'rgba(0, 0, 0, 0.6)',
-                color: 'white',
-                padding: '8px 12px',
-                borderBottomLeftRadius: '15px', // Use px for better control
-                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
-              }}>
-                <VisibilityOutlined style={{ marginRight: '8px' }} />
-                <span>{event.userViews}</span>
+    <>
+      <Grid container spacing={3} style={{ padding: '2%' }}>
+        {FilteredData.map((event, index) => (
+          <Grid key={event._id} item xs={12} sm={6} md={4}>
+            <div style={{ border: '1px solid lightgrey', borderRadius: '2%' }}>
+              <div style={{ padding: '5%', position: 'relative' }}>
+                <img
+                  className="event-image"
+                  style={{ height: '150px', }}
+                  src={`${constants.BASE_URL}images/${event.dpimageFileName}`}
+                  alt="Event"
+                />
+                <div style={{
+                  position: 'absolute',
+                  top: '11%',
+                  right: '5%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  background: 'rgba(0, 0, 0, 0.6)',
+                  color: 'white',
+                  padding: '8px 12px',
+                  borderBottomLeftRadius: '15px', // Use px for better control
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+                }}>
+                  <VisibilityOutlined style={{ marginRight: '8px' }} />
+                  <span>{event.userViews}</span>
+                </div>
               </div>
-            </div>
 
-            <div style={{ padding: '5%', paddingTop: 0 }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <Typography variant="h6" component="h2" style={{ marginBottom: '2%' }} className='hover-3 truncate-title'>
-                  {event.eventName}
-                </Typography> <IconButton onClick={() => toggleLike(event._id, event.isLiked)} style={{ marginLeft: '8px' }}>
-                  {loadingStates[event._id] ? (
-                    <CircularProgress
-                      key={index}
-                      style={{ color: 'dodgerblue' }}
-                      size={18}
-                    />
-                  ) : (
-                    event.isLiked ? (
-                      <ThumbUp style={{ color: 'blue' }} />
+              <div style={{ padding: '5%', paddingTop: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Typography variant="h6" component="h2" style={{ marginBottom: '2%' }} className='hover-3 truncate-title'>
+                    {event.eventName}
+                  </Typography>
+                  <IconButton onClick={() => toggleLike(event._id, event.isLiked)} style={{ marginLeft: '8px' }}>
+                    {loadingStates[event._id] ? (
+                      <CircularProgress
+                        key={index}
+                        style={{ color: 'dodgerblue' }}
+                        size={18}
+                      />
                     ) : (
-                      <ThumbUpOutlined />
-                    )
+                      event.isLiked ? (
+                        <ThumbUp style={{ color: 'blue' }} />
+                      ) : (
+                        <ThumbUpOutlined />
+                      )
+                    )}
+                  </IconButton>
+                </div>
+                <div style={{ marginBottom: '5%', color: 'black' }} className='event-description-truncate'>{event.description}</div>
+                <div style={{ display: 'flex', flexDirection: 'row' }}>
+                  <Button type="primary" style={{ width: '100%', background: 'DodgerBlue', color: 'white' }} onClick={() => { props.openEvent(event._id, event.eventName) }}>
+                    Visit
+                  </Button>
+                  {props.showEditDelete && (
+                    <Space style={{ paddingLeft: '2%' }}>
+                      <Button icon={<EditOutlined />} onClick={() => { props.editEvent(event._id) }} />
+                      {props.showLoading ? <Spin /> : <Button icon={<DeleteOutlined />} danger onClick={() => { props.handleDeleteEvent(event._id) }} />}
+                    </Space>
                   )}
-                </IconButton>
-              </div>
-              <div style={{ marginBottom: '5%', color: 'black' }} className='event-description-truncate'>{event.description}</div>
-              <div style={{ display: 'flex', flexDirection: 'row' }}>
-                <Button type="primary" style={{ width: '100%', background: 'DodgerBlue', color: 'white' }} onClick={() => { props.openEvent(event._id, event.eventName) }}>
-                  Visit
-                </Button>
+                </div>
                 {props.showEditDelete &&
-                  <Space style={{ paddingLeft: '2%' }}>
-                    <Button icon={<EditOutlined />} onClick={() => { props.editEvent(event._id) }} />
-                    {props.showLoading ? <Spin /> : <Button icon={<DeleteOutlined />} danger onClick={() => { props.handleDeleteEvent(event._id) }} />}
-                  </Space>
-                }
-              </div>
-              {props.showEditDelete &&
-                <Button
-                  type="primary"
-                  style={{ marginTop: '2%', width: '100%', background: event.status === 'Approved' ? 'green' : 'dodgerblue', color: 'white' }}
-                  onClick={() => { props.handleApprovedEvent(event._id, event.status === 'Approved' ? true : false) }}
+                  <Button
+                    type="primary"
+                    style={{ marginTop: '2%', width: '100%', background: event.status === 'Approved' ? 'green' : 'dodgerblue', color: 'white' }}
+                    onClick={() => { props.handleApprovedEvent(event._id, event.status === 'Approved' ? true : false) }}
 
-                  icon={event.status === 'Approved' ? <CheckOutlined /> : <></>}
-                >
-                  {event.status === 'Approved' ? 'Approved' : 'Approve'}
-                </Button>}
+                    icon={event.status === 'Approved' ? <CheckOutlined /> : <></>}
+                  >
+                    {event.status === 'Approved' ? 'Approved' : 'Approve'}
+                  </Button>}
+                {/* Create Poll button on a new line, only for President or society admin */}
+                {canCreatePoll && props.showEditDelete && (
+                  <Button
+                    icon={<PlusOutlined />}
+                    type="primary"
+                    onClick={() => handleCreatePoll(event._id)}
+                    style={{ background: '#13c2c2', marginTop: '10px', width: '100%', fontWeight: 500 }}
+                  >
+                    Create Poll
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
-        </Grid>
-      ))}
-    </Grid>
+          </Grid>
+        ))}
+      </Grid>
+      <PollCreationModal
+        open={showPollModal}
+        onClose={() => setShowPollModal(false)}
+        onSelectPollType={handlePollTypeSelect}
+      />
+      <CreatePollForm
+        open={showCreatePollForm}
+        onClose={handleCloseCreatePollForm}
+        pollType={selectedPollType}
+        eventId={selectedEventId}
+        pollColor={selectedPollColor}
+      />
+    </>
   );
 };
 

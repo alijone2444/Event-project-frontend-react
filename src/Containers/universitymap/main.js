@@ -150,6 +150,7 @@ const CustomModal = ({ isOpen, onClose, data }) => {
 const UniversityMap = () => {
   const location = useLocation();
   const { state } = location;
+  console.log('location', state)
   const { location: coordinates, locationName, remainingData } = state || {};
 
   const [lights, setLights] = useState(initialLights);
@@ -157,7 +158,7 @@ const UniversityMap = () => {
   const [modelLoaded, setModelLoaded] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalData, setModalData] = useState(null);
-  const navigate=useNavigate()
+  const navigate = useNavigate()
   const highlightPosition = useMemo(() => {
     if (locationName) {
       const matchedLocation = Object.keys(cameraPositions).find((key) =>
@@ -185,8 +186,8 @@ const UniversityMap = () => {
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "fixed", top: 0, left: 0 }}>
-       <AppBarComponent title={'Back'} onBackButtonClick={() => { navigate(state.toNavigate) }} />
-     
+      <AppBarComponent title={'Back'} onBackButtonClick={() => { navigate(state.toNavigate) }} />
+
       <Canvas
         camera={{
           position: [defaultCameraPos.x, defaultCameraPos.y, defaultCameraPos.z],

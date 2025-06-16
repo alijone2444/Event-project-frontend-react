@@ -88,6 +88,7 @@ function AllEvents() {
         }
     }, [dispatch]); // Fetch data only once when the component mounts
 
+
     const handleOpenEvent = (_id, eventName) => {
         navigate(`/eventdetail/${eventName}`, { state: { data: { _id, eventName }, toNavigate: '/events' } });
     };
@@ -168,3 +169,4 @@ function AllEvents() {
 }
 
 export default AllEvents;
+

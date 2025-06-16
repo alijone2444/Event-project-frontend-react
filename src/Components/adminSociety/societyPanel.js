@@ -169,7 +169,7 @@ const SocietyPanel = () => {
                                         Members:
                                     </Typography>
                                     <ul style={{ maxHeight: '50px', overflowY: 'auto' }}>
-                                        {society.members
+                                        {(society.members || [])
                                             .filter(member =>
                                                 typeof member === 'object' && // Ensure the element is an object
                                                 member !== null &&           // Exclude `null` values
@@ -224,8 +224,8 @@ const SocietyPanel = () => {
                                 }}
                             >
                                 <CreateEvent
-                                    oncloseSimple={() => { setshowEventModal(false) }}
-                                    onclose={() => { setshowEventModal(false) }}
+                                    onclose={() => setshowEventModal(false)}
+                                    oncloseSimple={() => setshowEventModal(false)}
                                     edit={null}
                                     societyName={selectedSociety}
                                 />

@@ -33,6 +33,7 @@ const EventCard = (props) => {
   const [selectedEventId, setSelectedEventId] = useState(null);
   const [selectedPollType, setSelectedPollType] = useState(null);
   const [selectedPollColor, setSelectedPollColor] = useState(null);
+  const [selectedEventName, setSelectedEventName] = useState(null);
 
   // Get userType from localStorage
   const userType = localStorage.getItem('userType');
@@ -80,8 +81,9 @@ const EventCard = (props) => {
     setFilteredData(filterEvents());
   }, [props.eventData, props.sortOption]);
 
-  const handleCreatePoll = (eventId) => {
+  const handleCreatePoll = (eventId, eventName) => {
     setSelectedEventId(eventId);
+    setSelectedEventName(eventName);
     setShowPollModal(true);
   };
 
@@ -96,6 +98,7 @@ const EventCard = (props) => {
     setShowCreatePollForm(false);
     setSelectedPollType(null);
     setSelectedPollColor(null);
+    setSelectedEventName(null);
   };
 
   return (
@@ -176,7 +179,7 @@ const EventCard = (props) => {
                   <Button
                     icon={<PlusOutlined />}
                     type="primary"
-                    onClick={() => handleCreatePoll(event._id)}
+                    onClick={() => handleCreatePoll(event._id, event.eventName)}
                     style={{ background: '#13c2c2', marginTop: '10px', width: '100%', fontWeight: 500 }}
                   >
                     Create Poll
@@ -197,6 +200,7 @@ const EventCard = (props) => {
         onClose={handleCloseCreatePollForm}
         pollType={selectedPollType}
         eventId={selectedEventId}
+        eventName={selectedEventName}
         pollColor={selectedPollColor}
       />
     </>

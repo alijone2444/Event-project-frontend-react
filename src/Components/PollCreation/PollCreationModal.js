@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     Modal,
     Typography,
@@ -9,6 +9,9 @@ import CloseIcon from '@mui/icons-material/Close'; // MUI icon
 import { pollTypes } from '../../Constants/constants';
 
 const PollCreationModal = ({ open, onClose, onSelectPollType }) => {
+    useEffect(() => {
+
+    }, [])
     return (
         <Modal
             open={open}

@@ -24,6 +24,8 @@ import SocietyCards from "../../../Components/SocietyCards/SocietyCards";
 import EventDataProvider from "../../../Components/dataFetchingComponent/dataFetchingComponent";
 import MarqueeComponent from "../../../Components/marqueeComponent/marquee";
 import TimerComponent from "../../../Components/timer/timer";
+import PollDisplay from "../../../Components/PollDisplay/PollDisplay";
+
 function Home() {
   const requestInstance = createAuthenticatedRequest();
   const dispatch = useDispatch();
@@ -156,6 +158,7 @@ function Home() {
           <TimerComponent startDate={UpcommingEvent[0]?.startDate} startTime={UpcommingEvent[0]?.startTime} eventName={UpcommingEvent[0]?.eventName} />
           <SocietyCards threeSocieties={threeSocieties.societies} />
         </div>
+        <PollDisplay pollType="home" />
         <HomeBody />
         <MarqueeComponent />
 

@@ -182,15 +182,15 @@ const EventManagementInterface = () => {
                 <Grid item xs={8} sm={8} md={8} lg={8} style={{ textAlign: 'right' }}>
                   <Grid container>
                     <Grid item xs={12} sm={8} md={8} lg={10} style={{ padding: "2%", }}>
-                    <Select
-  defaultValue="Show All"
-  onChange={handleSortChange}
-  sx={{ backgroundColor: "white",height:'35px' }} // MUI uses `sx` for styling
->
-  <MenuItem value="Show All">Show All</MenuItem>
-  <MenuItem value="Not Approved">Not Approved</MenuItem>
-  <MenuItem value="Approved">Approved</MenuItem>
-</Select>
+                      <Select
+                        defaultValue="Show All"
+                        onChange={handleSortChange}
+                        sx={{ backgroundColor: "white", height: '35px' }} // MUI uses `sx` for styling
+                      >
+                        <MenuItem value="Show All">Show All</MenuItem>
+                        <MenuItem value="Not Approved">Not Approved</MenuItem>
+                        <MenuItem value="Approved">Approved</MenuItem>
+                      </Select>
 
                     </Grid>
                     <Grid item xs={12} sm={4} md={4} lg={2} style={{ padding: "2%" }}>

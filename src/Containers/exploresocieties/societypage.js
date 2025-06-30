@@ -154,7 +154,7 @@ const AboutSocietyPage = () => {
             {((UserType === 'admin' || UserType === 'President') && !society.Simple) && <AppBar position="static" style={{ backgroundColor: 'purple', boxShadow: 'none', borderBottom: '1px solid #e0e0e0' }}>
                 <Toolbar >
                     <MuiTypography variant="h6" style={{ flexGrow: 1, color: 'white', margin: 0 }}>
-                        Add Event : {society.members
+                        Add Event : {(society.members || [])
                             .filter(member => typeof member === "object" && member.role === UserType) // Filter objects with matching 'role'
                             .map(filteredMember => filteredMember.name) // Extract the 'name' of each filtered member
                             .join(', ')}
@@ -336,7 +336,8 @@ const AboutSocietyPage = () => {
                         maxHeight: '80vh', // Limit the max height if needed
                     }}
                 >    <CreateEvent
-                        onclose={closeEventModal} // Pass close function to handle modal close
+                        onclose={closeEventModal}
+                        oncloseSimple={closeEventModal}
                         edit={null}
                         societyName={society.name}
                     />

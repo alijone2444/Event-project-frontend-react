@@ -26,18 +26,18 @@ const IcogramsMap = (props) => {
             { name: "Block 2", shape: "rect", coords: [135, 212, 231, 247], preFillColor: "rgba(255,0,255,0.3)" },
             { name: "Raza Block", shape: "rect", coords: [266, 276, 360, 318], preFillColor: "rgba(0,255,255,0.3)" },
             { name: "Basket ball Court", shape: "rect", coords: [85, 172, 140, 197], preFillColor: "rgba(255,255,0,0.3)" },
-            { name: "Mosque", shape: "rect", coords: [50,254, 125, 296], preFillColor: "rgba(255,255,0,0.3)" },
+            { name: "Mosque", shape: "rect", coords: [50, 254, 125, 296], preFillColor: "rgba(255,255,0,0.3)" },
             { name: "DHA", shape: "rect", coords: [18, 13, 126, 66], preFillColor: "rgba(255,255,0,0.3)" },
             { name: "Canteen 1", shape: "rect", coords: [445, 154, 466, 173], preFillColor: "rgba(255,255,0,0.3)" },
             { name: "Canteen 2", shape: "rect", coords: [323, 224, 341, 257], preFillColor: "rgba(255,255,0,0.3)" },
             { name: "Bookshop", shape: "rect", coords: [422, 174, 456, 195], preFillColor: "rgba(128,0,128,0.3)" },
             { name: "Block 3", shape: "rect", coords: [280, 190, 320, 240], preFillColor: "rgba(0,128,128,0.3)" },
             { name: "Block 7", shape: "rect", coords: [733, 113, 796, 199], preFillColor: "rgba(128,128,0,0.3)" },
-            { name: "Football Ground", shape: "rect", coords: [84,81, 204, 121], preFillColor: "rgba(0,0,0,0.3)" },
-            { name: "Teacher Hostel", shape: "rect", coords: [164,131, 230, 190], preFillColor: "rgba(0,0,0,0.3)" },
+            { name: "Football Ground", shape: "rect", coords: [84, 81, 204, 121], preFillColor: "rgba(0,0,0,0.3)" },
+            { name: "Teacher Hostel", shape: "rect", coords: [164, 131, 230, 190], preFillColor: "rgba(0,0,0,0.3)" },
             { name: "SPARCO", shape: "rect", coords: [26, 343, 89, 387], preFillColor: "rgba(0,0,0,0.3)" },
             { name: "Nursery", shape: "rect", coords: [372, 0, 403, 13], preFillColor: "rgba(0,0,0,0.3)" }
-        ,    { name: "Mechanical Lab", shape: "rect", coords: [536, 340, 641, 400], preFillColor: "rgba(0,0,0,0.3)" }
+            , { name: "Mechanical Lab", shape: "rect", coords: [536, 340, 641, 400], preFillColor: "rgba(0,0,0,0.3)" }
         ]
     };
 
@@ -106,12 +106,12 @@ const IcogramsMap = (props) => {
                 border: "1px solid dodgerblue",
                 borderRadius: "10px",
                 position: "relative",
-                padding:'2%'
+                padding: '2%'
             }}
         >
-        <Typography variant="h6" align="center">
-  University Map
-</Typography>
+            <Typography variant="h6" align="center">
+                University Map
+            </Typography>
 
             {/* Legend Toggle Button for Mobile */}
             <IconButton
@@ -138,7 +138,7 @@ const IcogramsMap = (props) => {
                     overflow: "hidden",
                     position: "relative",
                     border: "1px solid dodgerblue",
-                    borderBottom:0,
+                    borderBottom: 0,
                     cursor: isDragging ? "grabbing" : "grab",
                 }}
                 onMouseDown={handleMouseDown}
@@ -168,63 +168,70 @@ const IcogramsMap = (props) => {
                     </IconButton>
                 </div>
             </div>
-            <div style={{ 
-    position: 'absolute', 
-    bottom: '0', 
-    left: '50%', 
-    transform: 'translateX(-50%)', 
-    background: 'dodgerblue', 
-    padding: '5px 10px', 
-    color: 'white',
-    borderRadius: '5px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '8px'
-}}>
-    {text ? (
-        <>
-            <span style={{ fontSize: '18px' }}>✅</span>
-            <h4 style={{ margin: 0 }}>{text}</h4>
-        </>
-    ) : (
-        <h4 style={{ margin: 0 }}>Click on a location to see details</h4>
-    )}
-</div>
+            <div style={{
+                position: 'absolute',
+                bottom: '0',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                background: 'dodgerblue',
+                padding: '5px 10px',
+                color: 'white',
+                borderRadius: '5px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+            }}>
+                {text ? (
+                    <>
+                        <span style={{ fontSize: '18px' }}>✅</span>
+                        <h4 style={{ margin: 0 }}>{text}</h4>
+                    </>
+                ) : (
+                    <h4 style={{ margin: 0 }}>Click on a location to see details</h4>
+                )}
+            </div>
 
             {/* Legend */}
-            <div
-                style={{
-                    position: "absolute",
-                    top:  "10%",
-                    right: "10px",
-                    backgroundColor: "rgba(255, 255, 255, 0.9)",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    border: "1px solid grey",
-                    maxHeight: "300px",
-                    overflowY: "auto",
-                    display: window.innerWidth <= 768 ? (showLegend ? "block" : "none") : "block",
-                    transition: "0.3s ease-in-out",
-                    zIndex: 1,
-                }}
-            >
-                <h3>Legend</h3>
-                {MAP.areas.map((area, index) => (
-                    <div key={index} style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
-                        <div
-                            style={{
-                                width: "20px",
-                                height: "20px",
-                                backgroundColor: area.preFillColor,
-                                marginRight: "10px",
-                                border: "1px solid black",
-                            }}
-                        ></div>
-                        <span>{area.name}</span>
+            {(window.innerWidth > 768 || showLegend) && (
+                <div
+                    style={{
+                        position: "absolute",
+                        top: "10%",
+                        right: "10px",
+                        backgroundColor: "rgba(255, 255, 255, 0.9)",
+                        padding: "10px",
+                        borderRadius: "8px",
+                        border: "1px solid grey",
+                        maxHeight: "300px",
+                        overflowY: "auto",
+                        transition: "0.3s ease-in-out",
+                        zIndex: 1,
+                    }}
+                >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h3 style={{ margin: 0 }}>Legend</h3>
+                        {window.innerWidth <= 768 && (
+                            <IconButton size="small" onClick={() => setShowLegend(false)} style={{ marginLeft: 8 }}>
+                                <span style={{ fontSize: 18, fontWeight: 'bold' }}>✕</span>
+                            </IconButton>
+                        )}
                     </div>
-                ))}
-
-            </div>
+                    {MAP.areas.map((area, index) => (
+                        <div key={index} style={{ display: "flex", alignItems: "center", marginBottom: "8px" }}>
+                            <div
+                                style={{
+                                    width: "20px",
+                                    height: "20px",
+                                    backgroundColor: area.preFillColor,
+                                    marginRight: "10px",
+                                    border: "1px solid black",
+                                }}
+                            ></div>
+                            <span>{area.name}</span>
+                        </div>
+                    ))}
+                </div>
+            )}
 
         </div>
     );

@@ -1,11 +1,10 @@
-
 import HomeOutlined from '@mui/icons-material/HomeOutlined';
 import StarBorderOutlined from '@mui/icons-material/StarBorderOutlined';
 import societyicon from '../images/societyicon.png'
 import CalendarTodayOutlined from '@mui/icons-material/CalendarTodayOutlined';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-
+import { CheckCircleFilled, TableOutlined, BulbOutlined, CheckSquareFilled, CameraFilled, CheckOutlined } from '@ant-design/icons';
 import Info from '@mui/icons-material/InfoOutlined';
 import UserIcon from '@mui/icons-material/AccountCircleOutlined'
 import { AimOutlined, TeamOutlined, AppstoreAddOutlined, RocketOutlined, EnvironmentOutlined } from '@ant-design/icons';
@@ -60,8 +59,8 @@ const constants = {
 
     // // /ist-ems-backend/
     // BASE_URL: 'http://192.168.1.17:3002/ist-ems-backend/',
-    BASE_URL: 'https://ist-ems.live/ist-ems-backend/',
-
+    // BASE_URL: 'https://ist-ems.live/ist-ems-backend/',
+    BASE_URL: "http://localhost:3002/ist-ems-backend/",
     // BASE_URL_2: 'http://192.168.1.16:5000/',
     departmentOptions: [
         "Computer Science",
@@ -120,8 +119,8 @@ const constants = {
         }
     },
     recentEvents: `These are the latest events added to our platform, showcasing the most current and newly published happenings. Stay up-to-date with what's just been announced!`,
-    upcomingEvents: `A curated list of events scheduled to take place soon. This list helps you plan ahead and ensures you don’t miss out on events that align with your interests.`,
-    popularEvents: `These events have gained significant attention and are highly favored by our community. Discover what’s trending and join in on the most talked-about activities!`
+    upcomingEvents: `A curated list of events scheduled to take place soon. This list helps you plan ahead and ensures you don't miss out on events that align with your interests.`,
+    popularEvents: `These events have gained significant attention and are highly favored by our community. Discover what's trending and join in on the most talked-about activities!`
 }
 
 
@@ -129,3 +128,42 @@ const constants = {
 
 
 export default constants;
+
+export const pollTypes = [
+    {
+        title: 'Voting',
+        type: 'voting',
+        icon: <CheckCircleFilled style={{ fontSize: 24 }} />, // teal
+        color: '#13c2c2',
+    },
+    {
+        title: 'Free table',
+        type: 'free_table',
+        icon: <TableOutlined style={{ fontSize: 24 }} />, // yellow
+        color: '#faad14',
+    },
+    {
+        title: 'Collect ideas',
+        type: 'collect_ideas',
+        icon: <BulbOutlined style={{ fontSize: 24 }} />, // orange
+        color: '#fa8c16',
+    },
+    {
+        title: 'Survey',
+        type: 'survey',
+        icon: <CheckSquareFilled style={{ fontSize: 24 }} />, // purple
+        color: '#722ed1',
+    },
+    {
+        title: 'Photo Contest',
+        type: 'photo_contest',
+        icon: <CameraFilled style={{ fontSize: 24 }} />, // dark blue
+        color: '#001529',
+    },
+    // {
+    //     title: 'Open Poll',
+    //     type: 'open_poll',
+    //     icon: <CheckOutlined style={{ fontSize: 24 }} />, // green
+    //     color: '#52c41a',
+    // },
+];

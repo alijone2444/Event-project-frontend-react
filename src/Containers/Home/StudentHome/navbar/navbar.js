@@ -81,7 +81,8 @@ function Navbar(props) {
         navigate('/Calander', { state: profileData });
       }
       else if (option === 'IST MAP') {
-        navigate('/ist-3d-map', { state: profileData });
+        navigate('/ist-3d-map', { state: { toNavigate: '/Home' } });
+        console.log('profie data', profileData)
       }
     } catch (error) {
       console.error('Error handling click:', error);
